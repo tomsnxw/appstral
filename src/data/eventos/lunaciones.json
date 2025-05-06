@@ -1,0 +1,527 @@
+[
+    {
+        "phase": "Luna Llena",
+        "date": "2025-04-13T00:23:24Z",
+        "sign": "Libra",
+        "degree": 23,
+        "minutes": 19,
+        "eclipse": null,
+        "sun_sign": "Aries"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-04-27T19:32:18Z",
+        "sign": "Tauro",
+        "degree": 7,
+        "minutes": 46,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-05-12T16:57:05Z",
+        "sign": "Escorpio",
+        "degree": 22,
+        "minutes": 12,
+        "eclipse": null,
+        "sun_sign": "Tauro"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-05-27T03:03:30Z",
+        "sign": "Géminis",
+        "degree": 6,
+        "minutes": 5,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-06-11T07:44:59Z",
+        "sign": "Sagitario",
+        "degree": 20,
+        "minutes": 39,
+        "eclipse": null,
+        "sun_sign": "Géminis"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-06-25T10:32:46Z",
+        "sign": "Cáncer",
+        "degree": 4,
+        "minutes": 7,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-07-10T20:37:56Z",
+        "sign": "Capricornio",
+        "degree": 18,
+        "minutes": 50,
+        "eclipse": null,
+        "sun_sign": "Cáncer"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-07-24T19:12:21Z",
+        "sign": "Leo",
+        "degree": 2,
+        "minutes": 8,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-08-09T07:56:13Z",
+        "sign": "Acuario",
+        "degree": 16,
+        "minutes": 59,
+        "eclipse": null,
+        "sun_sign": "Leo"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-08-23T06:07:42Z",
+        "sign": "Virgo",
+        "degree": 0,
+        "minutes": 23,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-09-07T18:10:03Z",
+        "sign": "Piscis",
+        "degree": 15,
+        "minutes": 22,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Virgo"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-09-21T19:55:17Z",
+        "sign": "Virgo",
+        "degree": 29,
+        "minutes": 5,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2025-10-07T03:48:46Z",
+        "sign": "Aries",
+        "degree": 14,
+        "minutes": 8,
+        "eclipse": null,
+        "sun_sign": "Libra"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-10-21T12:26:19Z",
+        "sign": "Libra",
+        "degree": 28,
+        "minutes": 21,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-11-20T06:48:25Z",
+        "sign": "Escorpio",
+        "degree": 28,
+        "minutes": 11,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2025-12-20T01:44:29Z",
+        "sign": "Sagitario",
+        "degree": 28,
+        "minutes": 24,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-01-03T10:04:03Z",
+        "sign": "Cáncer",
+        "degree": 13,
+        "minutes": 1,
+        "eclipse": null,
+        "sun_sign": "Capricornio"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-01-18T19:53:08Z",
+        "sign": "Capricornio",
+        "degree": 28,
+        "minutes": 43,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-02-01T22:10:23Z",
+        "sign": "Leo",
+        "degree": 13,
+        "minutes": 3,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Acuario"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-03-19T01:24:37Z",
+        "sign": "Piscis",
+        "degree": 28,
+        "minutes": 27,
+        "eclipse": "Eclipse Solar"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-04-02T02:13:07Z",
+        "sign": "Libra",
+        "degree": 12,
+        "minutes": 21,
+        "eclipse": null,
+        "sun_sign": "Aries"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-05-01T17:24:19Z",
+        "sign": "Escorpio",
+        "degree": 11,
+        "minutes": 20,
+        "eclipse": null,
+        "sun_sign": "Tauro"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-05-16T20:02:11Z",
+        "sign": "Tauro",
+        "degree": 25,
+        "minutes": 57,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-05-31T08:46:21Z",
+        "sign": "Sagitario",
+        "degree": 9,
+        "minutes": 55,
+        "eclipse": null,
+        "sun_sign": "Géminis"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-06-15T02:55:19Z",
+        "sign": "Géminis",
+        "degree": 24,
+        "minutes": 3,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-06-29T23:57:50Z",
+        "sign": "Capricornio",
+        "degree": 8,
+        "minutes": 14,
+        "eclipse": null,
+        "sun_sign": "Cáncer"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-07-14T09:44:46Z",
+        "sign": "Cáncer",
+        "degree": 21,
+        "minutes": 59,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-07-29T14:36:52Z",
+        "sign": "Acuario",
+        "degree": 6,
+        "minutes": 30,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Leo"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-08-12T17:37:54Z",
+        "sign": "Leo",
+        "degree": 20,
+        "minutes": 1,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-08-28T04:19:41Z",
+        "sign": "Piscis",
+        "degree": 4,
+        "minutes": 54,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Virgo"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-09-11T03:28:09Z",
+        "sign": "Virgo",
+        "degree": 18,
+        "minutes": 25,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-09-26T16:50:11Z",
+        "sign": "Aries",
+        "degree": 3,
+        "minutes": 37,
+        "eclipse": null,
+        "sun_sign": "Libra"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-10-10T15:51:14Z",
+        "sign": "Libra",
+        "degree": 17,
+        "minutes": 21,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-10-26T04:12:57Z",
+        "sign": "Tauro",
+        "degree": 2,
+        "minutes": 45,
+        "eclipse": null,
+        "sun_sign": "Escorpio"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-11-09T07:03:16Z",
+        "sign": "Escorpio",
+        "degree": 16,
+        "minutes": 53,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2026-11-24T14:54:42Z",
+        "sign": "Géminis",
+        "degree": 2,
+        "minutes": 20,
+        "eclipse": null,
+        "sun_sign": "Sagitario"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2026-12-09T00:53:00Z",
+        "sign": "Sagitario",
+        "degree": 16,
+        "minutes": 56,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-01-07T20:25:32Z",
+        "sign": "Capricornio",
+        "degree": 17,
+        "minutes": 18,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-02-06T15:57:16Z",
+        "sign": "Acuario",
+        "degree": 17,
+        "minutes": 37,
+        "eclipse": "Eclipse Solar"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-03-08T09:30:38Z",
+        "sign": "Piscis",
+        "degree": 17,
+        "minutes": 34,
+        "eclipse": "Eclipse Solar"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-03-22T10:35:03Z",
+        "sign": "Libra",
+        "degree": 1,
+        "minutes": 29,
+        "eclipse": null,
+        "sun_sign": "Aries"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-04-20T22:28:18Z",
+        "sign": "Escorpio",
+        "degree": 0,
+        "minutes": 36,
+        "eclipse": null,
+        "sun_sign": "Tauro"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-06-04T19:41:30Z",
+        "sign": "Géminis",
+        "degree": 13,
+        "minutes": 58,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-06-19T00:45:30Z",
+        "sign": "Sagitario",
+        "degree": 27,
+        "minutes": 33,
+        "eclipse": null,
+        "sun_sign": "Géminis"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-07-04T03:03:14Z",
+        "sign": "Cáncer",
+        "degree": 11,
+        "minutes": 57,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-07-18T15:46:04Z",
+        "sign": "Capricornio",
+        "degree": 25,
+        "minutes": 48,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Cáncer"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-08-02T10:06:23Z",
+        "sign": "Leo",
+        "degree": 9,
+        "minutes": 55,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-08-17T07:29:50Z",
+        "sign": "Acuario",
+        "degree": 24,
+        "minutes": 11,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Leo"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-08-31T17:42:20Z",
+        "sign": "Virgo",
+        "degree": 8,
+        "minutes": 6,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-09-30T02:37:14Z",
+        "sign": "Libra",
+        "degree": 6,
+        "minutes": 43,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-10-15T13:48:09Z",
+        "sign": "Aries",
+        "degree": 21,
+        "minutes": 58,
+        "eclipse": null,
+        "sun_sign": "Libra"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-10-29T13:37:43Z",
+        "sign": "Escorpio",
+        "degree": 5,
+        "minutes": 54,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-11-14T03:27:05Z",
+        "sign": "Tauro",
+        "degree": 21,
+        "minutes": 31,
+        "eclipse": null,
+        "sun_sign": "Escorpio"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-11-28T03:25:35Z",
+        "sign": "Sagitario",
+        "degree": 5,
+        "minutes": 39,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2027-12-13T16:09:57Z",
+        "sign": "Géminis",
+        "degree": 21,
+        "minutes": 24,
+        "eclipse": null,
+        "sun_sign": "Sagitario"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2027-12-27T20:13:29Z",
+        "sign": "Capricornio",
+        "degree": 5,
+        "minutes": 50,
+        "eclipse": "Eclipse Solar"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2028-01-12T04:04:14Z",
+        "sign": "Cáncer",
+        "degree": 21,
+        "minutes": 27,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Capricornio"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2028-01-26T15:13:40Z",
+        "sign": "Acuario",
+        "degree": 6,
+        "minutes": 11,
+        "eclipse": "Eclipse Solar"
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2028-02-10T15:04:55Z",
+        "sign": "Leo",
+        "degree": 21,
+        "minutes": 23,
+        "eclipse": "Eclipse Lunar",
+        "sun_sign": "Acuario"
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2028-02-25T10:35:03Z",
+        "sign": "Piscis",
+        "degree": 6,
+        "minutes": 19,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Nueva",
+        "date": "2028-03-26T04:32:28Z",
+        "sign": "Aries",
+        "degree": 6,
+        "minutes": 2,
+        "eclipse": null
+    },
+    {
+        "phase": "Luna Llena",
+        "date": "2028-04-09T10:27:47Z",
+        "sign": "Libra",
+        "degree": 20,
+        "minutes": 5,
+        "eclipse": null,
+        "sun_sign": "Aries"
+    }
+]

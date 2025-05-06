@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798861160394",
+    "project_id": "efemeris-b8058",
+    "storage_bucket": "efemeris-b8058.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798861160394:android:ec88a90ad040ad95b86933",
+        "android_client_info": {
+          "package_name": "com.tomsnxw.appstral"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPORNaOngd5do6nroWg09SVUoFvbr90ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

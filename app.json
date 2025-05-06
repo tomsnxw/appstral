@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Appstral",
+    "label": "Appstral",
+    "slug": "appstral",
+    "icon": "./assets/icons/android-icon.png",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "com.tomsnxw.appstral",
+      "googleServicesFile": "./android/app/google-services.json",
+      "permissions": ["com.android.vending.BILLING"]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3b2375b3-d752-443c-a63d-afacea9008c0"
+      }
+    },
+    "plugins": [
+      [
+        "react-native-iap",
+        {
+          "paymentProvider": "both"
+        }
+      ]
+    ],
+    "owner": "tomsnxw"
+  }
+}

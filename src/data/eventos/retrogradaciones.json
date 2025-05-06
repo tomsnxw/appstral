@@ -1,0 +1,293 @@
+{
+  "Mercurio": [
+    {
+      "inicio": "2025-03-15T06:47:15Z",
+      "fin": "2025-04-07T11:08:46Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 9,
+      "inicio_minutos": 35,
+      "fin_signo": "Piscis",
+      "fin_grado": 26,
+      "fin_minutos": 50
+    },
+    {
+      "inicio": "2025-07-18T04:46:10Z",
+      "fin": "2025-08-11T07:31:01Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Leo",
+      "inicio_grado": 15,
+      "inicio_minutos": 35,
+      "fin_signo": "Leo",
+      "fin_grado": 4,
+      "fin_minutos": 15
+    },
+    {
+      "inicio": "2025-11-09T19:02:51Z",
+      "fin": "2025-11-29T17:39:36Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Sagitario",
+      "inicio_grado": 6,
+      "inicio_minutos": 52,
+      "fin_signo": "Escorpio",
+      "fin_grado": 20,
+      "fin_minutos": 42
+    },
+    {
+      "inicio": "2026-02-26T06:49:18Z",
+      "fin": "2026-03-20T19:33:58Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Piscis",
+      "inicio_grado": 22,
+      "inicio_minutos": 34,
+      "fin_signo": "Piscis",
+      "fin_grado": 8,
+      "fin_minutos": 29
+    },
+    {
+      "inicio": "2026-06-29T17:37:04Z",
+      "fin": "2026-07-23T22:59:00Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Cáncer",
+      "inicio_grado": 26,
+      "inicio_minutos": 15,
+      "fin_signo": "Cáncer",
+      "fin_grado": 16,
+      "fin_minutos": 19
+    },
+    {
+      "inicio": "2026-10-24T07:13:51Z",
+      "fin": "2026-11-13T15:55:01Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Escorpio",
+      "inicio_grado": 20,
+      "inicio_minutos": 59,
+      "fin_signo": "Escorpio",
+      "fin_grado": 5,
+      "fin_minutos": 2
+    },
+    {
+      "inicio": "2027-02-09T17:37:14Z",
+      "fin": "2027-03-03T12:33:10Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Piscis",
+      "inicio_grado": 5,
+      "inicio_minutos": 59,
+      "fin_signo": "Acuario",
+      "fin_grado": 20,
+      "fin_minutos": 55
+    },
+    {
+      "inicio": "2027-06-10T18:16:22Z",
+      "fin": "2027-07-04T19:40:31Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Cáncer",
+      "inicio_grado": 6,
+      "inicio_minutos": 22,
+      "fin_signo": "Géminis",
+      "fin_grado": 27,
+      "fin_minutos": 28
+    },
+    {
+      "inicio": "2027-10-07T14:38:12Z",
+      "fin": "2027-10-28T14:11:47Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Escorpio",
+      "inicio_grado": 4,
+      "inicio_minutos": 56,
+      "fin_signo": "Libra",
+      "fin_grado": 19,
+      "fin_minutos": 19
+    }
+  ],
+  "Venus": [
+    {
+      "inicio": "2025-03-02T00:37:17Z",
+      "fin": "2025-04-13T01:03:26Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 10,
+      "inicio_minutos": 50,
+      "fin_signo": "Piscis",
+      "fin_grado": 24,
+      "fin_minutos": 37
+    },
+    {
+      "inicio": "2026-10-03T07:17:02Z",
+      "fin": "2026-11-14T00:28:36Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Escorpio",
+      "inicio_grado": 8,
+      "inicio_minutos": 29,
+      "fin_signo": "Libra",
+      "fin_grado": 22,
+      "fin_minutos": 52
+    }
+  ],
+  "Marte": [
+    {
+      "inicio": "2027-01-10T13:00:26Z",
+      "fin": "2027-04-01T14:09:23Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Virgo",
+      "inicio_grado": 10,
+      "inicio_minutos": 26,
+      "fin_signo": "Leo",
+      "fin_grado": 20,
+      "fin_minutos": 56
+    }
+  ],
+  "Júpiter": [
+    {
+      "inicio": "2025-11-11T16:42:33Z",
+      "fin": "2026-03-11T03:31:00Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Cáncer",
+      "inicio_grado": 25,
+      "inicio_minutos": 9,
+      "fin_signo": "Cáncer",
+      "fin_grado": 15,
+      "fin_minutos": 5
+    },
+    {
+      "inicio": "2026-12-13T00:57:49Z",
+      "fin": "2027-04-13T02:12:34Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Leo",
+      "inicio_grado": 27,
+      "inicio_minutos": 1,
+      "fin_signo": "Leo",
+      "fin_grado": 16,
+      "fin_minutos": 60
+    }
+  ],
+  "Saturno": [
+    {
+      "inicio": "2025-07-13T04:08:28Z",
+      "fin": "2025-11-28T03:52:42Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 1,
+      "inicio_minutos": 56,
+      "fin_signo": "Piscis",
+      "fin_grado": 25,
+      "fin_minutos": 9
+    },
+    {
+      "inicio": "2026-07-26T19:57:38Z",
+      "fin": "2026-12-10T23:32:15Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 14,
+      "inicio_minutos": 45,
+      "fin_signo": "Aries",
+      "fin_grado": 7,
+      "fin_minutos": 56
+    },
+    {
+      "inicio": "2027-08-09T18:07:00Z",
+      "fin": "2027-12-24T02:48:09Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 27,
+      "inicio_minutos": 53,
+      "fin_signo": "Aries",
+      "fin_grado": 21,
+      "fin_minutos": 1
+    }
+  ],
+  "Urano": [
+    {
+      "inicio": "2025-09-06T04:52:30Z",
+      "fin": "2026-02-04T02:34:18Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Géminis",
+      "inicio_grado": 1,
+      "inicio_minutos": 28,
+      "fin_signo": "Tauro",
+      "fin_grado": 27,
+      "fin_minutos": 28
+    },
+    {
+      "inicio": "2026-09-10T18:28:24Z",
+      "fin": "2027-02-08T12:30:36Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Géminis",
+      "inicio_grado": 5,
+      "inicio_minutos": 42,
+      "fin_signo": "Géminis",
+      "fin_grado": 1,
+      "fin_minutos": 41
+    }
+  ],
+  "Neptuno": [
+    {
+      "inicio": "2025-07-04T21:34:13Z",
+      "fin": "2025-12-10T12:24:27Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 2,
+      "inicio_minutos": 11,
+      "fin_signo": "Piscis",
+      "fin_grado": 29,
+      "fin_minutos": 22
+    },
+    {
+      "inicio": "2026-07-07T10:55:45Z",
+      "fin": "2026-12-12T22:18:35Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 4,
+      "inicio_minutos": 25,
+      "fin_signo": "Aries",
+      "fin_grado": 1,
+      "fin_minutos": 37
+    },
+    {
+      "inicio": "2027-07-09T22:42:23Z",
+      "fin": "2027-12-15T09:07:29Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Aries",
+      "inicio_grado": 6,
+      "inicio_minutos": 40,
+      "fin_signo": "Aries",
+      "fin_grado": 3,
+      "fin_minutos": 51
+    }
+  ],
+  "Plutón": [
+    {
+      "inicio": "2025-05-04T15:28:30Z",
+      "fin": "2025-10-14T02:53:18Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Acuario",
+      "inicio_grado": 3,
+      "inicio_minutos": 49,
+      "fin_signo": "Acuario",
+      "fin_grado": 1,
+      "fin_minutos": 22
+    },
+    {
+      "inicio": "2026-05-06T15:35:34Z",
+      "fin": "2026-10-16T02:41:26Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Acuario",
+      "inicio_grado": 5,
+      "inicio_minutos": 31,
+      "fin_signo": "Acuario",
+      "fin_grado": 3,
+      "fin_minutos": 4
+    },
+    {
+      "inicio": "2027-05-08T12:55:24Z",
+      "fin": "2027-10-18T03:53:37Z",
+      "tipo": "retrógrado",
+      "inicio_signo": "Acuario",
+      "inicio_grado": 7,
+      "inicio_minutos": 11,
+      "fin_signo": "Acuario",
+      "fin_grado": 4,
+      "fin_minutos": 45
+    }
+  ]
+}
