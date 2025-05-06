@@ -8,6 +8,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { useUser } from '../contexts/UserContext';
 import { getFirestore, doc, updateDoc } from '../config/firebaseConfig';
+import Purchases from 'react-native-purchases';
 
 const SolarPremiumModal = ({handleCloseSolarPremiumModal, visible}) => {
   const [loading, setLoading] = useState(true);

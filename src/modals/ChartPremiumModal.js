@@ -23,6 +23,9 @@ import { useTranslation } from 'react-i18next';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { useUser } from '../contexts/UserContext';
+import Purchases from 'react-native-purchases';
+import { getFirestore, doc, updateDoc } from '../config/firebaseConfig';
+
 
 const ChartPremiumModal = ({handleCloseChartPremiumModal, visible}) => {
   const [loading, setLoading] = useState(true);
