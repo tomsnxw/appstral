@@ -1,0 +1,402 @@
+{
+  "Mercurio": {
+    "Aries": {
+      "en": "The mind revisits impulsive thoughts and decisions, where did we ‘speak out of turn’? What conversations turned into arguments when we were trying to set boundaries? What did I keep quiet when I wanted to shout?",
+      "es": "La mente revisa pensamientos y decisiones impulsivas, ¿dónde nos ‘fuimos de boca’? ¿Qué conversaciones se volvieron una discusión cuando se estaba intentando poner límites? ¿Qué callé cuando quise gritar?"
+    },
+    "Tauro": {
+      "en": "The moment demands to be inhabited, without haste or worry. How much energy's lost between memories and dreams, as the present fades away? What could you let go of to feel the calm of now?",
+      "es": "El momento pide ser habitado, sin prisas ni preocupaciones. ¿Cuánta energía se pierde entre recuerdos y sueños, mientras el presente se desvanece? ¿Qué podrías soltar para sentir la calma del ahora?"
+    },
+    "Géminis": {
+      "en": "The air fills with doubts whispering in the corners of the mind. Forgotten ideas stir like papers in the wind. What door do I walk past when I walk my mind? What words echo within me when I dare to say them?",
+      "es": "El aire se llena de dudas que susurran en los rincones de la mente. Ideas olvidadas se agitan, como papeles al viento. ¿Qué puerta paso de largo cuando camino mi mente? ¿Qué palabras resuenan dentro mío cuando me animo a decirlas?"
+    },
+    "Cáncer": {
+      "en": "Reason desperately tries to explore the words left in the chest, making it hard for them to flow out. Naming the feeling is one of the mind's greatest challenges, but it’s necessary to give words to the soul.",
+      "es": "La razón se desespera por explorar las palabras que quedan en el pecho, que le dificultan la fluidez con la que quiere salir por la boca. Nombrar el sentir es uno de los mayores desafíos para la mente, pero es necesario para ofrecerle palabras al alma."
+    },
+    "Leo": {
+      "en": "Part of our identity search needs the right words to name ourselves, and in this period, it becomes urgent to be true to our hearts when speaking. The moment to speak for ourselves is approaching, and first, we must find the way we want to express ourselves.",
+      "es": "Parte de nuestra búsqueda identitaria necesita de las palabras justas para nominarnos a nosotres mismos, y en este período se vuelve urgente ser leales a nuestro corazón al tomar la palabra. Se acerca el momento de hablar por nosotros mismos, y para ello primero debemos encontrar la manera en la que queremos expresarnos."
+    },
+    "Virgo": {
+      "en": "Silence calls the mind to organize what's scattered, to clear what's stagnant, and to listen to the whispers of the body. In the cleansing where the unnecessary fades, the essential finds its place. What inner voices need to be heard, and which ones have become obsolete?",
+      "es": "El silencio llama a la mente a ordenar lo disperso, a limpiar lo estancado y a escuchar los susurros del cuerpo. En la limpieza donde lo innecesario se desvanece, lo esencial encuentra su lugar. ¿Qué voces internas necesitan ser escuchadas y cuales quedaron caducas?"
+    },
+    "Libra": {
+      "en": "We’ll need to find new ways to communicate with others that don't hide in the limitations of words. Let’s dare to be symbols, to be interpreted, without defending ourselves with excuses. If we rethink how we connect, we can discover where we lack listening and where we need to be heard.",
+      "es": "Habrá que encontrar nuevas formas de comunicarse con el otro que no se escondan en las limitaciones de la palabra. Animarnos a ser símbolo, a ser interpretados, sin defendernos con excusas. Si repensamos la manera en que nos vinculamos, podemos descubrir dónde nos falta escuchar y dónde necesitamos que nos escuchen."
+    },
+    "Escorpio": {
+      "en": "Mercury’s the only god who could go down to the Underworld without staying there forever; our mind’s the only one that can approach our personal basement and make room for the words of our demons. If the mind fills with dormant resentments, with hidden secrets, we can only sit and listen to what our shadow needs to purge.",
+      "es": "Mercurio es el único dios que podía bajar al Inframundo sin quedarse ahí para siempre; nuestra mente es la única que puede acercarse a nuestro sótano personal y darle lugar a la palabra de nuestros demonios. Si la mente se llena de rencores dormidos, de secretos guardados, solo podemos sentarnos a escuchar qué necesita purgar nuestra sombra."
+    },
+    "Sagitario": {
+      "en": "Sometimes we’ve got to stop the car and check the map to see where we’re heading. If we hold on too tightly to the certainties that worked in the past, we might stop asking the questions that really matter now and lose our true path.",
+      "es": "A veces es necesario parar el carro y revisar el mapa para saber a dónde estamos yendo. Si nos aferramos a las certezas que nos sirvieron en el pasado, podemos dejar de hacernos preguntas fundamentales para nuestro presente, y así perder nuestro verdadero camino."
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "This transit brings us face to face with the chalkboard full of calculations, arrows, and ideas swirling in our minds. Ideas that don’t take shape stay adrift until we face them and bring them into reality. Now’s the time to separate utopias from real, possible change.",
+      "es": "Este tránsito enfrenta el pizarrón lleno de cálculos, flechas e ideas que tenemos en la mente. Las ideas que no se materializan quedan flotando sin cauce hasta que las atendemos y traemos a la realidad. Es momento de separar las utopías de los cambios posibles."
+    },
+    "Piscis": {
+      "en": "We could waste time trying to separate emotions from thoughts, but right now the key is to observe the inner chaos and tend to the emotional disruptions surfacing in our minds. Instead of trying to row our way out of the storm, we should make sure the boat doesn’t break under the pressure.",
+      "es": "Podríamos perder el tiempo intentando discernir las emociones de los pensamientos, pero en este período la clave está en observar el caos interno y asistir a las irrupciones de lo emocional en la mente. En vez de intentar remar fuera de la tormenta, debemos cuidar que no se nos rompa el barco bajo el temporal."
+    }
+  },
+  "Venus": {
+    "Aries": {
+      "en": "Personal worth is redefined in the mirror of other people's eyes. But the heart demands to beat for itself. How much longer can I ignore my desires? How much do I love myself when I look at myself without filters?",
+      "es": "El valor personal se redefine en el espejo de los ojos ajenos. Pero el corazón pide latir por sí mismo. ¿Cuánto más puedo ignorar mis deseos? ¿Cuánto me quiero al mirarme sin filtros?"
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "What do those explored options offer? They showed their treasures, but not everything that shines is gold, or at least not when it comes to putting desire into practice. To know what I enjoy, I must discern, know what benefits me. What would you stop valuing if you asked yourself if it’s worth the same today as when you first wanted it?",
+      "es": "¿Qué ofrecen esas opciones exploradas? Mostraron sus tesoros, pero no todo lo que brilla es oro, o al menos no cuando hay que poner en práctica el deseo. Para saber qué disfruto, debo discernir, saber qué me conviene. ¿Qué dejarías de valorar si te preguntaras si hoy vale lo mismo que cuando lo empezaste a querer?"
+    },
+    "Cáncer": {
+      "en": "",
+      "es": ""
+    },
+    "Leo": {
+      "en": "",
+      "es": ""
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "We’ve already heard that to love others, it’s necessary to start by loving ourselves, but how do we put this into practice? That part of me others see, and that I only explore when I give it to others, needs me to start giving it to myself. It’s not just about reviewing how I give love, but how it feels to receive it.",
+      "es": "Ya hemos escuchado que para amar a otros es necesario empezar por amarse a uno mismo, pero ¿cómo lo ponemos en práctica? Eso que los demás ven de mí y que solo exploro cuando lo doy a otros, necesita que me lo empiece a dar a mí. No es solo cuestión de revisar cómo doy amor, sino cómo se siente recibirlo."
+    },
+    "Escorpio": {
+      "en": "We’re not exempt from the power games that romantic love ensures as 'normal'. The desires for control disguise themselves as good intentions if we ignore that we can escape the toxic. It’s necessary to rethink how we share our intimacy, intervene when passion turns into obsession, and allow vulnerability without armor.",
+      "es": "No estamos exentos de los juegos de poder que el amor romántico nos asegura como 'normales'. Los deseos de control se disfrazan de buenas intenciones si ignoramos que podemos escapar de lo tóxico. Es necesario repensar cómo compartimos nuestra intimidad, intervenir cuando la pasión se vuelve obsesión y permitir la vulnerabilidad sin armaduras."
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "It seems like the sky is falling apart when the castles we built in the air are destroyed, when the bubbles in which we crystallize others with our illusions are popped. It’s time to review how we lose the reality of our connections in fantasy and what colorful lights we want to sell to others to appear in their dreams.",
+      "es": "Parece que el cielo se cae a pedazos cuando se destruyen los castillos que armamos en el aire, cuando se pinchan las burbujas en las que cristalizamos a los demás con nuestras ilusiones. Es momento de revisar cómo perdemos la realidad de nuestros vínculos en la fantasía y qué luces de colores queremos venderle a otros para aparecer en sus sueños."
+    }
+  },
+  "Marte": {
+    "Aries": {
+      "en": "",
+      "es": ""
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "",
+      "es": ""
+    },
+    "Cáncer": {
+      "en": "If we were to shed the armor that encases us, even just to meet ourselves, we might be able to see—through our softness—what is truly hurting us inside. Are we holding onto memories that awaken old reactions?",
+      "es": "Si nos quitásemos la armadura que nos acaparazona, al menos para encontrarnos con nosotres mismes, podríamos ver desde nuestra blandura qué cosas nos están doliendo internamente. ¿Conservamos memorias que nos despiertan reacciones antiguas? "
+    },
+    "Leo": {
+      "en": "What we believe we want—does it truly answer to our deepest desires, or is it the reward of a silent battle we’ve been fighting against others? The path we call our own—does it carry our heart in it, or is it shaped by what we were told we should long for?",
+      "es": "Eso que creemos querer, ¿responde a nuestros verdaderos anhelos personales o es el premio de una batalla silenciosa que libramos contra otres? Eso a lo que le decimos camino, ¿tiene nuestro corazón en él o es producto de lo que nos dijeron que debíamos desear?"
+    },
+    "Virgo": {
+      "en": "Where does the energy that keeps us moving each day come from?\\nSearching within to find the engine that drives our whole system is key to knowing how to activate it. We must stop the inertia and examine which part of our habits or daily life needs adjusting, so we can continue to sustain our functionality.",
+      "es": "¿De dónde viene esa energía que nos mantiene andando cada día?\\nBuscar en nosotres dónde está el motor que aviva todo nuestro sistema es clave para saber cómo activarlo. Hay que detener la inercia y revisar qué parte podríamos ajustar -de nuestros hábitos y nuestra cotidianidad- para seguir pudiendo sostener nuestra funcionalidad."
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "It’s time to willingly put an end to the inner battles, to stop the parts of ourselves that throw tantrums, that resist transformation, and destroy what we’re trying to build—or bind us to the versions we’re ready to leave behind.",
+      "es": "Es necesario hacer cesar voluntariamente las batallas internas, detener a las partes de une que hacen rabietas, que luchan por no ser transformadas, y destruyen lo que intentamos construir o nos atan a las versiones que queremos abandonar."
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "When our emotions intertwine with our will, it’s easy to be carried away by intentions fueled by fantasies. Right now, we need to practice stillness more than anything else—to wait for the fog on the path to clear before moving forward.",
+      "es": "Cuando se involucran nuestras emociones con nuestra voluntad es sencillo dejarse llevar por intenciones alimentadas por fantasías. En este momento necesitamos practicar más la calma que otra cosa, esperar a que baje la niebla del camino antes de seguir avanzando."
+    }
+  },
+  "Júpiter": {
+    "Aries": {
+      "en": "",
+      "es": ""
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "Focusing only on what we enjoy or what compels us to try new things without having to compromise or be productive can feel truly expansive if we're overwhelmed by routine. But this transit can not only insistently point out the lack of play in our lives, but also ask us to pay attention to the things we think and say. Do they reflect the real expansion we feel within ourselves?",
+      "es": "Atender sólo a lo que nos divierte o nos lleva a probar cosas nuevas sin tener que someter nada al compromiso y la productividad puede sentirse realmente expansivo si nos agobia la rutina y la vida repetitiva. Pero este tránsito no solo nos puede señalar con insistencia la falta juego en nuestra vida, si no también nos pide poner el ojo en las cosas que pensamos y decimos, ¿ellas acompañan la expansión real que sentimos coincidente con nosotros mismos?"
+    },
+    "Cáncer": {
+      "en": "Perhaps nostalgic memories within us overwhelm us, even exaggerating the feelings associated with those scenes. Examining the beliefs that keep our emotional barriers up could help us recognize what part of us is holding us back from growing because it clings to the past.",
+      "es": "Tal vez abrumen las recuerdos nostálgicos dentro nuestro, incluso se exageren los sentimientos que se vinculen con esas escenas. Revisar las creencias que sostienen en alto nuestras barreras emocionales podría ayudarnos a reconocer qué parte de nosotros no nos deja crecer por estar aferrada al pasado. "
+    },
+    "Leo": {
+      "en": "There's a search for meaning that can't be transferred, awakening questions at the core of each of us, reminding us to look at a compass we become trapped in ignoring when it challenges us too much. It's time to seek this North, asking ourselves where we'd go if we could safely follow our heart's desire.",
+      "es": "Hay una búsqueda de sentido intransferible que despierta incógnitas en el centro de cada une, que nos recuerda mirar una brújula que nos enfrascamos por ignorar cuando nos desafía demasiado. Es momento de ir en búsqueda de este propio Norte, preguntándonos a nosotros mismos hacia dónde iríamos si pudiéramos seguir con seguridad el deseo de nuestro corazón."
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "",
+      "es": ""
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "",
+      "es": ""
+    }
+  },
+  "Saturno": {
+    "Aries": {
+      "en": "We need to stop 'doing things' to channel anxiety. Starting things without finishing them doesn't mean procrastinating. It's time to work on what's already there, to dedicate time and effort to what we've already started and needs more work.\\nThe excitement of new things is stimulating, but it can distract us from what requires perseverance.",
+      "es": "Hay que parar de 'hacer cosas' para encausar la ansiedad, empezar cosas sin terminarlas no es dejar de postergar los objetivos. Es momento de ir a trabajar en lo que ya hay, de dedicarle tiempo y esfuerzo a lo que ya empezamos y necesita más trabajo.\\nLa emoción de la novedad es estimulante, pero nos puede distraer de lo que necesita perseverancia."
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "",
+      "es": ""
+    },
+    "Cáncer": {
+      "en": "",
+      "es": ""
+    },
+    "Leo": {
+      "en": "",
+      "es": ""
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "",
+      "es": ""
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "",
+      "es": ""
+    }
+  },
+  "Urano": {
+    "Aries": {
+      "en": "",
+      "es": ""
+    },
+    "Tauro": {
+      "en": "The external revolution becomes internal. As part of nature, humans are also affected by the development of technology, and part of the revolution that Uranus marks in this sign is awakening consciousness to see this biological connection we have with the Earth, and thus to glimpse, from our own materiality, what we are doing to the planet.",
+      "es": "La revolución externa se vuelve interna. Como parte de la naturaleza, el humano también se ve afectado por el desarrollo de la tecnología, y parte de la revolución que Urano marca en este signo está en despertar a la conciencia para que vea este vínculo biológico que tenemos con la Tierra, y así vislumbrar desde la propia materialidad lo que le estamos haciendo al planeta. "
+    },
+    "Géminis": {
+      "en": "The external revolution becomes internal. The way we perceive the world determines our relationship with it. If a certain way of discerning things is imposed on us, we'll never be able to discern what we want, what's good for us, what other options there are to choose from. We must allow the changes in the world to move us to internal questions: Where do we stand in the face of the destruction of the old world we inhabit?",
+      "es": "La revolución externa se vuelve interna. La manera en la que percibimos el mundo condiciona nuestro vínculo con él, si nos imponen una manera de discernir las cosas, nunca vamos a poder notar qué es queremos, qué es bueno para nosotros, qué otras opciones hay para elegir. Hay que dejar que los cambios del mundo nos muevan preguntas internas, ¿dónde estamos posicionados frente a la destrucción del viejo mundo que habitamos?"
+    },
+    "Cáncer": {
+      "en": "",
+      "es": ""
+    },
+    "Leo": {
+      "en": "",
+      "es": ""
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "",
+      "es": ""
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "",
+      "es": ""
+    }
+  },
+  "Neptuno": {
+    "Aries": {
+      "en": "It's time to collectively review which violent gods we share in our pantheon. The violence we suffer and reproduce arises from the Aries fragment of the imaginary that unites us. Patriarchal capitalist societies cultivate it, but only sensitivity to its destruction can awaken us. Neptune retrograde in Aries leads us to reinterpret these symbols and our participation in this planetary awareness.",
+      "es": "Es momento de revisar colectivamente qué dioses violentos compartimos en nuestro panteón. Las violencias que sufrimos y reproducimos surgen del fragmento ariano del imaginario que nos une. Sociedades capitalistas patriarcales la cultivan, pero solo la sensibilidad ante su destrucción puede despertarnos. Neptuno retrógrado en Aries nos lleva a reinterpretar estos símbolos y nuestra participación en esta sensibilización planetaria."
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "",
+      "es": ""
+    },
+    "Cáncer": {
+      "en": "",
+      "es": ""
+    },
+    "Leo": {
+      "en": "",
+      "es": ""
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "",
+      "es": ""
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "",
+      "es": ""
+    },
+    "Piscis": {
+      "en": "",
+      "es": ""
+    }
+  },
+  "Plutón": {
+    "Aries": {
+      "en": "",
+      "es": ""
+    },
+    "Tauro": {
+      "en": "",
+      "es": ""
+    },
+    "Géminis": {
+      "en": "",
+      "es": ""
+    },
+    "Cáncer": {
+      "en": "",
+      "es": ""
+    },
+    "Leo": {
+      "en": "",
+      "es": ""
+    },
+    "Virgo": {
+      "en": "",
+      "es": ""
+    },
+    "Libra": {
+      "en": "",
+      "es": ""
+    },
+    "Escorpio": {
+      "en": "",
+      "es": ""
+    },
+    "Sagitario": {
+      "en": "",
+      "es": ""
+    },
+    "Capricornio": {
+      "en": "",
+      "es": ""
+    },
+    "Acuario": {
+      "en": "We've already understood that the time to reform our way of building community is urgent. What we need to reexamine now is what we're breaking when we seek to destroy the old to make way for the new. We're using technological advances to change the world, perpetuating destructive ways. How could we use technology to save it? What should be transformed in our communities to serve the revolution the planet needs? Personally, what do I continue to bring to the new world that has been corrupted by the world we've lived in until recently?",
+      "es": "Ya entendimos que es impostergable reformar nuestra manera de hacer comunidad. Ahora, ¿qué estamos rompiendo al destruir lo viejo para dar lugar a lo nuevo? Usamos avances tecnológicos para cambiar el mundo, pero perpetuamos formas destructivas.¿Cómo podríamos usarlos para salvarlo? ¿Qué debe transformarse en nuestras comunidades? Y en lo personal, ¿qué sigo trayendo del mundo viejo?"
+    },
+    "Piscis": {
+      "en": "",
+      "es": ""
+    }
+  }
+}

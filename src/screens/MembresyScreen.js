@@ -11,17 +11,85 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import MailModal from '../modals/MailModal';
+import Purchases from 'react-native-purchases';
 
 const MembresyScreen = () => {
-  const {userData} = useUser();
+  const { userData, updateUser } = useUser();
   const navigation = useNavigation(); 
   const { theme } = useContext(ThemeContext);
   const [selectedOption, setSelectedOption] = useState("estelar"); 
   const { t, i18n  } = useTranslation();
+    const [loading, setLoading] = useState(true);
   const [mainBenefit, setMainBenefit] = useState(null);
   const [otherBenefits, setOtherBenefits] = useState([]);
   const membresia = userData?.membresia; 
+  const [offerings, setOfferings] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [estelarMonthly, setEstelarMonthly] = useState(null);
+  const [solarMonthly, setSolarMonthly] = useState(null);
+  const [chartPack, setChartPack] = useState(null);
+  const [selectedOfferingIdentifier, setSelectedOfferingIdentifier] = useState('estelar.plan'); 
+  const [selectedPackage, setSelectedPackage] = useState(null);
+
+  useEffect(() => {
+    const fetchOfferings = async () => {
+      setLoading(true);
+      try {
+        const fetchedOfferings = await Purchases.getOfferings();
+        console.log('Offerings obtenidos:', fetchedOfferings);
+        setOfferings(fetchedOfferings);
+  
+        const estelarOffering = fetchedOfferings?.all['estelar.plan'];
+        const solarOffering = fetchedOfferings?.all['solar.plan'];
+        const chartOffering = fetchedOfferings?.all['chart.pack'];
+  
+        setEstelarMonthly(estelarOffering?.availablePackages.find(pkg => pkg.packageType === Purchases.PACKAGE_TYPE.MONTHLY) || null);
+        setSolarMonthly(solarOffering?.availablePackages.find(pkg => pkg.packageType === Purchases.PACKAGE_TYPE.MONTHLY) || null);
+        setChartPack(chartOffering?.availablePackages[0] || null);
+  
+        if (selectedOfferingIdentifier === 'estelar.plan' && estelarMonthly) {
+          setSelectedPackage(estelarMonthly);
+        } else if (selectedOfferingIdentifier === 'solar.plan' && solarMonthly) {
+          setSelectedPackage(solarMonthly);
+        } else if (selectedOfferingIdentifier === 'chart.pack' && chartPack) {
+          setSelectedPackage(chartPack);
+        }
+      } catch (e) {
+        console.log('Error al obtener los Offerings', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchOfferings();
+  }, []); 
+
+const handlePurchase = async () => {
+  if (!selectedPackage) {
+    console.warn("No se seleccionó un paquete válido para la compra.");
+    return;
+  }
+  try {
+    const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
+    console.log('Información de la compra:', purchaserInfo);
+
+    if (purchaserInfo?.customerInfo?.entitlements?.active['estelar.premium']?.isActive) {
+
+      updateUser({ premium: true, membresia: 'estelar' });
+    } else if (purchaserInfo?.customerInfo?.entitlements?.active['solar.premium']?.isActive) {
+      updateUser({ premium: true, membresia: 'solar' });
+    } else if (selectedPackage?.identifier === 'chart.pack') {
+      const transaction = purchaserInfo?.latestTransaction;
+      const quantity = transaction?.quantity || 1;
+
+      updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
+    }
+  } catch (e) {
+    if (!e.userCancelled) {
+      console.warn("Error al comprar", e);
+    }
+  }
+};
 
   useEffect(() => {
     const fetchBenefits = async () => {
@@ -63,51 +131,61 @@ const MembresyScreen = () => {
 
       <Text style={styles(theme).noMembresySectionTitle}>{t("membresy.nomemberTitle")}</Text>
       <Text style={styles(theme).noMembresySectionText}>{t("membresy.nomemberSubtitle")}</Text>
-
       <View style={styles(theme).pricingOptions}>
       <View style={styles(theme).optionSeparator}/>
-        <TouchableOpacity
-          style={styles(theme).pricingOption}
-          onPress={() => setSelectedOption("estelar")}
-        >
-          <View style={[styles(theme).radioButton,selectedOption === "estelar" && styles(theme).selectedPremiumButton]}>
-            {selectedOption === "estelar" && <View style={styles(theme).innerCircle} />}
-          </View>
-          <View style={styles(theme).pricingInfo}>
-          <Text style={[styles(theme).pricingTitle,selectedOption === "estelar" && styles(theme).selectedText]}>{t("pricing.EstelarTitle")}</Text>
-          <Text style={styles(theme).pricingDescription}>
-          {t("pricing.EstelarDescription")}<Text style={{ fontFamily: 'Effra_Bold'}}>{t("pricing.EstelarDescriptionBold")}</Text>
-          </Text></View>
-        </TouchableOpacity>
+      <TouchableOpacity
+                    style={styles(theme).pricingOption}
+                    onPress={() => {
+                      setSelectedOfferingIdentifier('estelar.plan');
+                      setSelectedPackage(estelarMonthly);
+                    }}
+                  >
+                    <View style={[styles(theme).radioButton, selectedOfferingIdentifier === 'estelar.plan' && styles(theme).selectedPremiumButton]}>
+                      {selectedOfferingIdentifier === 'estelar.plan' && <View style={styles(theme).innerCircle} />}
+                    </View>
+                    <View style={styles(theme).pricingInfo}>
+                      <Text style={[styles(theme).pricingTitle, selectedOfferingIdentifier === 'estelar.plan' && styles(theme).selectedText]}>{t("pricing.EstelarTitle")}</Text>
+                      <Text style={styles(theme).pricingDescription}>
+                        {t("pricing.EstelarDescription")}<Text style={{ fontFamily: 'Effra_Bold' }}>{t("pricing.EstelarDescriptionBold")}</Text>
+                      </Text></View>
+                  </TouchableOpacity>
 <View style={styles(theme).optionSeparator}/>
         {/* Miembro Solar */}
-        <TouchableOpacity
-          style={styles(theme).pricingOption}
-          onPress={() => setSelectedOption("solar")}
-        >
-          <View style={[styles(theme).radioButton,selectedOption === "solar" && styles(theme).selectedPremiumButton]}>
-            {selectedOption === "solar" && <View style={styles(theme).innerCircle} />}
-          </View>
-          <View style={styles(theme).pricingInfo}>
-          <Text style={[styles(theme).pricingTitle,selectedOption === "solar" && styles(theme).selectedText]}>{t("pricing.SolarTitle")}</Text>
-          <Text style={styles(theme).pricingDescription}>
-          {t("pricing.SolarDescription")}
-          </Text></View>
-        </TouchableOpacity>
+         <TouchableOpacity
+                          style={styles(theme).pricingOption}
+                          onPress={() => {
+                            setSelectedOfferingIdentifier('solar.plan');
+                            setSelectedPackage(solarMonthly);
+                          }}
+                        >
+                          <View style={[styles(theme).radioButton, selectedOfferingIdentifier === 'solar.plan' && styles(theme).selectedPremiumButton]}>
+                            {selectedOfferingIdentifier === 'solar.plan' && <View style={styles(theme).innerCircle} />}
+                          </View>
+                          <View style={styles(theme).pricingInfo}>
+                            <Text style={[styles(theme).pricingTitle, selectedOfferingIdentifier === 'solar.plan' && styles(theme).selectedText]}>{t("pricing.SolarTitle")}</Text>
+                            <Text style={styles(theme).pricingDescription}>
+                              {t("pricing.SolarDescription")}
+                            </Text></View>
+                        </TouchableOpacity>
       </View>
       <Text style={styles(theme).noMembresyPackTitle}>{t("membresy.nomemberPack")}<Text style={styles(theme).noMembresyPackTitleBold}>{t("membresy.nomemberPackBold")}</Text></Text>
-      <TouchableOpacity
-          style={styles(theme).packPricingOption}
-          onPress={() => setSelectedOption("pack")}
-        >
-          <View style={[styles(theme).radioButton,selectedOption === "pack" && styles(theme).selectedPremiumButton]}>
-            {selectedOption === "pack" && <View style={styles(theme).innerCircle} />}
-          </View>
-          <View style={styles(theme).pricingInfo}>
-          <Text style={[styles(theme).pricingTitle,selectedOption === "pack" && styles(theme).selectedText]}>{t("pricing.PackTitle")}</Text>
-          <Text style={styles(theme).pricingDescription}>{t("pricing.PackDescription")}</Text></View>
-        </TouchableOpacity>
-              <TouchableOpacity style={styles(theme).payButton}><Text style={styles(theme).payButtonText}>{t("pricing.Pagar")}</Text></TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles(theme).packPricingOption}
+                    onPress={() => {
+                      setSelectedOfferingIdentifier('chart.pack');
+                      setSelectedPackage(chartPack);
+                    }}
+                  >
+                    <View style={[styles(theme).radioButton, selectedOfferingIdentifier === 'chart.pack' && styles(theme).selectedPremiumButton]}>
+                      {selectedOfferingIdentifier === 'chart.pack' && <View style={styles(theme).innerCircle} />}
+                    </View>
+                    <View style={styles(theme).pricingInfo}>
+                      <Text style={[styles(theme).pricingTitle, selectedOfferingIdentifier === 'chart.pack' && styles(theme).selectedText]}>{t("pricing.PackTitle" || "Paquete de Charts")}</Text>
+                      <Text style={styles(theme).pricingDescription}>
+                        {t("pricing.PackDescription" || "Compra un paquete de charts")}
+                      </Text></View>
+                  </TouchableOpacity>
+              <TouchableOpacity style={styles(theme).payButton} onPress={handlePurchase}><Text style={styles(theme).payButtonText}>{t("pricing.Pagar")}</Text></TouchableOpacity>
         
       <View style={styles(theme).scrollBottomSpace}></View>
     </ScrollView>
@@ -442,7 +520,6 @@ const styles = (theme) => StyleSheet.create({
     noMembresyScrollContainer: {
         paddingLeft: 20,
         paddingTop: 40,
-      height: height*.725
    
       },
       membresyScreenContainer: {

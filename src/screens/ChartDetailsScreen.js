@@ -694,9 +694,9 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
 
   let DISTANCIA_EXTRA_TOTAL;
   if (cantidadEnGrupo <= 3) {
-    DISTANCIA_EXTRA_TOTAL = 15;
+    DISTANCIA_EXTRA_TOTAL = 10;
   } else {
-    DISTANCIA_EXTRA_TOTAL = 25;
+    DISTANCIA_EXTRA_TOTAL = 30;
   }
 
   let distancia;
@@ -704,7 +704,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
     distancia = DISTANCIA_BASE; 
   } else {
     const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
-    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
+    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 6) + paso * posicionEnGrupo;
 
     distancia = DISTANCIA_BASE + offset;
   }
@@ -787,7 +787,7 @@ stroke={theme.tertiary} strokeWidth=".75"
 
             
             {planetas.map((planeta, index) => {
-              const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+              const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
               const planetSignoIndex = signosZodiacales.indexOf(signo);
               const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
               const isSelected = planeta === selectedPlanet;
@@ -801,19 +801,49 @@ stroke={theme.tertiary} strokeWidth=".75"
                   <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                     {simbolosPlanetas[planeta]}
                   </AnimatedText>
-                  {retrógrado && planeta !== t("planetas.Nodo Norte") && (
-      <AnimatedText
-        x={posicion.x + 7.5}
-        y={posicion.y + 10} 
-        fontSize={height*0.008}
-        textAnchor="start"
-        alignmentBaseline="middle"
-        fill={planetaColor}
-        fontFamily="Effra_SemiBold" 
-      >
-        Rx
-      </AnimatedText>
-    )}
+                 {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                  <>
+                    {estacionario && !retrógrado && (
+                      <SvgText
+                        x={posicion.x + 7.5}
+                        y={posicion.y + 10}
+                        fontSize={height * 0.008}
+                        textAnchor="start"
+                        alignmentBaseline="middle"
+                        fill={planetaColor}
+                        fontFamily="Effra_SemiBold"
+                      >
+                        st
+                      </SvgText>
+                    )}
+                    {retrógrado && !estacionario && (
+                      <SvgText
+                        x={posicion.x + 7.5}
+                        y={posicion.y + 10}
+                        fontSize={height * 0.008}
+                        textAnchor="start"
+                        alignmentBaseline="middle"
+                        fill={planetaColor}
+                        fontFamily="Effra_SemiBold"
+                      >
+                        Rx
+                      </SvgText>
+                    )}
+                    {retrógrado && estacionario && (
+                      <SvgText
+                        x={posicion.x + 7.5}
+                        y={posicion.y + 10}
+                        fontSize={height * 0.008}
+                        textAnchor="start"
+                        alignmentBaseline="middle"
+                        fill={planetaColor}
+                        fontFamily="Effra_SemiBold"
+                      >
+                        stRx
+                      </SvgText>
+                    )}
+                  </>
+                )}
                 </G>
               );
             })}     

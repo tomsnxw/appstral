@@ -32,7 +32,7 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
+import Purchases from 'react-native-purchases';
 const firebaseConfig = {
   apiKey: "AIzaSyBPORNaOngd5do6nroWg09SVUoFvbr90ro",
   authDomain: "efemeris-b8058.firebaseapp.com",
@@ -70,7 +70,7 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
       birthCountry,
       birthCity,
       firstTime: true,
-      notifications: true,
+      notifications: false,
       premium: false,
       sistemaCasas: "T",
       membresia: "",
@@ -231,7 +231,35 @@ const enviarMensaje = async (email, asunto, mensaje) => {
   }
 };
 
+const checkAndUpdateSubscriptionStatus = async () => {
+  try {
+    const customerInfo = await Purchases.getCustomerInfo();
+    console.log('Customer Info al iniciar (desde FirebaseConfig):', customerInfo);
 
+    const isEstelarActive = customerInfo?.entitlements?.active['estelar.premium']?.isActive === true;
+    const isSolarActive = customerInfo?.entitlements?.active['solar.premium']?.isActive === true;
+
+    if (auth.currentUser) {
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      if (!isEstelarActive && !isSolarActive) {
+        await updateDoc(userRef, { premium: false, membresia: "" }); // O el valor que desees
+        console.log('Suscripción premium no activa, base de datos actualizada (FirebaseConfig).');
+      } else if (isEstelarActive) {
+        await updateDoc(userRef, { premium: true, membresia: 'estelar' });
+        console.log('Suscripción Estelar activa, base de datos actualizada (FirebaseConfig).');
+      } else if (isSolarActive) {
+        await updateDoc(userRef, { premium: true, membresia: 'solar' });
+        console.log('Suscripción Solar activa, base de datos actualizada (FirebaseConfig).');
+      } else {
+        console.log('El usuario tiene una suscripción activa pero no es premium (FirebaseConfig).');
+      }
+    } else {
+      console.log('No hay usuario autenticado al verificar la suscripción (FirebaseConfig).');
+    }
+  } catch (error) {
+    console.log('Error al obtener la Customer Info (FirebaseConfig):', error);
+  }
+};
 
 export {
   auth,
@@ -240,6 +268,7 @@ export {
   collection,
   doc,
   getDoc,
+  setDoc,
   increment,
   updateDoc,
   getDocs,
@@ -260,5 +289,6 @@ export {
   guardarTokenFCM,
   updateUserLanguage,
   updateUserNotifications,
-  enviarMensaje
+  enviarMensaje,
+  checkAndUpdateSubscriptionStatus
 };

@@ -392,7 +392,7 @@ const renderCirculoZodiacal = () => {
   const CENTER = { x: SVG_SIZE / 2, y: SVG_SIZE / 2 };
   const ANGLE_PER_SIGN = 360 / 12;
   const LINE_LENGTH = RADIO + 10;
-  const DISTANCIA_PLANETAS = RADIO * 0.79;
+  const DISTANCIA_PLANETAS = RADIO * 0.8;
   const DISTANCIA_INNERCIRCLE = RADIO * 0.68;
   const DISTANCIA_ASPECTOS = RADIO * 0.675;
   const DISTANCIA_SIGNOS = RADIO + 21;
@@ -565,7 +565,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
 
   let DISTANCIA_EXTRA_TOTAL;
   if (cantidadEnGrupo <= 3) {
-    DISTANCIA_EXTRA_TOTAL = 15;
+    DISTANCIA_EXTRA_TOTAL = 10;
   } else {
     DISTANCIA_EXTRA_TOTAL = 25;
   }
@@ -575,13 +575,14 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
     distancia = DISTANCIA_BASE; 
   } else {
     const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
-    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 3) + paso * posicionEnGrupo;
+    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
 
     distancia = DISTANCIA_BASE + offset;
   }
 
   return calcularPosicion(anguloActual, distancia);
 };
+
 
 
   return (
@@ -657,7 +658,7 @@ stroke={theme.tertiary} strokeWidth=".75"
 
             
             {planetas.map((planeta, index) => {
-              const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+              const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
               const planetSignoIndex = signosZodiacales.indexOf(signo);
               const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
               const isSelected = planeta === selectedPlanet;
@@ -671,19 +672,49 @@ stroke={theme.tertiary} strokeWidth=".75"
                   <SvgText x={posicion.x} y={posicion.y} fontSize={height*.0225} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                     {simbolosPlanetas[planeta]}
                   </SvgText>
-                  {retrógrado && planeta !== "Nodo Norte" && (
+                  {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+  <>
+    {estacionario && !retrógrado && (
       <SvgText
         x={posicion.x + 7.5}
-        y={posicion.y + 10} 
-        fontSize={height*0.008}
+        y={posicion.y + 10}
+        fontSize={height * 0.008}
         textAnchor="start"
         alignmentBaseline="middle"
         fill={planetaColor}
-        fontFamily="Effra_SemiBold" 
+        fontFamily="Effra_SemiBold"
+      >
+        st
+      </SvgText>
+    )}
+    {retrógrado && !estacionario && (
+      <SvgText
+        x={posicion.x + 7.5}
+        y={posicion.y + 10}
+        fontSize={height * 0.008}
+        textAnchor="start"
+        alignmentBaseline="middle"
+        fill={planetaColor}
+        fontFamily="Effra_SemiBold"
       >
         Rx
       </SvgText>
     )}
+    {retrógrado && estacionario && (
+      <SvgText
+        x={posicion.x + 7.5}
+        y={posicion.y + 10}
+        fontSize={height * 0.008}
+        textAnchor="start"
+        alignmentBaseline="middle"
+        fill={planetaColor}
+        fontFamily="Effra_SemiBold"
+      >
+        stRx
+      </SvgText>
+    )}
+  </>
+)}
                 </G>
               );
             })}     
@@ -812,13 +843,13 @@ stroke={theme.tertiary} strokeWidth=".75"
         )}
            <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.375, zIndex: 1}}/>
 
-            <ShareMyChartModal
+           {modalVisible && (<ShareMyChartModal
         visible={modalVisible}
         year={year}
         formattedDate={formattedDate}
         formattedTime={formattedTime}
         handleCloseModal={handleCloseModal}
-      />
+      />)}
     </View>
      
     ) : null;

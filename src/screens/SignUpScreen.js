@@ -256,6 +256,7 @@ useEffect(() => {
 
 <View style={styles(theme).footer}>
       <Image source={require('../../assets/images/signupStars.png')} style={styles(theme).Image}  />
+      <Text style={[ styles(theme).footerText,{ color: dropdownVisible.country || dropdownVisible.city ? "transparent" : "#333333" }]}>{t("Footer")}</Text>
 
     </View>
     <View style={styles(theme).headerContainer}>
@@ -264,7 +265,7 @@ useEffect(() => {
     </View>
     <KeyboardAvoidingView
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={{ flex: 1 }}
+    style={{ height: height }}
   >
    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
    <ScrollView 
@@ -436,14 +437,12 @@ useEffect(() => {
                 <Text style={styles(theme).loginButton}>{t("Ingresar_Link")}</Text>
               </TouchableOpacity>
             </View>
-            
             </View>
             </ScrollView>
             
             </TouchableWithoutFeedback>
 
             </KeyboardAvoidingView>
-            <Text style={[ styles(theme).footerText,{ color: dropdownVisible.country || dropdownVisible.city ? "transparent" : "#333333" }]}>{t("Footer")}</Text> 
 
             </LinearGradient>
 
@@ -452,20 +451,13 @@ useEffect(() => {
 };
 const styles = (theme) => StyleSheet.create({
   gradient:{
-    flex: 1,
-    
-  },
-  container: {
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0, 
-    
+   height: height
   },
   headerContainer: {
     alignItems: "center",
     marginTop: 45
   },
   form: {
-    justifyContent: "center",
-    borderRadius: 10,
     gap: 10,
   },
   scrollContainer: {
@@ -558,6 +550,7 @@ const styles = (theme) => StyleSheet.create({
     marginHorizontal: 'auto',
     textAlign:'center',
     color: '#808080',
+    paddingHorizontal: width*.25,
   },
   dropdownBox:{
     borderBottomRightRadius: 20,
@@ -613,7 +606,7 @@ const styles = (theme) => StyleSheet.create({
     color: '#808080',
     fontSize: height*0.016,
     fontFamily: 'Effra_Regular',
-    width: '90%'
+    width: '90%',
       },
       
   titleDatePicker: {
@@ -621,7 +614,7 @@ const styles = (theme) => StyleSheet.create({
     fontSize: height*0.016,
     fontFamily: 'Effra_Regular',
     padding: 0,
-    margin: 0
+    margin: 0,
   },
   navigate: {
     display: 'flex',
@@ -671,10 +664,9 @@ const styles = (theme) => StyleSheet.create({
   footerText:{
     fontSize: width*0.03,
     fontFamily: 'Effra_Light',
-    bottom: 15,
-    zIndex: 500,
+    paddingTop: 15,
     marginHorizontal: 'auto',
-
+    position:'absolute'
 },
 footer:{
   position: "absolute",

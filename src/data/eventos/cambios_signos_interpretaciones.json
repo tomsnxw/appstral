@@ -1,0 +1,330 @@
+{
+    "Sol": {
+        "Aries": {
+            "es": "La conciencia se ilumina con el fuego del impulso, el deseo de empezar. Es tiempo de vibrar en la potencia del inicio, la energía nos anima a dar el primer paso hacia eso que nos enciende. Después del caos pisciano, aparece una luz animándonos a iniciar un nuevo ciclo.",
+            "en": "Consciousness is lit by the fire of impulse, the desire to begin. It's time to vibrate in the power of the start, the energy encourages us to take the first step toward what lights us up. After the Piscean chaos, a light appears encouraging us to start a new cycle."
+        },
+        "Tauro": {
+            "es": "La conciencia se posa en la tierra fértil, en la pausa que nutre y en el goce de lo simple.\nEs tiempo de habitar la materia con todos los sentidos, afianzar lo que perdura.\nLos tiempos se enlentecen: la energía ariana aprende paciencia para saborear los frutos de la tierra taurina.",
+            "en": "Consciousness rests on fertile ground, in the pause that nurtures and in the joy of simplicity.\nIt's time to inhabit the matter with all the senses, to strengthen what endures.\nTimes slow down: the Aries energy learns patience to savor the fruits of the Taurean earth."
+        },
+        "Géminis": {
+            "es": "La luz del Sol nos permite vislumbrar nuevos caminos. Es tiempo de abrirnos con curiosidad a lo lúdico del descubrimiento, a las múltiples posibilidades y a las puertas que abren nuevas conversaciones. Lo que parecía inmóvil en Tauro ahora quiere moverse al compás del viento geminiano, que enlaza y transforma.",
+            "en": "The Sun's light lets us glimpse new paths. It's time to open ourselves with curiosity to the playful aspect of discovery, to the many possibilities, and to the doors that open new conversations. What seemed still in Taurus now wants to move to the rhythm of the Gemini wind, which links and transforms."
+        },
+        "Cáncer": {
+            "es": "Se siente en el aire, estamos más sensibles; este Sol nos recuerda nuestra vulnerabilidad. Es vital cuidarnos para cuidar de otros, regar raíces para compartir nutrientes, practicar calidez con nosotros y los demás. Tras abrir puertas en Géminis, elegimos una para refugiarnos y construir un hogar canceriano.",
+            "en": "It's felt in the air, we're more sensitive; this Sun reminds us of our vulnerability. It's vital to take care of ourselves to take care of others, to water roots to share nutrients, to practice warmth with ourselves and others. After opening doors in Gemini, we choose one to take refuge in and build a Cancerian home."
+        },
+        "Leo": {
+            "es": "Es hora de conectar con nuestra creatividad, identificar lo que aflora del pecho y alimentar con coraje lo más auténtico del Ser. El ambiente invita a expresar nuestra esencia, avivar la luz propia para alumbrar el camino y ser faro para otros. Desde el caparazón canceriano, la autenticidad leonina ruge y sale con confianza.",
+            "en": "It's time to connect with our creativity, to identify what's rising from the chest, and to feed with courage the most authentic part of the Self. The environment invites us to express our essence, to kindle our own light to light the way and be a beacon for others. From the Cancerian shell, Leo's authenticity roars and emerges with confidence."
+        },
+        "Virgo": {
+            "es": "Llegó el momento de pulir lo bruto, de poner nuestras herramientas en la mesa y ajustar cada parte de nuestra vida que requiere detalle para seguir funcionando. Urge hacer orden, interno y externo, afinando nuestros instrumentos para aportar nuestra música al mundo. ¿Cómo prepararnos para lo que queda del año? Virgo, con rigor, recompone lo que el fuego arrasó.",
+            "en": "The time has come to polish the rough, to put our tools on the table and adjust every part of our life that needs detail to keep functioning. There's a need to make order, both internal and external, fine-tuning our instruments to bring our music to the world. How do we prepare for what's left of the year? Virgo, with rigor, rebuilds what fire has ravaged."
+        },
+        "Libra": {
+            "es": "El Sol irradia energía libriana, alumbrando el encuentro y mostrándonos que, cooperando, creamos más de lo que haríamos soles. Hay un goce que escapa de los sentidos, el placer de nuestra parte vincular, que nace del disfrute de compartir. Tras el trabajo ermitaño en Virgo, Libra nos abre la puerta al mundo a través de los otros. ¿Cuán bella sería mi danza si la bailara al son de la sinfonía de los encuentros?",
+            "en": "The Sun radiates Libra energy, illuminating encounters and showing us that, by cooperating, we create more than we would alone. There's a joy beyond the senses, the pleasure of our relational part, born from the enjoyment of sharing. After the hermit work in Virgo, Libra opens the door to the world through others. How beautiful would my dance be if I danced it to the rhythm of the symphony of encounters?"
+        },
+        "Escorpio": {
+            "es": "El Febo se sumerge en el misterio, más allá del reino de su luz, iluminando lo que ocultamos de nosotros mismos. Lo negado sigue presente y nuestra escucha interna se abre al contacto con ello. ¿Nos atrevemos a transformar lo venenoso? La luz libriana deja, como contraparte, la sombra escorpiana y todo lo que no quiso mostrarse.",
+            "en": "The Sun dives into mystery, beyond the realm of its light, illuminating what we hide from ourselves. What’s denied remains present, and our inner listening opens to contact with it. Do we dare to transform the poisonous? Libra's light leaves, as a counterpart, Scorpio's shadow and everything that refused to be shown."
+        },
+        "Sagitario": {
+            "es": "Llegamos al sol que nos espera al final del túnel; las sombras se retiran y la esperanza avanza. Todos buscamos un horizonte luminoso que guíe nuestro camino. Son tiempos de celebración. Nuestra densidad escorpiana halla sentido en Sagitario, donde la experiencia se vuelve sabiduría.",
+            "en": "We reach the sun waiting for us at the end of the tunnel; the shadows retreat and hope advances. We all seek a bright horizon to guide our way. It's a time for celebration. Our Scorpian density finds meaning in Sagittarius, where experience turns into wisdom."
+        },
+        "Capricornio": {
+            "es": "Desde lo más alto del zodíaco, el Sol observa el camino recorrido. Con el cierre del año, revisamos lo que fue y proyectamos lo que será. La motivación sagitariana nos impulsa a los últimos pasos, pero aún queda el esfuerzo capricorniano para cerrar el ciclo, reconocer logros y aceptar frustraciones.",
+            "en": "From the highest point of the zodiac, the Sun watches the path traveled. With the year's closing, we review what has been and project what will be. Sagittarius' motivation pushes us to the final steps, but Capricorn's effort remains to close the cycle, recognize achievements, and accept frustrations."
+        },
+        "Acuario": {
+            "es": "¿Pierde el Sol su brillo cuando se encuentra con otros Soles? Bajo el signo de Acuario, ilumina la red invisible que nos vincula más allá de los vínculos conscientes. Es necesario hermanarnos con otros para entender las injusticias y rebelarnos ante el sistema que las genera. Los objetivos capricornianos pueden buscar reconocimiento en otros, pero los objetivos acuarianos buscan mejorar el mundo.",
+            "en": "Does the Sun lose its shine when it meets other Suns? Under Aquarius' sign, it lights up the invisible network that connects us beyond conscious bonds. It's necessary to unite with others to understand injustices and rebel against the system that generates them. Capricornian goals may seek recognition from others, but Aquarian goals seek to improve the world."
+        },
+        "Piscis": {
+            "es": "Así como el Sol pierde su imagen en el reflejo cambiante del océano, al transitar por Piscis todes atravesamos una disolución y nuestra percepción del mundo pierde forma. La imaginación se activa, las emociones inundan la razón, y todo lo que creíamos aferrar se suelta. En Piscis cerramos los ojos para sentir todo lo que la mente acuariana no llega a percibir desde la racionalidad.",
+            "en": "Just as the Sun loses its image in the changing reflection of the ocean, when passing through Pisces, we all go through a dissolution and our perception of the world loses form. Imagination activates, emotions flood reason, and everything we thought we could hold on to slips away. In Pisces, we close our eyes to feel everything that the Aquarian mind can't perceive from rationality."
+        }
+    },
+    "Mercurio": {
+        "Aries": {
+            "es": "Después de un período somnoliento, la energía de Aries vigoriza el ambiente.\nNo debemos confundir la agilidad mental con claridad de ideas, puede que las ansias de hablar sean más rápidas en actuar que nuestra propia interpretación de lo que pensamos.\nUna palabra de aliento puede mover más nuestra voluntad que una amenaza.",
+            "en": "After a sleepy period, Aries' energy invigorates the atmosphere.\nLet's not confuse mental agility with clarity of thought. The urge to speak might act faster than our own interpretation of what we think.\nA word of encouragement can move our will more than a threat ever could."
+        },
+        "Tauro": {
+            "es": "Ya no parece que todo corre, que se pasan los trenes, ahora pareciera que las cosas avanzan más lento de lo que quisiéramos, y que los trenes no llegan más. La lentitud es frustrante, pero también nos permite ver mejor el panorama, percibir todas las formas que la velocidad deforma en la corrida.",
+            "en": "It no longer feels like everything's rushing by or that we're missing our trains. Now it seems things are moving slower than we'd like, and the trains aren't even arriving. The slowness is frustrating, but it also lets us see the landscape more clearly, noticing shapes that speed would otherwise distort."
+        },
+        "Géminis": {
+            "es": "Podemos sentir que los pensamientos se multiplican, porque haber tenido un período de más lentitud nos permitió ver muchas más cosas de las que antes veíamos, y la paleta de colores brinda ahora muchos matices diferentes. Eso que hasta hace poco sólo era una idea, tomó forma y ahora busca expandirse en todas sus posibilidades, sin comprometerse con ningún camino en particular.",
+            "en": "We might feel our thoughts multiplying — having slowed down helped us see far more than we used to, and the palette now offers many new shades. What was once just an idea has taken form and now seeks to expand in all directions, without committing to any one path."
+        },
+        "Cáncer": {
+            "es": "Bajan los puentes que nos conectan la mente con las emociones, los sentimientos quieren ser representados por la palabra, y la comunicación busca tomar los colores de los sentires.\nDespués de muchas preguntas, aparecieron respuestas resonantes, haciendo eco en el interior.\nTal vez haya más para oír que para decir en este momento.",
+            "en": "The bridges connecting mind and emotion are lowered — our feelings want to be voiced, and communication seeks to take on the colors of our moods.\nAfter many questions, resonant answers emerge, echoing within.\nMaybe there's more to hear than to say right now."
+        },
+        "Leo": {
+            "es": "Para saber qué palabras nos definen, necesitamos explorar cómo responde nuestro corazón a ellas, y sentir qué se ilumina cuando nos preguntamos quiénes somos.\nAlzar nuestra voz por lo que nos hace latir el corazón es también enseñar con el ejemplo, invitar a otros a brillar por sí mismos, y esa es la verdadera potencia Mercurio en Leo.",
+            "en": "To know which words define us, we need to explore how our hearts respond to them — to feel what lights up when we ask who we are.\nRaising our voices for what makes our hearts beat is also teaching by example, inviting others to shine on their own.\nThat's Mercury's real power in Leo."
+        },
+        "Virgo": {
+            "es": "El planeta toma fuerza cuando pasa por un signo que rige, ¿cómo podemos darle cuerda a nuestra racionalidad sin pasarse ni enroscarse?\nEncauzar el acelere mental en una actividad intelectual puede ser igual de productivo que ordenar bien nuestra cabeza, revisar las agendas y tachar quehaceres, la mente necesita de sus cambios de aceite también.",
+            "en": "This planet gains strength in a sign it rules. So how can we wind up our rational minds without overthinking or spiraling?\nChanneling mental speed into intellectual activity can be just as productive as organizing our thoughts, reviewing agendas, and crossing off tasks.\nOur minds need oil changes too."
+        },
+        "Libra": {
+            "es": "Bajo este signo, importan más los tonos de las palabras dichas que la correcta pronunciación.\nPodemos percibir mucho más de los demás cuando se expresan que el conjunto de letras con las que armó una oración, si aprendemos a interpretarlos cuando hablan, y más aún si entendemos el reflejo propio que nos muestran.",
+            "en": "Under this sign, the tone of what’s said matters more than perfect pronunciation.\nWe can pick up much more from people’s expressions than from the letters they use — if we learn to read them when they speak, and even more if we recognize the reflections of ourselves they reveal."
+        },
+        "Escorpio": {
+            "es": "Puede que nos sintamos con ganas de aguijonear a los demás con nuestras palabras, de generar conflicto para que las cosas cambien de una vez. Pero el desafío no es el desquite, si no la observación interna.\nRequiere de mucha fortaleza mental recordarnos que podemos utilizar la palabra para alquimizar una situación antes de herir a una persona.",
+            "en": "We might feel tempted to sting others with our words, to stir conflict so things finally change. But the real challenge isn't retaliation — it's internal observation.\nIt takes mental strength to remind ourselves we can use words to alchemize a situation before we end up hurting someone."
+        },
+        "Sagitario": {
+            "es": "La mente no alcanza a encontrar el sentido a todo, pero también nos constituye una parte más animal que intuye, y entiende que no todo lo comprende la razón.\nEl desafío se encuentra en el diálogo que genera cada une entre esas partes de uno mismo.\n¿Cuánto lugar se lleva la voz de la razón, y cuánto la del instinto?",
+            "en": "The mind can't find meaning in everything, but there's also a more instinctive part of us that just knows — and understands not everything can be grasped by reason.\nThe challenge lies in the dialogue each of us creates between those parts.\nHow much space does the voice of reason take, and how much the voice of instinct?"
+        },
+        "Capricornio": {
+            "es": "Es momento de ordenar bien nuestros próximos pasos, nuestros logros dependen de la planificación correcta del desarrollo hasta ellos.\nHay cosas importantes y serias en las que pensar, pues hasta los sueños necesitan de nuestro trabajo para materializarse.\nLa honestidad concisa nos da el criterio de realidad necesario para afrontar los obstáculos en el camino.",
+            "en": "It's time to clearly plan our next steps.\nOur achievements depend on how well we map out the path to them.\nThere are serious and important things to think about, because even dreams need our effort to materialize.\nConcise honesty gives us the reality check we need to face the obstacles ahead."
+        },
+        "Acuario": {
+            "es": "En esta atmósfera de ingenio, ideas brillantes flotan, listas para ser atrapadas.\nHay visiones nuevas aguardando ser transmitidas, solo tenemos que ajustar nuestra frecuencia para encontrarlas.\nEn el pulso evolutivo de la tierra, escuchar sus direcciones en las bocas de los demás, es señal suficiente para entender a dónde debe cambiar el mundo.",
+            "en": "In this atmosphere of ingenuity, brilliant ideas float around, ready to be caught.\nNew visions are waiting to be shared — we just need to adjust our frequency to find them.\nIn the Earth's evolutionary pulse, hearing directions through others' voices is a clear enough sign of where the world needs to shift."
+        },
+        "Piscis": {
+            "es": "Una niebla confunde nuestras señales, es difícil interpretar a otros y hacernos interpretar.\nLas palabras dichas tienen un universo de emociones, intenciones y misterios, que no parecen lograr encontrar oídos que las interpreten enteras.\nDeberemos buscar otras formas más simbólicas para hacernos entender.",
+            "en": "A fog blurs our signals — it's hard to interpret others and be understood ourselves.\nWords carry entire universes of emotion, intention, and mystery, but they often can't find ears that grasp them fully.\nWe'll have to seek more symbolic ways of making ourselves understood."
+        }
+    },
+    "Venus": {
+        "Aries": {
+            "es": "El deseo arde en la piel, es una chispa que no teme al salto.\nLa pasión se despliega sin mapas ni promesas, solo el pulso del ahora.\nNada pesa, nada espera: el amor es un incendio que se aviva en el movimiento.\n¿Qué se despierta cuando dejamos que el fuego guíe?",
+            "en": "Desire burns within the skin, a spark that fears no leap.\nPassion unfolds without maps or promises, only the pulse of now.\nNothing weighs, nothing awaits: love is a fire that is stoked by movement.\nWhat awakens when we let the fire guide us?"
+        },
+        "Tauro": {
+            "es": "",
+            "en": ""
+        },
+        "Géminis": {
+            "es": "",
+            "en": ""
+        },
+        "Cáncer": {
+            "es": "",
+            "en": ""
+        },
+        "Leo": {
+            "es": "",
+            "en": ""
+        },
+        "Virgo": {
+            "es": "",
+            "en": ""
+        },
+        "Libra": {
+            "es": "",
+            "en": ""
+        },
+        "Escorpio": {
+            "es": "",
+            "en": ""
+        },
+        "Sagitario": {
+            "es": "",
+            "en": ""
+        },
+        "Capricornio": {
+            "es": "",
+            "en": ""
+        },
+        "Acuario": {
+            "es": "",
+            "en": ""
+        },
+        "Piscis": {
+            "es": "",
+            "en": ""
+        }
+    },
+    "Marte": {
+        "Aries": {
+            "es": "El ambiente se siente flamable, Marte llegó a su signo.\nSe dispone una energía excelente para poner en movimiento todo aquello que venimos sintiendo detenido, y para poner a prueba todas nuestras herramientas para regular la ansiedad que da el movimiento acelerado del entorno.",
+            "en": "The atmosphere feels flammable, Mars has arrived in its sign.\nExcellent energy is available to set in motion everything we've been feeling stuck, and to test all our tools to regulate the anxiety caused by the accelerated movement of our surroundings."
+        },
+        "Tauro": {
+            "es": "Es difícil no frustrarse cuando las cosas se mueven más lento de lo que une quisiera, es todo un desafío para la paciencia.\nEl cambio de energía es notorio, las ganas de ir corriendo cambian por las ganas de pisar fuerte.\nLa constancia logra más que la emoción de comenzar, los mejores deseos se forjan con tiempo.",
+            "en": "It's hard not to get frustrated when things move slower than you'd like; it's quite a challenge for patience.\nThe shift in energy is noticeable; the urge to rush forward changes to the desire to take a leap forward.\nPersistence achieves more than the thrill of getting started; the best desires are forged over time."
+        },
+        "Géminis": {
+            "es": "",
+            "en": ""
+        },
+        "Cáncer": {
+            "es": "",
+            "en": ""
+        },
+        "Leo": {
+            "es": "La voluntad es un sol en ascenso.\nNada pequeño, nada tibio: todo es impulso, todo es fuego.\nEl miedo cede ante la determinación y el instinto guía con certeza.\nSe abre un tiempo de crear, arriesgar y brillar.",
+            "en": "Willpower is a rising sun.\nNothing small, nothing lukewarm: everything is impulse, everything is fire.\nFear gives way to determination, and instinct guides with certainty.\nA time of creation, risk, and brilliance begins."
+        },
+        "Virgo": {
+            "es": "",
+            "en": ""
+        },
+        "Libra": {
+            "es": "",
+            "en": ""
+        },
+        "Escorpio": {
+            "es": "",
+            "en": ""
+        },
+        "Sagitario": {
+            "es": "El llamado a la acción se excita en este signo, con machete en mano direccionamos la agresividad marciana para abrirnos camino por la aventura, no para herir. Parece que de repente surgen las ganas de moverse, de explorar otras lejanías.\nEs hora de mover nuestra voluntad con un entusiasmo renovado.",
+            "en": "The call to action is roused in this sign. With machete in hand, we direct our Martian aggression to pave the way for adventure, not to inflict harm. It seems that a sudden urge to move, to explore other faraway places, arises.\nIt's time to move our will with renewed enthusiasm."
+        },
+        "Capricornio": {
+            "es": "",
+            "en": ""
+        },
+        "Acuario": {
+            "es": "",
+            "en": ""
+        },
+        "Piscis": {
+            "es": "",
+            "en": ""
+        }
+    },
+    "Júpiter": {
+        "Cáncer": {
+            "es": "La expansión no busca altura, sino profundidad. Júpiter nos señaliza en el mapa de nuestro propio camino, el momento de visitar una gran fuente de conocimiento; nuestro propio interior. Explorar las raíces de nuestras creencias aprendidas nos permite reconocer límites impuestos que nos alejan de nuestra propia verdad.",
+            "en": "Expansion isn't about height, but depth. Jupiter signals the moment in our own path to visit a great source of knowledge; our inner self. Exploring the roots of our learned beliefs lets us recognize imposed limits that keep us from our own truth."
+        },
+        "Leo": {
+            "es": "Júpiter en Leo nos invita a aventurarnos a llegar al máximo de irradiación de nuestra personalidad, a ser maestros en el arte de ser nosotros mismos, y recorrer nuestro propio camino individual alumbrando con el fuego de nuestro corazón. Cada latido es un llamado a confiar, a crear, a arder sin miedo. ¿Adónde te guía el corazón?",
+            "en": "Jupiter in Leo invites us to venture into reaching the full radiance of our personality, to be masters in the art of being ourselves, and walk our individual path lighting the way with the fire of our heart. Every heartbeat is a call to trust, create, and burn without fear. Where does your heart guide you?"
+        },
+        "Virgo": {
+            "es": "Nos encontramos todos dentro del taller de Júpiter. Nos llegó el momento de corregir lo que hasta ahora parecían pequeños desperfectos. Puede ser frustrante sentir que siempre hay algo por mejorar bajo este tránsito, pero también es cuando lo pequeño revela su grandeza. El ojo minucioso que juzga todo puede convertirse en la mano precisa que todo lo mejora.",
+            "en": "We all find ourselves in Jupiter's workshop. It's time to fix what until now seemed like small flaws. It can be frustrating to feel that there's always something to improve under this transit, but it's also when the small reveals its greatness. The meticulous eye that judges everything can become the precise hand that improves everything."
+        },
+        "Libra": {
+            "es": "Encontrarnos con otros que piensan distinto y traen otras verdades reorienta nuestras creencias e invita a cuestionar lo que sentimos como certezas. Al compartir visiones del mundo, acordamos pautas para coexistir sin invadirnos ni imponernos. Cuanto más nos acercamos a quienes tienen experiencias distintas, más nos nutrimos de perspectivas ajenas.",
+            "en": "Meeting others who think differently and bring other truths reorients our beliefs and invites us to question what we feel as certainties. By sharing worldviews, we agree on ways to coexist without invading or imposing. The closer we get to those with different experiences, the more we nourish ourselves with outside perspectives."
+        }
+    },
+    "Saturno": {
+        "Aries": {
+            "es": "Saturno entra en Aries, pone sus ojos sobre nuestros impulsos desatados y nos marca sus consecuencias, enseñándonos que la primera responsabilidad que debemos tomar es la de nuestras acciones. Si tenemos comienzos postergados, es momento de enfrentarnos a nuestros límites autoimpuestos y trabajar la voluntad.",
+            "en": "Saturn enters Aries, setting its sights on our untamed impulses and marking the consequences. It teaches us that the first responsibility we must take is that of our actions. If we have delayed beginnings, it's time to face our self-imposed limits and work on our willpower."
+        },
+        "Tauro": {
+            "es": "Es momento de trabajar la paciencia, la sensación de que todo cuesta en cada paso nos obliga a desarrollar resistencia. Cuando cuesta sustentar lo básico, aprendemos a manejarnos con la menor cantidad de recursos.\nSi buscamos la satisfacción inmediata, podemos perder mejores resultados.",
+            "en": "It's time to work on patience. The feeling that everything costs at every step forces us to develop resistance. When it's hard to sustain the basics, we learn to manage with the least resources.\nIf we seek immediate satisfaction, we might lose better results."
+        }
+    },
+    "Urano": {
+        "Aries": {
+            "es": "",
+            "en": ""
+        },
+        "Tauro": {
+            "es": "",
+            "en": ""
+        },
+        "Géminis": {
+            "es": "Urano canaliza la energía geminiana, y nos indica el momento de actualizar los lenguajes, de dejarnos atravesar el pensamiento por las ideas del colectivo, y generar nuevos puentes que nos conecten con nuestro entorno cercano. ¿A dónde llegaríamos si usaramos las nuevas inteligencias que creamos para mejorar el mundo en vez de dominarlo?",
+            "en": "Uranus channels Gemini energy, signaling the time to update our languages, to allow our thoughts to be permeated by the ideas of the collective, and to build new bridges that connect us with our immediate surroundings. Where would we end up if we used the new intelligences we create to improve the world instead of dominating it?"
+        },
+        "Cáncer": {
+            "es": "",
+            "en": ""
+        },
+        "Leo": {
+            "es": "",
+            "en": ""
+        },
+        "Virgo": {
+            "es": "",
+            "en": ""
+        },
+        "Libra": {
+            "es": "",
+            "en": ""
+        },
+        "Escorpio": {
+            "es": "",
+            "en": ""
+        },
+        "Sagitario": {
+            "es": "",
+            "en": ""
+        },
+        "Capricornio": {
+            "es": "",
+            "en": ""
+        },
+        "Acuario": {
+            "es": "",
+            "en": ""
+        },
+        "Piscis": {
+            "es": "",
+            "en": ""
+        }
+    },
+    "Neptuno": {
+        "Aries": {
+            "es": "Neptuno invoca la energía de Aries para la humanidad, y despierta en nuestro inconsciente compartido las imágenes arquetípicas de la guerra y la supervivencia. Nos vemos arrastrados por una marea de sensaciones fueguinas que fluyen a través de nuestro mundo onírico, mental y material. En estos próximos años será necesario expandir nuestra empatía hacia aquelles que son víctimas del desborde de energía ariana de la humanidad, de reconocer nuestro papel en este desenfreno, y acudir con nuestro servicio a quienes hemos pisado en pos de nuestras conquistas.",
+            "en": "Neptune invokes the energy of Aries for humanity, awakening in our shared unconscious the archetypal images of war and survival. We're swept away by a tide of fiery sensations that flow through our dream, mental, and material worlds. In these coming years, it'll be necessary to expand our empathy toward those who are victims of humanity's overflowing Aries energy, to recognize our role in this excess, and to offer our service to those we've trampled on in pursuit of our conquests."
+        },
+        "Tauro": {
+            "es": "",
+            "en": ""
+        },
+        "Géminis": {
+            "es": "",
+            "en": ""
+        },
+        "Cáncer": {
+            "es": "",
+            "en": ""
+        },
+        "Leo": {
+            "es": "",
+            "en": ""
+        },
+        "Virgo": {
+            "es": "",
+            "en": ""
+        },
+        "Libra": {
+            "es": "",
+            "en": ""
+        },
+        "Escorpio": {
+            "es": "",
+            "en": ""
+        },
+        "Sagitario": {
+            "es": "",
+            "en": ""
+        },
+        "Capricornio": {
+            "es": "",
+            "en": ""
+        },
+        "Acuario": {
+            "es": "",
+            "en": ""
+        },
+        "Piscis": {
+            "es": "",
+            "en": ""
+        }
+    }
+}

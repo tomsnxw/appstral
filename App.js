@@ -42,8 +42,8 @@ import CalculateIcon from "./assets/icons/calculateIcon";
 import EphemerisIcon from "./assets/icons/ephemerisIcon";
 import ErrorBoundary from './src/components/ErrorBoundary'
 import 'react-native-reanimated';
-import { auth, onAuthStateChanged, db, doc, getDoc,getAuth, updateDoc, guardarTokenFCM } from "./src/config/firebaseConfig";
-import { UserProvider, useUser } from './src/contexts/UserContext';
+import { auth, onAuthStateChanged, db, doc,setDoc,checkAndUpdateSubscriptionStatus, getDoc,getAuth, updateDoc, guardarTokenFCM } from "./src/config/firebaseConfig";
+import { UserProvider } from './src/contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 import './src/i18n/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -70,85 +70,72 @@ Notifications.setNotificationHandler({
 });
 
 export async function registerForPushNotificationsAsync() {
-  let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-
-
-    token = (await Notifications.getDevicePushTokenAsync()).data;
-    console.log('📱 Token FCM:', token); 
-  } else {
-    alert('Debes usar un dispositivo físico');
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+  
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+  
+      if (finalStatus === 'granted') {
+        token = (await Notifications.getDevicePushTokenAsync()).data;
+        console.log('📱 Token FCM:', token);
+  
+        const auth = getAuth();
+        const db = getFirestore();
+        if (auth.currentUser) {
+          const uid = auth.currentUser.uid;
+          const userRef = doc(db, 'users', uid);
+  
+          await setDoc(userRef, {
+            fcm_token: token,
+            notifications: true,
+          }, { merge: true });
+        }
+      } else {
+        console.log('❌ Permiso de notificaciones denegado');
+      }
+    } else {
+      alert('Debes usar un dispositivo físico');
+    }
+  
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.HIGH, 
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+        sound: true,
+        enableVibrate: true,
+        shouldShowAlert: true,
+      });
+    }
+  
+    return token;
   }
-
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.HIGH, 
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-      sound: true,
-      enableVibrate: true,
-      shouldShowAlert: true,
-    });
-  }
-
-  return token;
-}
 
 const App = () => {
   const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
-  const { userData } = useUser();
   const [languageLoaded, setLanguageLoaded] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [isConnected, setIsConnected] = useState(null);
   const navigationRef = useNavigationContainerRef();
+
   useEffect(() => {
-    // Configuración de RevenueCat
-    Purchases.configure({ apiKey: 'goog_kKDJcHBrPfeMtodupJQmiOyhCff' });
-  
-    // Listener para escuchar cambios en la información del comprador
-    const purchaserInfoListener = Purchases.addPurchaserInfoUpdateListener(async (purchaserInfo) => {
-      console.log('Información del comprador actualizada:', purchaserInfo);
-  
-      const activeEntitlements = purchaserInfo.entitlements.active;
-  
-      // Si el usuario tiene alguna suscripción activa
-      const premiumStatus = activeEntitlements['premium_estelar'] || activeEntitlements['premium_solar'];
-      const membershipType = activeEntitlements['premium_solar'] ? 'solar' : 'estelar';
-  
-      // Si el usuario no tiene suscripción activa
-      const isPremium = premiumStatus ? true : false;
-  
-      // Solo actualizar si el usuario tiene un ID y los datos están disponibles
-      if (userData && userData.user_id) {
-        const db = getFirestore();
-        const userRef = doc(db, 'users', userData.user_id);
-  
-        // Actualiza los datos de la suscripción en Firebase
-        await updateDoc(userRef, {
-          premium: isPremium,
-          membresia: isPremium ? membershipType : null,
-        });
-  
-        console.log('Datos de suscripción actualizados en Firebase');
-      }
-    });
-  
-    // Cleanup: remover el listener cuando el componente se desmonte
-    return () => {
-      purchaserInfoListener.remove();
-    };
-  }, [userData]);
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG); // Habilitar logs de depuración
+
+    if (Platform.OS === 'ios') {
+      Purchases.configure({ apiKey: '<TU_API_KEY_PUBLICA_DE_APPLE>' });
+    } else if (Platform.OS === 'android') {
+      Purchases.configure({ apiKey: 'goog_kKDJcHBrPfeMtodupJQmiOyhCff' });
+    }
+  }, []);
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
@@ -164,18 +151,22 @@ const App = () => {
     return () => subscription.remove();
   }, []);
   
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => { // Usa 'auth' directamente (la instancia importada)
-          if (user) {
-            const token = await registerForPushNotificationsAsync();
-            if (token) {
-              guardarTokenFCM(token);
-            }
-          }
-        });
-    
-        return unsubscribe;
-      }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        const token = await registerForPushNotificationsAsync();
+        if (token) {
+          guardarTokenFCM(token);
+        }
+        checkAndUpdateSubscriptionStatus();
+      } else {
+        setIsLoggedIn(false);
+      }
+      setAuthChecked(true);
+    });
+    return unsubscribe;
+  }, []);
 
 
     const [fontsLoaded] = useFonts({

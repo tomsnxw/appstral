@@ -52,7 +52,7 @@ const handleSolarRevo = () => {
   const [resultado, setResultado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [faseLunar, setFaseLunar] = useState(null);
-  const [isPressable, setIsPressable] = useState(true);
+  const [isPressable, setIsPressable] = useState(false);
   const [error, setError] = useState(null);
   const [latitud, setLatitud] = useState(null);
   const [longitud, setLongitud] = useState(null);
@@ -621,7 +621,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
 
   let DISTANCIA_EXTRA_TOTAL;
   if (cantidadEnGrupo <= 3) {
-    DISTANCIA_EXTRA_TOTAL = 15;
+    DISTANCIA_EXTRA_TOTAL = 10;
   } else {
     DISTANCIA_EXTRA_TOTAL = 25;
   }
@@ -714,7 +714,7 @@ stroke={theme.tertiary} strokeWidth=".75"
 
             
             {planetas.map((planeta, index) => {
-              const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+              const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
               const planetSignoIndex = signosZodiacales.indexOf(signo);
               const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
               const isSelected = planeta === selectedPlanet;
@@ -728,19 +728,49 @@ stroke={theme.tertiary} strokeWidth=".75"
                   <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                     {simbolosPlanetas[planeta]}
                   </AnimatedText>
-                  {retrógrado && planeta !== t("planetas.Nodo Norte") && (
-      <AnimatedText
-        x={posicion.x + 7.5}
-        y={posicion.y + 10} 
-        fontSize={height*0.008}
-        textAnchor="start"
-        alignmentBaseline="middle"
-        fill={planetaColor}
-        fontFamily="Effra_SemiBold" 
-      >
-        Rx
-      </AnimatedText>
-    )}
+                  {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                   <>
+                     {estacionario && !retrógrado && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         st
+                       </SvgText>
+                     )}
+                     {retrógrado && !estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         Rx
+                       </SvgText>
+                     )}
+                     {retrógrado && estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         stRx
+                       </SvgText>
+                     )}
+                   </>
+                 )}
                 </G>
               );
             })}     
@@ -801,12 +831,10 @@ stroke={theme.tertiary} strokeWidth=".75"
   const birthDateTime = new Date(`${userData.birthDate}T${userData.birthTime}:00`);
 
 
-        if (loading) {
-          return (
-           <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
-            <ActivityIndicator size="large" color="#ab89e9"/></View>
-          );
-        }
+  if (loading) {
+    return null;
+  }
+
 
   return (
 

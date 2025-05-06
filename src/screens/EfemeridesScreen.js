@@ -14,7 +14,9 @@ import { useTranslation } from "react-i18next";
 import { doc, getDoc, db } from "../config/firebaseConfig";
 const { height: height, width: width } = Dimensions.get('screen');
 import { ThemeContext } from '../contexts/ThemeContext';
-
+import retrogradacionesInterpretaciones from '../data/eventos/retrogradaciones_interpretaciones.json';
+import lunacionesInterpretaciones from '../data/eventos/lunaciones_interpretaciones.json'; 
+import cambiosSignosInterpretaciones from '../data/eventos/cambios_signos_interpretaciones.json'; // Importa el nuevo archivo JSON
 
 const SkeletonItem = ({theme}) => {
   const opacity = useSharedValue(0.3);
@@ -80,45 +82,43 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
 
     const cargarEventosCambios = async () => {
       return await Promise.all(cambiosSigno.map(async (evento) => {
-        let detallesIdioma = "Sin interpretación disponible";
-        try {
-          const docRef = doc(db, "eventos", "cambios_signos", evento.planeta, evento.signo);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            detallesIdioma = data?.detalles?.[language] || data?.detalles?.es || detallesIdioma;
-          }
-        } catch (error) {
-          console.error(`Error al obtener detalles de ${evento.planeta} en ${evento.signo}:`, error);
+        const planeta = evento.planeta;
+        const signo = evento.signo;
+        let detallesIdioma = null; // Inicializamos a null
+  
+        // Accede a la interpretación desde el JSON local de cambios de signo
+        if (cambiosSignosInterpretaciones[planeta] && cambiosSignosInterpretaciones[planeta][signo]) {
+          detallesIdioma = cambiosSignosInterpretaciones[planeta][signo][i18n.language] ||
+                           cambiosSignosInterpretaciones[planeta][signo].es ||
+                           null; // Si no se encuentra en ningún idioma, sigue siendo null
         }
+  
         return {
           fecha: convertirAFechaLocal(evento.fecha),
-          planeta: t(`planetas.${evento.planeta}`),
-          title: `${t(`planetas.${evento.planeta}`)} ${evento.movimiento === "retrógrado" ? t(`retrograde`) : ""} ${t(`entra_en`)} ${t(`signs.${evento.signo}`)}`,
+          planeta: t(`planetas.${planeta}`),
+          title: `${t(`planetas.${planeta}`)} ${evento.movimiento === "retrógrado" ? t(`retrograde`) : ""} ${t(`entra_en`)} ${t(`signs.${signo}`)}`,
           categoria: 'cambios',
-          simbolo: evento.signo,
+          simbolo: signo,
           detalles: detallesIdioma
         };
       }));
     };
-
+  
     const cargarEventosRetro = async () => {
       let eventosRetro = [];
       for (const planeta in retrogradaciones) {
         for (const evento of retrogradaciones[planeta]) {
           const inicio = convertirAFechaLocal(evento.inicio);
           const fin = convertirAFechaLocal(evento.fin);
-          let detalles = "Sin interpretación disponible";
-          try {
-            const docRef = doc(db, "eventos", "retrogradaciones", planeta, evento.inicio_signo);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              detalles = data?.[i18n.language] || data?.es || detalles;
-            }
-          } catch (error) {
-            console.error(`Error al obtener detalles de retrogradación de ${planeta} en ${evento.inicio_signo}:`, error);
+          let detalles = null; // Inicializamos a null
+  
+          // Accede a la interpretación desde el JSON local
+          if (retrogradacionesInterpretaciones[planeta] && retrogradacionesInterpretaciones[planeta][evento.inicio_signo]) {
+            detalles = retrogradacionesInterpretaciones[planeta][evento.inicio_signo][i18n.language] ||
+                       retrogradacionesInterpretaciones[planeta][evento.inicio_signo].es ||
+                       null; // Si no se encuentra en ningún idioma, sigue siendo null
           }
+  
           eventosRetro.push({
             fecha: inicio,
             rango: `${fechaFormateada(inicio)} - ${fechaFormateada(fin)}`,
@@ -134,32 +134,30 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
       }
       return eventosRetro;
     };
-
+  
     const cargarEventosLunaciones = async () => {
       return await Promise.all(lunaciones.map(async (evento) => {
         const fecha = convertirAFechaLocal(evento.date);
         const tipoEvento = evento.eclipse ? evento.eclipse : evento.phase;
-        let detalles = "Sin detalles disponibles";
-        try {
-          const docRef = doc(db, "eventos", "lunaciones", tipoEvento, evento.sign);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            detalles = data?.[i18n.language] || data?.es || detalles;
-          }
-        } catch (error) {
-          console.error(`Error al obtener detalles de ${tipoEvento} en ${evento.sign}:`, error);
+        const signo = evento.sign;
+        let detalles = null; // Inicializamos a null
+  
+        // Accede a la interpretación desde el JSON local de lunaciones
+        if (lunacionesInterpretaciones[tipoEvento] && lunacionesInterpretaciones[tipoEvento][signo]) {
+          detalles = lunacionesInterpretaciones[tipoEvento][signo][i18n.language] ||
+                     lunacionesInterpretaciones[tipoEvento][signo].es ||
+                     null; // Si no se encuentra en ningún idioma, sigue siendo null
         }
-
+  
         const faseTraducida = t(`lunacion.${evento.phase}`);
         const eclipseTraducido = evento.eclipse ? t(`eclipses.${evento.eclipse}`) : null;
         const tituloEvento = eclipseTraducido || faseTraducida;
-
+  
         return {
           fecha,
           title: tituloEvento,
           categoria: 'lunaciones',
-          signo: `${evento.degree}° ${t(`signs.${evento.sign}`)}`,
+          signo: `${evento.degree}° ${t(`signs.${signo}`)}`,
           phase: faseTraducida,
           detalles
         };
@@ -279,8 +277,7 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
     </View>
   );
 };
-
-const AccordionItem = ({ item, index, expandedIndex, toggleAccordion,i18n, handleOpenShareModal, t, theme }) => {
+const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, handleOpenShareModal, t, theme }) => {
   const navigation = useNavigation();
   const idioma = i18n.language;
   const fechaFormateada = (() => {
@@ -288,30 +285,28 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion,i18n, handl
       day: '2-digit',
       month: 'long',
     }).format(new Date(item.fecha));
-  
+
     return `${fecha}`;
   })();
 
 
-const signosSimbolos = [
-'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
-];
+  const signosSimbolos = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
+  ];
 
-const signosZodiacales = [
-"Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio", 
-"Sagitario", "Capricornio", "Acuario", "Piscis"
-];
+  const signosZodiacales = [
+    "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio",
+    "Sagitario", "Capricornio", "Acuario", "Piscis"
+  ];
 
-
-
-const obtenerLetraCategoria = (evento) => {
-if (evento.categoria === "retrogradaciones") return "M";
-if (evento.categoria === "cambios") {
-const index = signosZodiacales.indexOf(evento.simbolo);
-return index !== -1 ? signosSimbolos[index] : "C";
-}  if (evento.categoria === "lunaciones") return "R"; 
-return "";
-};
+  const obtenerLetraCategoria = (evento) => {
+    if (evento.categoria === "retrogradaciones") return "M";
+    if (evento.categoria === "cambios") {
+      const index = signosZodiacales.indexOf(evento.simbolo);
+      return index !== -1 ? signosSimbolos[index] : "C";
+    } if (evento.categoria === "lunaciones") return "R";
+    return "";
+  };
 
 
   const height = useSharedValue(0);
@@ -324,6 +319,8 @@ return "";
     opacity: height.value > 0 ? 1 : 0,
   }));
 
+  const canToggle = item && item.detalles;
+  const showShareButton = item && item.detalles;
 
   return (
     <View style={styles(theme).efemeridesCard}>
@@ -332,60 +329,60 @@ return "";
           item.categoria === "aspectos"
             ? [theme.eventMagenta, theme.eventGreen]
             : item.categoria === "cambios de signo"
-            ? [theme.eventYellow, theme.eventPink]
-            : item.categoria === "retrogradaciones"
-            ? [theme.eventMagenta, theme.eventGreen]
-            : item.categoria === "lunaciones"
-            ? [theme.eventBlue, theme.eventPurple]
-            : [theme.eventYellow, theme.eventPink]
+              ? [theme.eventYellow, theme.eventPink]
+              : item.categoria === "retrogradaciones"
+                ? [theme.eventMagenta, theme.eventGreen]
+                : item.categoria === "lunaciones"
+                  ? [theme.eventBlue, theme.eventPurple]
+                  : [theme.eventYellow, theme.eventPink]
         }
         style={styles(theme).categoriaCirculo}
       >
-        <Text 
-                  style={[ 
-                    styles(theme).categoriaEventoLetra, 
-                    item.categoria === "cambios" && styles(theme).signoEstilo,
-                    item.categoria === "lunaciones" && styles(theme).lunaEstilo,
-                    item.categoria === "retrogradaciones" && styles(theme).retroEstilo
-                  ]}
-                >
-                  {obtenerLetraCategoria(item)}
-                </Text>
+        <Text
+          style={[
+            styles(theme).categoriaEventoLetra,
+            item.categoria === "cambios" && styles(theme).signoEstilo,
+            item.categoria === "lunaciones" && styles(theme).lunaEstilo,
+            item.categoria === "retrogradaciones" && styles(theme).retroEstilo
+          ]}
+        >
+          {obtenerLetraCategoria(item)}
+        </Text>
       </LinearGradient>
 
-      <TouchableOpacity onPress={() => toggleAccordion(index)} style={styles(theme).eventContainer}>
-        <View style={{ width: width*0.75, flexDirection: 'row',  justifyContent: 'space-between'}}>
-        <Text style={styles(theme).eventTitle}>{item.title}</Text>
-        <TouchableOpacity style={{zIndex: 10, width: 25, height: 25}}
-         onPress={handleOpenShareModal}
-
-        >
-        <ShareIcon style={styles(theme).eventShareIcon}/></TouchableOpacity>
+      <TouchableOpacity
+        onPress={canToggle ? () => toggleAccordion(index) : null} 
+        style={styles(theme).eventContainer}
+        activeOpacity={canToggle ? 0.8 : 1} 
+      >
+        <View style={{ width: width * 0.75, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={styles(theme).eventTitle}>{item.title}</Text>
+          {showShareButton && ( // Renderiza el botón de compartir solo si showShareButton es true
+            <TouchableOpacity style={{ zIndex: 10, width: 25, height: 25 }} onPress={handleOpenShareModal}>
+              <ShareIcon style={styles(theme).eventShareIcon} />
+            </TouchableOpacity>
+          )}
         </View>
-     <Text style={styles(theme).eventInfo}>
-  {item.categoria === "aspectos" || item.categoria === "retrogradaciones" 
-    ? item.rango 
-    : fechaFormateada}
-</Text>
+        <Text style={styles(theme).eventInfo}>
+          {item.categoria === "aspectos" || item.categoria === "retrogradaciones"
+            ? item.rango
+            : fechaFormateada}
+        </Text>
 
         {item.signo && <Text style={styles(theme).eventInfo}>{item.signo}</Text>}
-       
-        <Animated.View
-        style={[styles(theme).expandedContent, animatedStyle]}>
-        {item.detalles && 
-        <View style={styles(theme).eventDetailsContainer}>
-        <Text style={styles(theme).eventDetails}>{item.detalles}</Text>
-        
-        </View>
-        }
-      </Animated.View>
-      </TouchableOpacity>
 
-     
+        <Animated.View
+          style={[styles(theme).expandedContent, animatedStyle]}>
+          {item.detalles &&
+            <View style={styles(theme).eventDetailsContainer}>
+              <Text style={styles(theme).eventDetails}>{item.detalles}</Text>
+            </View>
+          }
+        </Animated.View>
+      </TouchableOpacity>
     </View>
   );
 };
-
 const styles = (theme) => StyleSheet.create({
     skeletonEventContainer: {
       flexDirection: "row",

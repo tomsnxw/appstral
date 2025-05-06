@@ -429,7 +429,7 @@ return (
          
            let DISTANCIA_EXTRA_TOTAL;
            if (cantidadEnGrupo <= 3) {
-             DISTANCIA_EXTRA_TOTAL = 15;
+             DISTANCIA_EXTRA_TOTAL = 10;
            } else {
              DISTANCIA_EXTRA_TOTAL = 25;
            }
@@ -497,7 +497,7 @@ return (
      
                      
                      {planetas.map((planeta, index) => {
-                       const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+                       const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
                    const planetSignoIndex = signosZodiacales.indexOf(signo);
                    const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
                const isSelected = planeta === selectedPlanet;
@@ -510,19 +510,49 @@ return (
                            <SvgText x={posicion.x} y={posicion.y} fontSize={viewShotHeight*.023} fill={planetaColor} textAnchor="start" alignmentBaseline="middle" fontFamily="Astronomicon">
                              {simbolosPlanetas[planeta]}
                            </SvgText>
-                           {retrógrado && planeta !== "Nodo Norte" && (
-               <SvgText
-                 x={posicion.x + 5.5}
-                 y={posicion.y + 11} 
-                 fontSize="5"
-                 textAnchor="start"
-                 alignmentBaseline="middle"
-                 fill={planetaColor}
-                 fontFamily="Effra_SemiBold" 
-               >
-                 Rx
-               </SvgText>
-             )}
+                         {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                          <>
+                            {estacionario && !retrógrado && (
+                              <SvgText
+                                x={posicion.x + 7.5}
+                                y={posicion.y + 10}
+                                fontSize="5"
+                                textAnchor="start"
+                                alignmentBaseline="middle"
+                                fill={planetaColor}
+                                fontFamily="Effra_SemiBold"
+                              >
+                                st
+                              </SvgText>
+                            )}
+                            {retrógrado && !estacionario && (
+                              <SvgText
+                                x={posicion.x + 7.5}
+                                y={posicion.y + 10}
+                                fontSize="5"
+                                textAnchor="start"
+                                alignmentBaseline="middle"
+                                fill={planetaColor}
+                                fontFamily="Effra_SemiBold"
+                              >
+                                Rx
+                              </SvgText>
+                            )}
+                            {retrógrado && estacionario && (
+                              <SvgText
+                                x={posicion.x + 7.5}
+                                y={posicion.y + 10}
+                                fontSize="5"
+                                textAnchor="start"
+                                alignmentBaseline="middle"
+                                fill={planetaColor}
+                                fontFamily="Effra_SemiBold"
+                              >
+                                stRx
+                              </SvgText>
+                            )}
+                          </>
+                        )}
                          </G>
                        );
                      })}     
@@ -610,15 +640,9 @@ return (
          if (viewReady && resultado) {
            captureAndShare();
          }
-       }, [viewReady, resultado]);    
- 
+       }, [viewReady, resultado]); 
+          
 
-         if (loading) {
-           return (
-            <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
-             <ActivityIndicator size="large" color="#ab89e9"/></View>
-           );
-         }
  
          return (
           <Modal
@@ -673,8 +697,8 @@ return (
             );
  };
  
- const styles = (theme) => StyleSheet.create({
-    modalShareContainer: {
+const styles = (theme) => StyleSheet.create({
+  modalShareContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     paddingHorizontal: 40,
@@ -686,20 +710,16 @@ return (
   shareChartResultList: {
     paddingLeft: width*0.15,
   },
-  shareChartResultFlatList: {
-    flexGrow: 1,
-  },
-  shareChartInfoText:{
-    fontSize: height*0.018,
-    fontFamily: 'Effra_Regular',
-    color: theme.secondary
+  chartResultSeparator:{
+    height: .6,
+    marginLeft: 15,
+    backgroundColor: theme.secondary,
   },
   roundedShareContainer: {
     borderRadius: 10,
-    backgroundColor: 'red',
     overflow: 'hidden',
     width: viewShotWidth,
-    height: viewShotHeight,
+    minHeight: viewShotHeight,
     alignSelf: 'center',
     backgroundColor: theme.background,
     transform: [{scale:.85}],
@@ -709,7 +729,7 @@ return (
   },
   shareChartInfoSeparator:{
     height:20,
-    width: 1,
+    width: 2,
     backgroundColor: theme.primaryBorder,
   },
   chartText: {
@@ -724,19 +744,21 @@ return (
     margin: 'auto',
     flexDirection: 'row',
     gap: 5,
-    transform: [{ translateY: -10}], 
+    marginBottom: 5
   },
   ScreenshotFooterText:{
     margin: 'auto',
     textAlign: 'center',
     fontFamily: 'Effra_Regular',
     color: theme.secondaryBorder,
-    fontSize: height*0.012
+    fontSize: viewShotHeight*0.013,
+    height: viewShotHeight*0.0155
+
   },
   ScreenshotFooterIcon:{
-    width: 10,
+    width: viewShotHeight*0.013,
     margin: 'auto',
-    height: 10
+    height: viewShotHeight*0.02
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -744,7 +766,7 @@ return (
   },
   shareChartDetailsContainer: {
     width: viewShotWidth,
-    height: viewShotHeight,
+    minHeight: viewShotHeight,
     alignSelf: 'center',
     backgroundColor: theme.background,
     paddingVertical: 5

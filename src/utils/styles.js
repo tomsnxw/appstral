@@ -1080,7 +1080,7 @@ ChartInfo:{
       backgroundColor: theme.primaryBorder,
       },
         chartResultList: {
-        paddingLeft: width*0.15,
+        paddingLeft: width*0.125,
       },
     ChartInfo:{
       margin: 'auto',
@@ -1553,7 +1553,7 @@ ChartInfo:{
           borderTopLeftRadius: 25,
           borderTopRightRadius: 25,
           backgroundColor: theme.editSheet,
-          height: wHeight*.615,
+          height: wHeight*.62,
         },
             modalPremiumContent: {
               borderTopLeftRadius: 25,

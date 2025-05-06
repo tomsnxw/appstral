@@ -640,7 +640,7 @@ const CalculateScreen = () => {
       const CENTER = { x: SVG_SIZE / 2, y: SVG_SIZE / 2 };
       const ANGLE_PER_SIGN = 360 / 12;
       const LINE_LENGTH = RADIO + 10;
-      const DISTANCIA_PLANETAS = RADIO * 0.79;
+      const DISTANCIA_PLANETAS = RADIO * 0.8;
       const DISTANCIA_INNERCIRCLE = RADIO * 0.68;
       const DISTANCIA_ASPECTOS = RADIO * 0.675;
       const DISTANCIA_SIGNOS = RADIO + 21;
@@ -809,7 +809,7 @@ const CalculateScreen = () => {
     
       let DISTANCIA_EXTRA_TOTAL;
       if (cantidadEnGrupo <= 3) {
-        DISTANCIA_EXTRA_TOTAL = 15;
+        DISTANCIA_EXTRA_TOTAL = 10;
       } else {
         DISTANCIA_EXTRA_TOTAL = 25;
       }
@@ -900,7 +900,7 @@ const CalculateScreen = () => {
     
                 
                 {planetas.map((planeta, index) => {
-                  const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+                  const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
                   const planetSignoIndex = signosZodiacales.indexOf(signo);
                   const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
                   const isSelected = planeta === selectedPlanet;
@@ -914,19 +914,49 @@ const CalculateScreen = () => {
                       <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.0225} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                         {simbolosPlanetas[planeta]}
                       </AnimatedText>
-                      {retrógrado && planeta !== t("planetas.Nodo Norte") && (
-          <AnimatedText
-            x={posicion.x + 7.5}
-            y={posicion.y + 10} 
-            fontSize={height*0.008}
-            textAnchor="start"
-            alignmentBaseline="middle"
-            fill={planetaColor}
-            fontFamily="Effra_SemiBold" 
-          >
-            Rx
-          </AnimatedText>
-        )}
+                      {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                       <>
+                         {estacionario && !retrógrado && (
+                           <SvgText
+                             x={posicion.x + 7.5}
+                             y={posicion.y + 10}
+                             fontSize={height * 0.008}
+                             textAnchor="start"
+                             alignmentBaseline="middle"
+                             fill={planetaColor}
+                             fontFamily="Effra_SemiBold"
+                           >
+                             st
+                           </SvgText>
+                         )}
+                         {retrógrado && !estacionario && (
+                           <SvgText
+                             x={posicion.x + 7.5}
+                             y={posicion.y + 10}
+                             fontSize={height * 0.008}
+                             textAnchor="start"
+                             alignmentBaseline="middle"
+                             fill={planetaColor}
+                             fontFamily="Effra_SemiBold"
+                           >
+                             Rx
+                           </SvgText>
+                         )}
+                         {retrógrado && estacionario && (
+                           <SvgText
+                             x={posicion.x + 7.5}
+                             y={posicion.y + 10}
+                             fontSize={height * 0.008}
+                             textAnchor="start"
+                             alignmentBaseline="middle"
+                             fill={planetaColor}
+                             fontFamily="Effra_SemiBold"
+                           >
+                             stRx
+                           </SvgText>
+                         )}
+                       </>
+                     )}
                     </G>
                   );
                 })}     

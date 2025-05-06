@@ -192,11 +192,11 @@
     "Fondo": "Select a background"
   },
     "pricing": {
-      "solarTitle": "Become a member to calculate your solar return",
+      "solarTitle": "Become a member to calculate a solar return",
       "solarSubtitle": "You'll be able to calculate the solar return for all your astral charts. If you're part of the Stellar membership, you'll have unlimited astral chart calculations:",
       "chartTitle": "You've reached the limit of free charts provided by Appstral",
       "chartSubtitle": "Purchase a chart pack or become a Stellar Member for unlimited astral chart calculations:",
-      "PackTitle": "Pack of 5 charts $1.99",
+      "PackTitle": "Pack of 5 charts $4.99",
       "PackDescription": "Calculate five astral charts and add them to your collection.",
       "SolarTitle": "Solar Member $0.99 / month",
       "SolarDescription": "Solar Members have access to the solar return of all their charts.",

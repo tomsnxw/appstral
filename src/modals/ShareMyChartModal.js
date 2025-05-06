@@ -99,11 +99,11 @@ return (
       }
     };
 
-    useEffect(() => {
-      if (visible) {
-        setViewReady(false);
-      }
-    }, [visible]);
+useEffect(() => {
+         if (viewReady && resultado) {
+           captureAndShare();
+         }
+       }, [viewReady, resultado]);
 
       const [fontsLoaded] = useFonts({
         'Astronomicon': require('../../assets/fonts/Astronomicon.ttf'),
@@ -197,12 +197,7 @@ return (
           fetchPlanetPositions();
         }
       }, [userData?.birthDate, userData?.birthTime, latitud, longitud, year]);
-
-      useEffect(() => {
-        if (viewReady && resultado) {
-          captureAndShare();
-        }
-      }, [viewReady, resultado]);    
+ 
 
       const simbolosPlanetas = i18n.language === 'es' ? { 
         "Sol": "Q",
@@ -482,7 +477,7 @@ return (
         
           let DISTANCIA_EXTRA_TOTAL;
           if (cantidadEnGrupo <= 3) {
-            DISTANCIA_EXTRA_TOTAL = 15;
+            DISTANCIA_EXTRA_TOTAL = 10;
           } else {
             DISTANCIA_EXTRA_TOTAL = 25;
           }
@@ -550,7 +545,7 @@ return (
     
                     
                     {planetas.map((planeta, index) => {
-                      const { signo, grado, minutos, retrógrado } = resultado.planetas[planeta];
+                      const { signo, grado, minutos, retrógrado,estacionario } = resultado.planetas[planeta];
                   const planetSignoIndex = signosZodiacales.indexOf(signo);
                   const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
               const isSelected = planeta === selectedPlanet;
@@ -563,19 +558,49 @@ return (
                           <SvgText x={posicion.x} y={posicion.y} fontSize={viewShotHeight*.023} fill={planetaColor} textAnchor="start" alignmentBaseline="middle" fontFamily="Astronomicon">
                             {simbolosPlanetas[planeta]}
                           </SvgText>
-                          {retrógrado && planeta !== "Nodo Norte" && (
-              <SvgText
-                x={posicion.x + 5.5}
-                y={posicion.y + 11} 
-                fontSize="5"
-                textAnchor="start"
-                alignmentBaseline="middle"
-                fill={planetaColor}
-                fontFamily="Effra_SemiBold" 
-              >
-                Rx
-              </SvgText>
-            )}
+                          {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                           <>
+                             {estacionario && !retrógrado && (
+                               <SvgText
+                                 x={posicion.x + 7.5}
+                                 y={posicion.y + 10}
+                                 fontSize="5"
+                                 textAnchor="start"
+                                 alignmentBaseline="middle"
+                                 fill={planetaColor}
+                                 fontFamily="Effra_SemiBold"
+                               >
+                                 st
+                               </SvgText>
+                             )}
+                             {retrógrado && !estacionario && (
+                               <SvgText
+                                 x={posicion.x + 7.5}
+                                 y={posicion.y + 10}
+                                 fontSize="5"
+                                 textAnchor="start"
+                                 alignmentBaseline="middle"
+                                 fill={planetaColor}
+                                 fontFamily="Effra_SemiBold"
+                               >
+                                 Rx
+                               </SvgText>
+                             )}
+                             {retrógrado && estacionario && (
+                               <SvgText
+                                 x={posicion.x + 7.5}
+                                 y={posicion.y + 10}
+                                 fontSize="5"
+                                 textAnchor="start"
+                                 alignmentBaseline="middle"
+                                 fill={planetaColor}
+                                 fontFamily="Effra_SemiBold"
+                               >
+                                 stRx
+                               </SvgText>
+                             )}
+                           </>
+                         )}
                         </G>
                       );
                     })}     
@@ -649,12 +674,7 @@ return (
 <View style={styles(theme).modalShareContainer}>
         <View style={styles(theme).modalShareContent}>
         <View style={styles(theme).roundedShareContainer}>
-  <ViewShot
-    ref={viewShotRef}
-    style={styles(theme).shareChartDetailsContainer}
-    captureMode="mount"
-    onLayout={() => setViewReady(true)}
-  >
+   <ViewShot ref={viewShotRef} style={styles(theme).shareChartDetailsContainer} captureMode="mount">
             {year ? (
             <View style={styles(theme).shareChartDetailsHeader}>
               <View style={styles(theme).shareChartTitle}>
@@ -689,7 +709,8 @@ return (
                 <Text numberOfLines={1} ellipsizeMode="tail"  style={styles(theme).shareChartInfoText}>{userData?.birthCity}</Text>
               </View>
             </View>)}
-            <View style={styles(theme).shareChartResultCircle}>{renderCirculoZodiacal()}</View>
+                 <View style={styles(theme).shareChartResultCircle} onLayout={() => setViewReady(true)}>{renderCirculoZodiacal()}</View>
+   
             {resultado && (
               <FlatList
                 data={currentPlanetsOrder}

@@ -160,15 +160,17 @@ return (
    });
  
    const fetchPlanetPositions = async () => {
-     if (!latitud || !longitud) {
-       setError('Las coordenadas no están disponibles.');
-       setLoading(false);
-       return;
-     }
-   
-     try {
+    if (!latitud || !longitud) {
+      setError('Las coordenadas no están disponibles.');
+      setLoading(false);
+      return;
+    }
+  
+    setLoading(true);
+    
+    try {
       let response;
-         const fechaHora = `${fecha}T${hora}`;
+         const fechaHora = `${cartaData?.fecha}T${cartaData?.hora}`;
       if (year) {
         response = await axios.get('https://appstralbackend-production.up.railway.app/revolucion_solar', {
           params: {
@@ -176,13 +178,13 @@ return (
             lat: latitud,
             lon: longitud,
             sistema_casas: sistemaCasas, 
-            year_param: year,
             lang: i18n.language,
+            year_param: year,
           },
         });
       } else {
      
-         response = await axios.get('https://appstralbackend-production.up.railway.app/calcular_carta', {
+        response = await axios.get('https://appstralbackend-production.up.railway.app/mi_carta', {
           params: {
             fecha: fechaHora,
             lat: latitud,
@@ -192,21 +194,24 @@ return (
           },
         });
       }
-       setResultado(response.data);
-       setAscendente(response.data.ascendente); 
-       setLoading(false);
-       setFaseLunar(response.data.fase_lunar);
-     } catch (err) {
-       setError('Hubo un error al obtener las posiciones planetarias');
-       setLoading(false);
-     }
-   };
- 
-   useEffect(() => {
-     if (latitud && longitud && fecha) {
-       fetchPlanetPositions();
-     }
-   }, [latitud, longitud, fecha, ]);
+      
+
+      setResultado(response.data);
+      setAscendente(response.data.ascendente);
+      setFaseLunar(response.data.fase_lunar);
+      setLoading(false);
+    } catch (err) {
+      setError('Hubo un error al obtener las posiciones planetarias');
+      setLoading(false);
+    }
+  };
+
+      useEffect(() => {
+        if (cartaData?.fecha && cartaData?.hora && latitud && longitud) {
+          fetchPlanetPositions();
+        }
+      }, [cartaData?.fecha, cartaData?.hora, latitud, longitud]);
+
  
    const simbolosPlanetas = i18n.language === 'es' ? { 
     "Sol": "Q",
@@ -675,12 +680,10 @@ return (
        }, [viewReady, resultado]);    
  
 
-         if (loading) {
-           return (
-            <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
-             <ActivityIndicator size="large" color="#ab89e9"/></View>
-           );
-         }
+      if (loading) {
+        return null;
+      }
+    
  
          
         const birthDateTime = new Date(`${fecha}T${hora}:00`);
@@ -732,7 +735,7 @@ return (
                                         <Text numberOfLines={1} ellipsizeMode="tail"  style={styles(theme).shareChartInfoText}>{cartaData?.ciudad}</Text>
                                       </View>
                                     </View>)}
-              <View style={styles(theme).shareChartResultCircle}   onLayout={() => setViewReady(true)}>{renderCirculoZodiacal()}</View>
+              <View style={styles(theme).shareChartResultCircle} onLayout={() => setViewReady(true)}>{renderCirculoZodiacal()}</View>
   
                  {resultado && (
                      <FlatList
@@ -754,8 +757,8 @@ return (
             );
  };
  
- const styles = (theme) => StyleSheet.create({
-    modalShareContainer: {
+const styles = (theme) => StyleSheet.create({
+  modalShareContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     paddingHorizontal: 40,
@@ -767,20 +770,16 @@ return (
   shareChartResultList: {
     paddingLeft: width*0.15,
   },
-  shareChartResultFlatList: {
-    flexGrow: 1,
-  },
-  shareChartInfoText:{
-    fontSize: height*0.018,
-    fontFamily: 'Effra_Regular',
-    color: theme.secondary
+  chartResultSeparator:{
+    height: .6,
+    marginLeft: 15,
+    backgroundColor: theme.secondary,
   },
   roundedShareContainer: {
     borderRadius: 10,
-    backgroundColor: 'red',
     overflow: 'hidden',
     width: viewShotWidth,
-    height: viewShotHeight,
+    minHeight: viewShotHeight,
     alignSelf: 'center',
     backgroundColor: theme.background,
     transform: [{scale:.85}],
@@ -790,7 +789,7 @@ return (
   },
   shareChartInfoSeparator:{
     height:20,
-    width: 1,
+    width: 2,
     backgroundColor: theme.primaryBorder,
   },
   chartText: {
@@ -805,19 +804,21 @@ return (
     margin: 'auto',
     flexDirection: 'row',
     gap: 5,
-    transform: [{ translateY: -10}], 
+    marginBottom: 5
   },
   ScreenshotFooterText:{
     margin: 'auto',
     textAlign: 'center',
     fontFamily: 'Effra_Regular',
     color: theme.secondaryBorder,
-    fontSize: height*0.012
+    fontSize: viewShotHeight*0.013,
+    height: viewShotHeight*0.0155
+
   },
   ScreenshotFooterIcon:{
-    width: 10,
+    width: viewShotHeight*0.013,
     margin: 'auto',
-    height: 10
+    height: viewShotHeight*0.02
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -825,7 +826,7 @@ return (
   },
   shareChartDetailsContainer: {
     width: viewShotWidth,
-    height: viewShotHeight,
+    minHeight: viewShotHeight,
     alignSelf: 'center',
     backgroundColor: theme.background,
     paddingVertical: 5
