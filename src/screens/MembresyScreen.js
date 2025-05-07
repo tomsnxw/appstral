@@ -66,23 +66,31 @@ const MembresyScreen = () => {
 
 const handlePurchase = async () => {
   if (!selectedPackage) {
-    console.warn("No se seleccionó un paquete válido para la compra.");
-    return;
+    console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
+    if (estelarMonthly) {
+      setSelectedPackage(estelarMonthly);
+      setSelectedOfferingIdentifier('estelar.plan'); // Aseguramos que el identificador también esté correcto
+    } else {
+      console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
+      return;
+    }
   }
   try {
     const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
     console.log('Información de la compra:', purchaserInfo);
 
-    if (purchaserInfo?.customerInfo?.entitlements?.active['estelar.premium']?.isActive) {
-
+    // Check for entitlements, not subscription names.  Use the correct entitlement IDs.
+    if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
       updateUser({ premium: true, membresia: 'estelar' });
-    } else if (purchaserInfo?.customerInfo?.entitlements?.active['solar.premium']?.isActive) {
+      
+    } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
       updateUser({ premium: true, membresia: 'solar' });
+      
     } else if (selectedPackage?.identifier === 'chart.pack') {
       const transaction = purchaserInfo?.latestTransaction;
       const quantity = transaction?.quantity || 1;
-
       updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
+      
     }
   } catch (e) {
     if (!e.userCancelled) {

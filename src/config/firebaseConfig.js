@@ -230,19 +230,19 @@ const enviarMensaje = async (email, asunto, mensaje) => {
     throw error;
   }
 };
-
 const checkAndUpdateSubscriptionStatus = async () => {
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     console.log('Customer Info al iniciar (desde FirebaseConfig):', customerInfo);
 
-    const isEstelarActive = customerInfo?.entitlements?.active['estelar.premium']?.isActive === true;
-    const isSolarActive = customerInfo?.entitlements?.active['solar.premium']?.isActive === true;
+    //  Corrected Entitlement check.
+    const isEstelarActive = customerInfo?.entitlements?.active['premium_estelar']?.isActive === true;
+    const isSolarActive = customerInfo?.entitlements?.active['premium_solar']?.isActive === true;
 
     if (auth.currentUser) {
       const userRef = doc(db, "users", auth.currentUser.uid);
       if (!isEstelarActive && !isSolarActive) {
-        await updateDoc(userRef, { premium: false, membresia: "" }); // O el valor que desees
+        await updateDoc(userRef, { premium: false, membresia: "" });
         console.log('Suscripción premium no activa, base de datos actualizada (FirebaseConfig).');
       } else if (isEstelarActive) {
         await updateDoc(userRef, { premium: true, membresia: 'estelar' });

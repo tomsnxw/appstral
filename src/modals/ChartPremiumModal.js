@@ -56,7 +56,7 @@ const ChartPremiumModal = ({handleCloseChartPremiumModal, visible}) => {
     },
     onPanResponderRelease: (_, gesture) => {
       if (gesture.dy > 100) {
-        handleCloseSolarPremiumModal();
+        handleCloseChartPremiumModal();
       } else {
         Animated.spring(translateY, {
           toValue: 0,
@@ -140,26 +140,31 @@ useEffect(() => {
 
 const handlePurchase = async () => {
   if (!selectedPackage) {
-    console.warn("No se seleccionó un paquete válido para la compra.");
-    return;
+    console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
+    if (estelarMonthly) {
+      setSelectedPackage(estelarMonthly);
+      setSelectedOfferingIdentifier('estelar.plan'); // Aseguramos que el identificador también esté correcto
+    } else {
+      console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
+      return;
+    }
   }
   try {
     const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
     console.log('Información de la compra:', purchaserInfo);
 
-    if (purchaserInfo?.customerInfo?.entitlements?.active['estelar.premium']?.isActive) {
-
+    // Check for entitlements, not subscription names.  Use the correct entitlement IDs.
+    if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
       updateUser({ premium: true, membresia: 'estelar' });
-      handleCloseSolarPremiumModal();
-    } else if (purchaserInfo?.customerInfo?.entitlements?.active['solar.premium']?.isActive) {
+      handleCloseChartPremiumModal();
+    } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
       updateUser({ premium: true, membresia: 'solar' });
-      handleCloseSolarPremiumModal();
+      handleCloseChartPremiumModal();
     } else if (selectedPackage?.identifier === 'chart.pack') {
       const transaction = purchaserInfo?.latestTransaction;
       const quantity = transaction?.quantity || 1;
-
       updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
-      handleCloseSolarPremiumModal();
+      handleCloseChartPremiumModal();
     }
   } catch (e) {
     if (!e.userCancelled) {
@@ -167,6 +172,7 @@ const handlePurchase = async () => {
     }
   }
 };
+
   return (
        <Modal animationType="none" transparent={true} statusBarTranslucent={true} visible={isModalVisible} onRequestClose={handleCloseChartPremiumModal}>
                <TouchableWithoutFeedback onPress={handleCloseChartPremiumModal}>
