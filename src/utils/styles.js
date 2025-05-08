@@ -1553,13 +1553,13 @@ ChartInfo:{
           borderTopLeftRadius: 25,
           borderTopRightRadius: 25,
           backgroundColor: theme.editSheet,
-          height: wHeight*.62,
+          height: wHeight*.7,
         },
             modalPremiumContent: {
               borderTopLeftRadius: 25,
               borderTopRightRadius: 25,
               backgroundColor: theme.editSheet,
-              height: wHeight*.72,
+              height: wHeight*.8,
             },
           modalPremiumSlider: {
             justifyContent: 'center',
