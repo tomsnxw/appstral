@@ -74,7 +74,7 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
       premium: false,
       sistemaCasas: "T",
       membresia: "",
-      extraCharts: 0,
+      extraCharts: 3,
       
     };
 
