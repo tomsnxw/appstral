@@ -779,7 +779,11 @@ stroke={theme.tertiary} strokeWidth=".75"
   return resultado !== null ? (
 
     <View style={styles.myChartContainer}>
-    <View style={styles.ChartHeader}>
+    <View style={{ width: width*.9,
+margin: 'auto',
+paddingTop: 20,
+marginTop: 0,
+gap: 7.5}}>
     <View style={styles.chartTitle}>
           <Text adjustsFontSizeToFit numberOfLines={2} style={styles.ChartTitleText}>Revolución Solar</Text>
           <View style={[styles.chartOptions, { opacity: !loading ? 1 : 0.3 }]}>

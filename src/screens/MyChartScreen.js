@@ -292,7 +292,7 @@ const handleSolarRevo = () => {
       
         try {
           setLoading(true);
-          const response = await axios.get('https://appstralbackend-production.up.railway.app/mi_carta', {
+          const response = await axios.get('https://appstralbackend-production.up.railway.app/calcular_carta', {
             params: {
               fecha: fechaHora,
               lat: latitud,
