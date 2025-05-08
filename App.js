@@ -423,7 +423,7 @@ const App = () => {
           {activeTab !== 3 && (
             <View style={{}}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={{flexDirection: 'row',justifyContent: 'space-around', gap: 7.5, backgroundColor: theme.background,height:height*.08,justifyContent: 'center',alignItems: 'center',paddingHorizontal: width*0.06}}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-around', gap: 7.5,height:height*.072,justifyContent: 'center',alignItems: 'center',paddingHorizontal: width*0.06}}>
           {categorias.map((categoria, index) => (
             <TouchableOpacity
               key={index}

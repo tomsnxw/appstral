@@ -387,7 +387,6 @@ const styles = (theme) => StyleSheet.create({
     skeletonEventContainer: {
       flexDirection: "row",
       alignItems: "center",
-      paddingVertical: 10,
       paddingLeft: 15,
       gap: 10,
       height: height*0.095,
@@ -413,14 +412,12 @@ const styles = (theme) => StyleSheet.create({
     },
     efemeridesContainer:{
       height: height,
-      marginVertical:'auto',
+      marginTop:'auto',
       marginBottom: 0,
+      marginTop:height*.01,
     },
     topEfemeridesSpace:{
       height: height*.08,
-    },
-    efemeridesCardContainer: {
-      paddingTop: 15,
     },
     efemeridesCard: {
       paddingTop: 10,
