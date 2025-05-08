@@ -531,12 +531,19 @@ justifyContent: 'space-evenly',
       justifyContent: 'center'
     },
     remainingChartsText:{
-      margin: 'auto',
-      fontFamily: 'Effra_Medium',
+width: height*.026,
+        height: height*.026,
+        backgroundColor: theme.red,
+        position: 'absolute',
+        bottom: (height - wHeight) + height * 0.2375,
+        textAlign: 'center',
+        fontFamily: 'Effra_Medium',
       color: theme.alwaysWhite,
       fontSize: height*0.018,
-      textAlign: 'center',
-      height: height*0.023,
+        borderRadius: 50,
+        zIndex: 2,
+        right: width*0.42,
+        justifyContent: 'center'
     },
     skeletonCircle: {
       width: height*0.055,

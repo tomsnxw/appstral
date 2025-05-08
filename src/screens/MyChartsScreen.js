@@ -576,17 +576,9 @@ useEffect(() => {
       </LinearGradient>
 
       {userData.membresia !== 'estelar' && (
-        <View style={{      width: height*.026,
-          height: height*.026,
-          backgroundColor: theme.red,
-          position: 'absolute',
-          bottom: height * 0.34,
-          borderRadius: 50,
-          zIndex: 2,
-          right: width*0.42,
-          justifyContent: 'center'}}>
+
       <Text style={styles.remainingChartsText}>{cartasRestantes}</Text>
-      </View>
+
     )}
       <Modal
       animationType="none"
