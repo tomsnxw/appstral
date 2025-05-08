@@ -196,11 +196,11 @@
       "solarSubtitle": "You'll be able to calculate the solar return for all your astral charts. If you're part of the Stellar membership, you'll have unlimited astral chart calculations:",
       "chartTitle": "You've reached the limit of free charts provided by Appstral",
       "chartSubtitle": "Purchase a chart pack or become a Stellar Member for unlimited astral chart calculations:",
-      "PackTitle": "Pack of 5 charts $4.99",
+      "PackTitle": "Pack of 5 charts $5",
       "PackDescription": "Calculate five astral charts and add them to your collection.",
-      "SolarTitle": "Solar Member $0.99 / month",
+      "SolarTitle": "Solar Member $1 / month",
       "SolarDescription": "Solar Members have access to the solar return of all their charts.",
-      "EstelarTitle": "Stellar Member $0.99 / month",
+      "EstelarTitle": "Stellar Member $1 / month",
       "EstelarDescription": "Stellar Members have access to the solar return of all their charts, ",
       "EstelarDescriptionBold": "and astral chart creation is unlimited!",
       "Pagar": "Get"
@@ -235,8 +235,10 @@
       "mensaje": "Message",
       "asunto": "Subject",
       "editar": "Edit",
-      "editTitle": "Free charts provided by Appstral can only be edited once."
-     },
+      "editTitle": "Free charts provided by Appstral can only be edited once.",
+      "cancelTitle": "To cancel your subscription you must do so from the Play Store",
+      "irATienda": "Go to Store"
+         },
      "connection":{
       "title":"We seem to be having trouble connecting",
       "subtitle": "Could you please verify that your internet is working properly?"

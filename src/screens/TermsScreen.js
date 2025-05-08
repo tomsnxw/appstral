@@ -17,15 +17,16 @@ const TermsScreen = () => {
 
   return ( 
   <View style={styles.policyContainer}>
-    <ScrollView style={styles.policyScrollContainer}>
-       
-        <View style={styles.policyHeader}>
+      <View style={styles.policyHeader}>
             <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backArrow}>
         <BackArrowIcon style={{ width:width*.03, height: width*.03, fill: theme.secondary, margin: 'auto'}}/>
         </TouchableOpacity>
-        <Text style={styles.policyTitle}>{t("Terms.title")}</Text>
 
         </View>
+    <ScrollView style={styles.policyScrollContainer}>
+       
+    <Text style={styles.policyTitle}>{t("Terms.title")}</Text>
+
 
       <Text style={styles.policySectionTitle}>{t("Terms.subtitle1")}</Text>
       <Text style={styles.policySectionText}>{t("Terms.description1")}</Text>

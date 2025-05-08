@@ -144,7 +144,7 @@ const handlePurchase = async () => {
     console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
     if (estelarMonthly) {
       setSelectedPackage(estelarMonthly);
-      setSelectedOfferingIdentifier('estelar.plan'); // Aseguramos que el identificador también esté correcto
+      setSelectedOfferingIdentifier('estelar.plan');
     } else {
       console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
       return;
@@ -154,17 +154,21 @@ const handlePurchase = async () => {
     const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
     console.log('Información de la compra:', purchaserInfo);
 
-    // Check for entitlements, not subscription names.  Use the correct entitlement IDs.
+    // Check for entitlements, not subscription names. Use the correct entitlement IDs.
     if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
       updateUser({ premium: true, membresia: 'estelar' });
       handleCloseChartPremiumModal();
     } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
       updateUser({ premium: true, membresia: 'solar' });
       handleCloseChartPremiumModal();
-    } else if (selectedPackage?.identifier === 'chart.pack') {
-      const transaction = purchaserInfo?.latestTransaction;
+    } console.log("Identificador del paquete seleccionado:", selectedPackage?.identifier); // <-- AGREGAR ESTO
+    if (selectedPackage?.identifier === 'chart.pack') {
+      const transaction = purchaserInfo?.transaction;
       const quantity = transaction?.quantity || 1;
+      console.log("Se detectó compra de chart.pack. Cantidad:", quantity); // <-- AGREGAR ESTO
+      console.log("Valor actual de extraCharts antes de actualizar:", userData?.extraCharts); // <-- AGREGAR ESTO
       updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
+      console.log("Valor esperado de extraCharts después de actualizar:", (userData?.extraCharts || 0) + (5 * quantity)); // <-- AGREGAR ESTO
       handleCloseChartPremiumModal();
     }
   } catch (e) {

@@ -198,11 +198,11 @@
       "solarSubtitleBold": " los cálculos de cartas astrales son ilimitados:",
       "chartTitle": "Has alcanzado el límite de cartas que obsequia Appstral",
       "chartSubtitle": "Adquiere un paquete de cartas, o conviértete en Miembro Estelar y calcula cartas astrales de manera ilimitada:",
-      "PackTitle": "Pack de 5 cartas  $4.99",
+      "PackTitle": "Pack de 5 cartas  $5",
       "PackDescription": "Calcula cinco cartas astrales y súmalas a tu colección.",
-      "SolarTitle": "Miembro Solar $0.99 / mes",
+      "SolarTitle": "Miembro Solar $1 / mes",
       "SolarDescription": "Los Miembros Solares tienen acceso a la revolución solar de todas sus cartas.",
-      "EstelarTitle": "Miembro Estelar $0.99 / mes",
+      "EstelarTitle": "Miembro Estelar $1 / mes",
       "EstelarDescription": "Los miembros estelares tienen",
       "EstelarDescriptionBold": " acceso a la revolución solar de todas sus cartas, ¡y la creación de cartas astrales es ilimitada!",
       "Pagar": "Obtener"
@@ -230,14 +230,16 @@
       "logOutSubtitle": "¡Hasta pronto!",
       "deleteTitle": "¿Estás seguro de que quieres eliminar esta carta?",
       "cancelar": "Cancelar",
-      "enviar": "Send",
+      "enviar": "Enviar",
       "cerrar": "Cerrar sesión",
       "editar": "Editar",
       "eliminar": "Eliminar",
       "enviarMensaje": "Envíanos un mensaje",
       "mensaje": "Mensaje",
       "asunto": "Asunto",
-      "editTitle": "Las cartas gratuitas obsequiadas por Appstral solo se pueden editar una vez"
+      "editTitle": "Las cartas gratuitas obsequiadas por Appstral solo se pueden editar una vez",
+      "cancelTitle": "Para cancelar tu suscripción debes hacerlo desde el Play Store",
+      "irATienda": "Ir a la Tienda"
      },
      "connection":{
       "title":"Parece que estamos teniendo problemas para conectarnos",

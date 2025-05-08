@@ -167,7 +167,7 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
     }
   
     const [birthYear, birthMonth, birthDay] = fecha.split('-');
-    if (birthYear < 1899 || birthYear > 2100) {
+    if (birthYear < 1699 || birthYear > 2100) {
       showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
       return;
     }

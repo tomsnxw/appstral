@@ -17,7 +17,7 @@ export const createStyles = (theme) => {
       },
     homeContainer:{
       height: height,
-      paddingTop: 10
+      paddingTop: height*.005
     },
   maskedView: {
     width: '100%',
@@ -117,14 +117,14 @@ export const createStyles = (theme) => {
   titleModoButton: {
     fontSize: height*0.015,
     color: theme.secondary,
-    lineHeight: height*0.04,
+    lineHeight: height*0.039,
     fontFamily: 'Effra_Regular',
         textAlign: 'center'
   },
   titleButton: {
     fontSize: height*0.02,
     color: theme.secondary,
-    lineHeight: height*0.04,
+    lineHeight: height*0.039,
     fontFamily: 'Effra_Light',
     textAlign: 'center'
   },
@@ -690,11 +690,13 @@ justifyContent: 'space-evenly',
     backgroundColor: theme.background,
     paddingHorizontal: 25,
     borderRadius: 100,
+    marginTop: 5,
     borderWidth: 1
   },
   activeSortChartButton: {
   backgroundColor: theme.black, 
   borderColor: theme.black,
+  marginTop: 5,
   },
   sortChartbuttonText: {
   color: theme.primary,
@@ -820,11 +822,6 @@ chartOptions:{
   gap: 15,
   marginVertical: 'auto',
   },
-chartTitleContainer:{
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-},
 specialChartTitleText:{
   maxWidth: width*.6, 
   color: theme.black,
@@ -875,14 +872,14 @@ ChartInfo:{
       height: height,
       marginBottom: 0,
       marginTop: 'auto',
-      backgroundColor: theme.background
+      backgroundColor: theme.background,
+      flexDirection: 'row'
       },
       scrollBottomSpace:{
         height: height*.45
       },
       policyHeader:{
-        flexDirection: 'row',
-        gap: 15
+        paddingLeft: 20, paddingVertical: 40
       },
       backArrow:{
         backgroundColor: theme.grey,
@@ -896,20 +893,21 @@ ChartInfo:{
         height: 11,
       },
       policyTitle: {
-       marginVertical: 'auto',
-       fontFamily: 'Effra_Medium',
-       fontSize: 20,
-       color: theme.primary
+        marginVertical: 'auto',
+        fontFamily: 'Effra_Medium',
+        fontSize: 20,
+        color: theme.primary,
+        marginBottom: 10
       },
       policySectionTitle: {
-        marginLeft: 48,
+        
         fontFamily: 'Effra_Bold',
        fontSize: 16,
        color: theme.primary,
        marginVertical: 15
       },
       policySectionText: {
-        marginLeft: 48,
+        
         fontFamily: 'Effra_Regular',
        fontSize: 16,
        color: theme.primary
@@ -1066,7 +1064,7 @@ ChartInfo:{
       ],},
         chartTitleContainer:{
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: 10,
     justifyContent: 'space-between'
     },
     chartOptions:{

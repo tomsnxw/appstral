@@ -17,17 +17,15 @@ const PolicyScreen = () => {
 
   return ( 
   <View style={styles.policyContainer}>
-    <ScrollView style={styles.policyScrollContainer}>
-       
-        <View style={styles.policyHeader}>
+  <View style={styles.policyHeader}>
             <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backArrow}>
         <BackArrowIcon style={{ width:width*.03, height: width*.03, fill: theme.secondary, margin: 'auto'}}/>
-        </TouchableOpacity>
-        <Text style={styles.policyTitle}>{t("Policy.title")}</Text>
+        </TouchableOpacity></View>
+    <ScrollView style={styles.policyScrollContainer}>
 
-        </View>
-
+  <Text style={styles.policyTitle}>{t("Policy.title")}</Text>
       <Text style={styles.policySectionText}>
+        
       {t("Policy.introduction")}
       </Text>
 

@@ -694,8 +694,8 @@ navigation={navigation}
       <ConfirmEditModal
       visible={confirmEditModalVisible}
       onConfirm={() => {
-    setConfirmEditModalVisible(false);
-    handleOpenEditModal();}}onCancel={() => setConfirmEditModalVisible(false)}
+    setConfirmEditModalVisible(false); handleOpenEditModal();}}
+    onCancel={() => setConfirmEditModalVisible(false)}
     t={t}/>
           {selectedCarta && (<DeleteChartModal
             visible={showAlert}

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import MailModal from '../modals/MailModal';
 import Purchases from 'react-native-purchases';
+import ConfirmCancelModal from '../modals/ConfirmCancelModal';
 
 const MembresyScreen = () => {
   const { userData, updateUser } = useUser();
@@ -30,6 +31,9 @@ const MembresyScreen = () => {
   const [chartPack, setChartPack] = useState(null);
   const [selectedOfferingIdentifier, setSelectedOfferingIdentifier] = useState('estelar.plan'); 
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [confirmCancelModalVisible, setConfirmCancelModalVisible] = useState(false);
+  
+  
   useEffect(() => {
     const fetchOfferings = async () => {
       setLoading(true);
@@ -63,44 +67,45 @@ const MembresyScreen = () => {
     fetchOfferings();
   }, []); 
   
-  const handlePurchase = async () => {
-    if (!selectedPackage) {
-      console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
-      if (estelarMonthly) {
-        setSelectedPackage(estelarMonthly);
-        setSelectedOfferingIdentifier('estelar.plan');
-      } else {
-        console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
-        return;
-      }
+const handlePurchase = async () => {
+  if (!selectedPackage) {
+    console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
+    if (estelarMonthly) {
+      setSelectedPackage(estelarMonthly);
+      setSelectedOfferingIdentifier('estelar.plan');
+    } else {
+      console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
+      return;
     }
-  
-    try {
-      const customerInfo = await Purchases.getCustomerInfo();
-      console.log("User ID de RevenueCat:", customerInfo?.originalAppUserId);
-  
-      const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
-      console.log('Información de la compra:', purchaserInfo);
-  
-      if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
-        updateUser({ premium: true, membresia: 'estelar' });
-        
-      } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
-        updateUser({ premium: true, membresia: 'solar' });
-        
-      } else if (selectedPackage?.identifier === 'chart.pack') {
-        const transaction = purchaserInfo?.latestTransaction;
-        const quantity = transaction?.quantity || 1;
-        updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
-        
-      }
-    } catch (e) {
-      if (!e.userCancelled) {
-        console.warn("Error al comprar", e);
-      }
+  }
+  try {
+    const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
+    console.log('Información de la compra:', purchaserInfo);
+
+    // Check for entitlements, not subscription names. Use the correct entitlement IDs.
+    if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
+      updateUser({ premium: true, membresia: 'estelar' });
+      
+    } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
+      updateUser({ premium: true, membresia: 'solar' });
+      
+    } console.log("Identificador del paquete seleccionado:", selectedPackage?.identifier); // <-- AGREGAR ESTO
+    if (selectedPackage?.identifier === 'chart.pack') {
+      const transaction = purchaserInfo?.transaction;
+      const quantity = transaction?.quantity || 1;
+      console.log("Se detectó compra de chart.pack. Cantidad:", quantity); // <-- AGREGAR ESTO
+      console.log("Valor actual de extraCharts antes de actualizar:", userData?.extraCharts); // <-- AGREGAR ESTO
+      updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
+      console.log("Valor esperado de extraCharts después de actualizar:", (userData?.extraCharts || 0) + (5 * quantity)); // <-- AGREGAR ESTO
+      
     }
-  };
-  
+  } catch (e) {
+    if (!e.userCancelled) {
+      console.warn("Error al comprar", e);
+    }
+  }
+};
+
 
   useEffect(() => {
     const fetchBenefits = async () => {
@@ -220,7 +225,7 @@ const MembresyScreen = () => {
             <Text style={styles(theme).membresyPriceText}>{t("membresy.Price")}<Text style={styles(theme).membresyPriceTextBold}>{userData?.membresia === 'estelar' && t("membresy.estelarPriceBold")}{userData?.membresia === 'solar' && t("membresy.solarPriceBold")}</Text></Text>
             <View style={styles(theme).membresyClaimButtons}>
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles(theme).membresyClaimButton}><Text style={styles(theme).membresyClaimButtonText}>{t("membresy.reclamos")}</Text></TouchableOpacity>
-            <TouchableOpacity style={styles(theme).membresyCancelButton}><Text style={styles(theme).membresyClaimButtonText}>{t("membresy.Cancelar")}</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => {setConfirmCancelModalVisible(true);}} style={styles(theme).membresyCancelButton}><Text style={styles(theme).membresyClaimButtonText}>{t("membresy.Cancelar")}</Text></TouchableOpacity>
             </View>     
             { i18n.language === 'es' && ( <Text style={styles(theme).benefitContainerTitle}>{userData?.membresia === 'solar' && "BENEFICIO SOLAR"}{userData?.membresia === 'estelar' && "BENEFICIO ESTELAR"}</Text>)}            
             { i18n.language === 'es' && (
@@ -257,6 +262,10 @@ const MembresyScreen = () => {
         t={t}
         onClose={() => setModalVisible(false)}
       />
+         <ConfirmCancelModal
+            visible={confirmCancelModalVisible}
+            onCancel={() => setConfirmCancelModalVisible(false)}
+          t={t}/>
       </View>
   );
 };

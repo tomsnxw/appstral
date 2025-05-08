@@ -276,11 +276,16 @@ const App = () => {
       };
     }, []);
   
-      useEffect(() => {
-          if (languageLoaded && fontsLoaded && isConnected !== null && authChecked) {
-            setLoading(false);
-          }
-        }, [languageLoaded, fontsLoaded, isConnected, authChecked]); 
+    useEffect(() => {
+      if (languageLoaded && fontsLoaded && isConnected !== null && authChecked) {
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 2000); // 2000 milisegundos = 2 segundos
+    
+        // Limpia el temporizador si los valores de las dependencias cambian antes de que se complete el retraso
+        return () => clearTimeout(timer);
+      }
+    }, [languageLoaded, fontsLoaded, isConnected, authChecked]);
     
   const opacities = [useRef(new Animated.Value(1)).current, useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];
   
@@ -368,13 +373,12 @@ const App = () => {
       }).start();
     
       return (
-      <View  style={{position: 'absolute', width: width, backgroundColor: theme.background }}>
-
-        <View style={{width: width*.9, height:height*0.125,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
+        <View  style={{position: 'absolute', backgroundColor: theme.background, width: width, height:height*0.135 }}>
+        <View style={{width: width*.9, height:height*0.135,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
         <Text style={{fontSize: height*0.036,transform: [{translateY: height*0.01}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('efemerides')}</Text>
     
             {/* Tab Bar */}
-            <View style={{flexDirection: 'row',height: height*0.042}}>
+            <View style={{flexDirection: 'row',height: height*0.045}}>
               {state.routeNames.map((routeName, index) => {
                 const isFocused = state.index === index;
                 return (
@@ -382,14 +386,12 @@ const App = () => {
                     key={routeName}
                     style={{
                       flex: 1,
-                      alignItems: 'center',
                       justifyContent: 'center',
-                      paddingVertical: 10,
                       color: theme.black
                     }}
                     onPress={() => handleTabPress(index)}
                   >
-                   <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.black}]}>
+                   <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.black}]}>
 
                       {routeName}
                     </Text>
@@ -421,7 +423,7 @@ const App = () => {
           {activeTab !== 3 && (
             <View style={{}}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={{flexDirection: 'row',justifyContent: 'space-around', gap: 7.5, backgroundColor: theme.background,height:height*.085,justifyContent: 'center',alignItems: 'center',paddingHorizontal: width*0.06}}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-around', gap: 7.5, backgroundColor: theme.background,height:height*.08,justifyContent: 'center',alignItems: 'center',paddingHorizontal: width*0.06}}>
           {categorias.map((categoria, index) => (
             <TouchableOpacity
               key={index}
@@ -603,27 +605,24 @@ const App = () => {
     }).start();
   
     return (
-      <View  style={{position: 'absolute', backgroundColor: theme.background, width: width, height:height*0.125 }}>
-      <View style={{width: width*.9,height:height*0.125,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
+      <View  style={{position: 'absolute', backgroundColor: theme.background, width: width, height:height*0.135 }}>
+      <View style={{width: width*.9,height:height*0.135,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
       <Text style={{fontSize: height*0.036,transform: [{translateY: height*0.01}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('perfil')}</Text>
-        <View style={{flexDirection: 'row',height: height*0.042}}>
+        <View style={{flexDirection: 'row',height: height*0.045}}>
           {state.routeNames.map((routeName, index) => {
             const isFocused = state.index === index;
             const color = isFocused ? '#673ab7' : '#222';
             return (
               <TouchableOpacity
-                    key={routeName}
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      paddingVertical: 10,
-                      color: theme.black
-                    }}
-                    onPress={() => handleTabPress(index)}
-                  >
-                <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.black}]}>
-
+              key={routeName}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                color: theme.black
+              }}
+              onPress={() => handleTabPress(index)}
+            >
+                <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.black}]}>
                   {routeName}
                 </Text>
               </TouchableOpacity>

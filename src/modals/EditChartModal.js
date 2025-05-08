@@ -213,7 +213,7 @@ const EditChartModal = ({ visible, route, handleCloseEditModal, setIsEdited }) =
       }
     
       const [year, month, day] = fecha.split('-');
-      if (year < 1899 || year > 2100) {
+      if (year < 1699 || year > 2100) {
         showToast({ message: t("toast.Fecha_Anio_Invalido"), type: "alert" });
         return;
       }

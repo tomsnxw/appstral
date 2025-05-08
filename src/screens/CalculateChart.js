@@ -409,7 +409,7 @@ const CalculateScreen = () => {
     }
   
     const [birthYear, birthMonth, birthDay] = fecha.split('-');
-    if (birthYear < 1899 || birthYear > 2100) {
+    if (birthYear < 1699 || birthYear > 2100) {
       showToast({ message: t("toast.Fecha_Anio_Invalido"), type: "alert" });
       return;
     }
