@@ -1223,9 +1223,7 @@ const CalculateScreen = () => {
           <TouchableOpacity disabled={!isPressable} onPress={guardarNuevaCarta}>
           <SaveIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
           </TouchableOpacity>
-          <TouchableOpacity disabled={!isPressable} onPress={handleOpenShareModal}>
-          <ShareIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
-          </TouchableOpacity>
+         
           <TouchableOpacity disabled={!isPressable} style={{ padding: 1 }} onPress={handleOpenEditModal}>
             <EditIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
           </TouchableOpacity>
