@@ -787,7 +787,7 @@ const AuthStack = () => {
     return (
       <NavigationContainer ref={navigationRef} key={reloadKey} theme={MyTheme}>
       <Tab.Navigator 
-      initialRouteName="Efemerides"
+      initialRouteName={initialRoute}
       swipeEnabled={true}
            screenOptions={{
             
