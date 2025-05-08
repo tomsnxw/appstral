@@ -76,32 +76,27 @@ const styles = createStyles(theme);
 const [cartasRestantes, setCartasRestantes] = useState(0);
 const [confirmEditModalVisible, setConfirmEditModalVisible] = useState(false);
 
+const fetchCartasRestantes = async () => {
+  if (!auth.currentUser) return;
+
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) return;
+
+    // Obtén el valor de 'extraCharts' del documento del usuario
+    const extraCharts = userSnap.data()?.extraCharts || 0;
+    setCartasRestantes(extraCharts);
+
+  } catch (error) {
+    console.error("Error obteniendo el número de cartas restantes:", error);
+  }
+};
+
 useEffect(() => {
-  const fetchCartasRestantes = async () => {
-    if (!auth.currentUser) return;
-
-    try {
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) return;
-
-      const cartasRef = collection(db, "users", auth.currentUser.uid, "cartas");
-      const cartasSnap = await getDocs(cartasRef);
-
-      const cartasNormales = cartasSnap.docs.filter(doc => !doc.data().especial);
-
-      const maxCartas = 3;
-      const restantes = Math.max(0, maxCartas - cartasNormales.length);
-      setCartasRestantes(restantes);
-
-    } catch (error) {
-      console.error("Error obteniendo cartas restantes:", error);
-    }
-  };
-
   fetchCartasRestantes();
-}, [cartasRestantes]);
+}, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -188,43 +183,39 @@ useEffect(() => {
   },
 });
 
-    const handleOpenAddModal = async () => {
-      try {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const userSnap = await getDoc(userRef);
-    
-        if (!userSnap.exists()) {
-          showToast({ message: t("toast.Ups"), type: "error" });
-          return;
-        }
-    
-    
-        const cartasRef = collection(db, "users", auth.currentUser.uid, "cartas");
-        const cartasSnap = await getDocs(cartasRef);
-    
-        const cartasNormales = cartasSnap.docs.filter(doc => !doc.data().especial);
-    
-        const totalCartas = cartasNormales.length;
-    
-        if (userData.membresia !== 'estelar' && totalCartas >= 3) {
-          if (userData.extraCharts > 0) {
-            setAddModalVisible(true);
-            handleCloseOptions();
-            return;
-          } else {
-            setChartPremiumModalVisible(true);
-            return;
-          }
-        }
-    
-        setAddModalVisible(true);
-        handleCloseOptions();
-      } catch (error) {
-        console.error("Error al verificar las cartas:", error);
-        showToast({ message: t("toast.Error_Verificacion"), type: "error" });
-      }
-    };
-    
+const handleOpenAddModal = async () => {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      showToast({ message: t("toast.Ups"), type: "error" });
+      return;
+    }
+
+    const isEstelar = userData.membresia === 'estelar';
+    const hasExtraCharts = userData.extraCharts > 0;
+
+    if (!isEstelar && hasExtraCharts) {
+      setAddModalVisible(true);
+      handleCloseOptions();
+      return;
+    }
+
+    if (!isEstelar && !hasExtraCharts) {
+      setChartPremiumModalVisible(true);
+      return;
+    }
+
+    // Si es 'estelar', siempre abre el modal (sin importar extraCharts)
+    setAddModalVisible(true);
+    handleCloseOptions();
+
+  } catch (error) {
+    console.error("Error al verificar el usuario:", error);
+    showToast({ message: t("toast.Error_Verificacion"), type: "error" });
+  }
+};
     const handleCloseAddModal = () => {
       setAddModalVisible(false);
     };
@@ -269,7 +260,8 @@ useEffect(() => {
 
     const onRefresh = async () => {
         setRefreshing(true);
-        obtenerCartas();
+        await obtenerCartas(); // Asegúrate de que obtenerCartas termine antes de actualizar cartas restantes
+        await fetchCartasRestantes();
         setRefreshing(false);
       };
       

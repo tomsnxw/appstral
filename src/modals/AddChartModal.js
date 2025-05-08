@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { View, TouchableWithoutFeedback, Text, TextInput, Animated,TouchableOpacity, FlatList, KeyboardAvoidingView,Keyboard, StyleSheet, PanResponder, Platform, Alert,Dimensions, Modal } from 'react-native';
 import { useFonts } from 'expo-font';
-import { auth, db, addDoc, collection } from '../config/firebaseConfig';
+import { auth, db, addDoc, collection, increment,doc,getDoc, updateDoc } from '../config/firebaseConfig';
 import Svg, { Circle, Line, G, Image, Text as SvgText } from 'react-native-svg';
 import DateTimePicker from '@react-native-community/datetimepicker'; 
 import {LinearGradient} from 'expo-linear-gradient';
@@ -200,8 +200,8 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
     }).start();
   
     try {
-      const userRef = collection(db, "users", auth.currentUser.uid, "cartas");
-      const docRef = await addDoc(userRef, {
+      const userCartasRef = collection(db, "users", auth.currentUser.uid, "cartas");
+      const docRef = await addDoc(userCartasRef, {
         nombre,
         apellido,
         fecha,
@@ -211,13 +211,20 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
         latitud,
         longitud,
         creado: new Date(),
+        especial: false, // Asumo que las cartas agregadas por este medio no son especiales
       });
-      if (!userData.premium && userData.extraCharts > 0) {
-        const userDocRef = doc(db, 'users', auth.currentUser.uid);
+  
+      // Decrementar extraCharts si el usuario no es premium
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnap = await getDoc(userDocRef);
+      const userData = userSnap.data();
+  
+      if (userData?.membresia !== 'estelar' && userData?.extraCharts > 0) {
         await updateDoc(userDocRef, {
           extraCharts: increment(-1),
         });
       }
+  
       const cartaData = { nombre, apellido, fecha, hora, pais, ciudad, latitud, longitud, id: docRef.id };
       handleCloseAddModal();
       setTimeout(() => {
@@ -228,7 +235,7 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
       console.error(error);
     } finally {
       setLoading(false);
-      progress.setValue(0); 
+      progress.setValue(0);
     }
   };
   

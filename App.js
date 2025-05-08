@@ -128,14 +128,16 @@ const App = () => {
   const navigationRef = useNavigationContainerRef();
 
   useEffect(() => {
-    Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG); // Habilitar logs de depuración
-
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
+ 
     if (Platform.OS === 'ios') {
       Purchases.configure({ apiKey: '<TU_API_KEY_PUBLICA_DE_APPLE>' });
     } else if (Platform.OS === 'android') {
       Purchases.configure({ apiKey: 'goog_kKDJcHBrPfeMtodupJQmiOyhCff' });
     }
-  }, []);
+  }, []); 
+ 
+
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
@@ -150,7 +152,7 @@ const App = () => {
 
     return () => subscription.remove();
   }, []);
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -159,15 +161,40 @@ const App = () => {
         if (token) {
           guardarTokenFCM(token);
         }
-        checkAndUpdateSubscriptionStatus();
+        console.log('✅ Usuario autenticado con Firebase:', user.uid);
+  
+        // Configurar RevenueCat con el UID del usuario
+        Purchases.configure({
+          apiKey: Platform.OS === 'ios'
+            ? '<TU_API_KEY_PUBLICA_DE_APPLE>'
+            : 'goog_kKDJcHBrPfeMtodupJQmiOyhCff',
+          appUserID: user.uid,
+        });
+  
+        try {
+          // Obtener el estado del usuario en RevenueCat
+          const customerInfo = await Purchases.getCustomerInfo();
+  
+          const currentAppUserID = await Purchases.getAppUserID();
+          console.log('🆔 RevenueCat App User ID:', currentAppUserID);
+          console.log('📦 RevenueCat Entitlements:', customerInfo.entitlements);
+  
+          // Actualizar estado en Firestore
+          await checkAndUpdateSubscriptionStatus(customerInfo);
+        } catch (error) {
+          console.error('❌ Error al obtener customerInfo de RevenueCat:', error);
+        }
       } else {
         setIsLoggedIn(false);
+        console.log('🔒 Usuario no autenticado con Firebase');
+        Purchases.reset();
       }
+  
       setAuthChecked(true);
     });
+  
     return unsubscribe;
   }, []);
-
 
     const [fontsLoaded] = useFonts({
       'Effra_Bold_Italic': require('./assets/fonts/Effra_Bold_Italic.ttf'),
@@ -249,11 +276,11 @@ const App = () => {
       };
     }, []);
   
-    useEffect(() => {
-      if (languageLoaded && fontsLoaded && isConnected !== null) {
-        setLoading(false);
-      }
-    }, [languageLoaded, fontsLoaded, isConnected]);
+      useEffect(() => {
+          if (languageLoaded && fontsLoaded && isConnected !== null && authChecked) {
+            setLoading(false);
+          }
+        }, [languageLoaded, fontsLoaded, isConnected, authChecked]); 
     
   const opacities = [useRef(new Animated.Value(1)).current, useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];
   
@@ -286,7 +313,7 @@ const App = () => {
     loop();
   }, []);
   
-    if (loading) {
+  if (loading || !authChecked) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           
@@ -343,7 +370,7 @@ const App = () => {
       return (
       <View  style={{position: 'absolute', width: width, backgroundColor: theme.background }}>
 
-        <View style={{width: width*.9,height:height*0.125,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
+        <View style={{width: width*.9, height:height*0.125,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
         <Text style={{fontSize: height*0.036,transform: [{translateY: height*0.01}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('efemerides')}</Text>
     
             {/* Tab Bar */}
@@ -362,7 +389,7 @@ const App = () => {
                     }}
                     onPress={() => handleTabPress(index)}
                   >
-                   <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,color: theme.black}]}>
+                   <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.black}]}>
 
                       {routeName}
                     </Text>
@@ -595,7 +622,7 @@ const App = () => {
                     }}
                     onPress={() => handleTabPress(index)}
                   >
-                <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,color: theme.black}]}>
+                <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04, lineHeight: width*.045 ,color: theme.black}]}>
 
                   {routeName}
                 </Text>
@@ -760,7 +787,7 @@ const AuthStack = () => {
     return (
       <NavigationContainer ref={navigationRef} key={reloadKey} theme={MyTheme}>
       <Tab.Navigator 
-      initialRouteName={initialRoute}
+      initialRouteName="Efemerides"
       swipeEnabled={true}
            screenOptions={{
             

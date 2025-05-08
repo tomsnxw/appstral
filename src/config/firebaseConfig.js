@@ -74,7 +74,7 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
       premium: false,
       sistemaCasas: "T",
       membresia: "",
-      extraCharts: 3,
+      extraCharts: 0,
       
     };
 
@@ -230,34 +230,37 @@ const enviarMensaje = async (email, asunto, mensaje) => {
     throw error;
   }
 };
-const checkAndUpdateSubscriptionStatus = async () => {
+const checkAndUpdateSubscriptionStatus = async (customerInfoParam = null) => {
   try {
-    const customerInfo = await Purchases.getCustomerInfo();
-    console.log('Customer Info al iniciar (desde FirebaseConfig):', customerInfo);
+    const customerInfo = customerInfoParam || await Purchases.getCustomerInfo();
+    const entitlements = customerInfo.entitlements?.active || {};
 
-    //  Corrected Entitlement check.
-    const isEstelarActive = customerInfo?.entitlements?.active['premium_estelar']?.isActive === true;
-    const isSolarActive = customerInfo?.entitlements?.active['premium_solar']?.isActive === true;
+    console.log('🔑 Entitlements activos del usuario:', entitlements);
 
-    if (auth.currentUser) {
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      if (!isEstelarActive && !isSolarActive) {
-        await updateDoc(userRef, { premium: false, membresia: "" });
-        console.log('Suscripción premium no activa, base de datos actualizada (FirebaseConfig).');
-      } else if (isEstelarActive) {
-        await updateDoc(userRef, { premium: true, membresia: 'estelar' });
-        console.log('Suscripción Estelar activa, base de datos actualizada (FirebaseConfig).');
-      } else if (isSolarActive) {
-        await updateDoc(userRef, { premium: true, membresia: 'solar' });
-        console.log('Suscripción Solar activa, base de datos actualizada (FirebaseConfig).');
-      } else {
-        console.log('El usuario tiene una suscripción activa pero no es premium (FirebaseConfig).');
-      }
-    } else {
-      console.log('No hay usuario autenticado al verificar la suscripción (FirebaseConfig).');
+    let premium = false;
+    let membresia = '';
+
+    if (entitlements['premium_estelar']) {
+      premium = true;
+      membresia = 'estelar';
+    } else if (entitlements['premium_solar']) {
+      premium = true;
+      membresia = 'solar';
     }
+
+    const user = auth.currentUser;
+    if (!user) {
+      console.warn('🛑 No hay usuario logueado para actualizar Firestore.');
+      return;
+    }
+
+    const userRef = doc(db, 'users', user.uid);
+
+    await updateDoc(userRef, { premium, membresia });
+
+    console.log('✅ Estado de membresía actualizado en Firestore:', { premium, membresia });
   } catch (error) {
-    console.log('Error al obtener la Customer Info (FirebaseConfig):', error);
+    console.error('❌ Error al verificar o actualizar la suscripción del usuario:', error);
   }
 };
 

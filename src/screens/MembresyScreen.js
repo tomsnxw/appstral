@@ -30,7 +30,6 @@ const MembresyScreen = () => {
   const [chartPack, setChartPack] = useState(null);
   const [selectedOfferingIdentifier, setSelectedOfferingIdentifier] = useState('estelar.plan'); 
   const [selectedPackage, setSelectedPackage] = useState(null);
-
   useEffect(() => {
     const fetchOfferings = async () => {
       setLoading(true);
@@ -63,41 +62,45 @@ const MembresyScreen = () => {
   
     fetchOfferings();
   }, []); 
-
-const handlePurchase = async () => {
-  if (!selectedPackage) {
-    console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
-    if (estelarMonthly) {
-      setSelectedPackage(estelarMonthly);
-      setSelectedOfferingIdentifier('estelar.plan'); // Aseguramos que el identificador también esté correcto
-    } else {
-      console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
-      return;
+  
+  const handlePurchase = async () => {
+    if (!selectedPackage) {
+      console.warn("No se seleccionó un paquete válido para la compra. Intentando seleccionar Estelar por defecto.");
+      if (estelarMonthly) {
+        setSelectedPackage(estelarMonthly);
+        setSelectedOfferingIdentifier('estelar.plan');
+      } else {
+        console.warn("No se encontró el paquete Estelar mensual. No se puede realizar la compra por defecto.");
+        return;
+      }
     }
-  }
-  try {
-    const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
-    console.log('Información de la compra:', purchaserInfo);
-
-    // Check for entitlements, not subscription names.  Use the correct entitlement IDs.
-    if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
-      updateUser({ premium: true, membresia: 'estelar' });
-      
-    } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
-      updateUser({ premium: true, membresia: 'solar' });
-      
-    } else if (selectedPackage?.identifier === 'chart.pack') {
-      const transaction = purchaserInfo?.latestTransaction;
-      const quantity = transaction?.quantity || 1;
-      updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
-      
+  
+    try {
+      const customerInfo = await Purchases.getCustomerInfo();
+      console.log("User ID de RevenueCat:", customerInfo?.originalAppUserId);
+  
+      const purchaserInfo = await Purchases.purchasePackage(selectedPackage);
+      console.log('Información de la compra:', purchaserInfo);
+  
+      if (purchaserInfo?.customerInfo?.entitlements?.active['premium_estelar']?.isActive) {
+        updateUser({ premium: true, membresia: 'estelar' });
+        
+      } else if (purchaserInfo?.customerInfo?.entitlements?.active['premium_solar']?.isActive) {
+        updateUser({ premium: true, membresia: 'solar' });
+        
+      } else if (selectedPackage?.identifier === 'chart.pack') {
+        const transaction = purchaserInfo?.latestTransaction;
+        const quantity = transaction?.quantity || 1;
+        updateUser({ extraCharts: (userData?.extraCharts || 0) + (5 * quantity) });
+        
+      }
+    } catch (e) {
+      if (!e.userCancelled) {
+        console.warn("Error al comprar", e);
+      }
     }
-  } catch (e) {
-    if (!e.userCancelled) {
-      console.warn("Error al comprar", e);
-    }
-  }
-};
+  };
+  
 
   useEffect(() => {
     const fetchBenefits = async () => {

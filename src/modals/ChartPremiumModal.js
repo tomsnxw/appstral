@@ -67,6 +67,7 @@ const ChartPremiumModal = ({handleCloseChartPremiumModal, visible}) => {
   })
 ).current;
 
+
 useEffect(() => {
   const fetchOfferings = async () => {
     setLoading(true);

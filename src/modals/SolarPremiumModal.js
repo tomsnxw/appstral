@@ -53,6 +53,11 @@ useEffect(() => {
   const fetchOfferings = async () => {
     setLoading(true);
     try {
+      // Obtener el appUserID de RevenueCat
+      const appUserID = await Purchases.getAppUserID();
+      console.log('RevenueCat App User ID al abrir ofertas:', appUserID);
+
+      // Luego, obtener las ofertas
       const fetchedOfferings = await Purchases.getOfferings();
       console.log('Offerings obtenidos:', fetchedOfferings);
       setOfferings(fetchedOfferings);
@@ -94,7 +99,7 @@ useEffect(() => {
           useNativeDriver: true,
         }),
       ]).start(() => {
-        fetchOfferings(); 
+        fetchOfferings();
       });
     });
   } else {
