@@ -70,7 +70,7 @@ const Glosario = () => {
   
   return (
     <View style={{height: height, backgroundColor: theme.background}}>
-         <View style={{paddingTop: height*.0325, paddingBottom: height*.0155, justifyContent: 'center'}}>
+         <View style={{paddingTop: height*.0375, paddingBottom: height*.0155, justifyContent: 'center'}}>
                     <View style={styles.searchBar}>
                       <SearchIcon style={styles.searchBarIcon} />
                       <TextInput
@@ -92,10 +92,10 @@ const Glosario = () => {
             const circleColor = theme.glosarioCircles[index % theme.glosarioCircles.length];
     
             return (
-              <View style={{     marginHorizontal: 15,
+              <View style={{marginHorizontal: 15,
+                marginTop: height *.01,
                 flexDirection: 'row', 
-                gap: 10,
-                marginVertical: 5}}>
+                gap: 10,}}>
                 <View
                   style={[styles.categoriaCirculo, { backgroundColor: circleColor }]}>
                   <Text style={styles.categoriaLetra}>{item.letra}</Text>
@@ -112,7 +112,7 @@ const Glosario = () => {
                       toggleAccordion={toggleAccordion}
                     />
                   ))}
-                  <View style={{ minHeight: height *.001,maxHeight: height *.001,
+                  <View style={{ minHeight: height *.001,maxHeight: height *.001, marginTop: height *.01,
         backgroundColor: theme.primaryBorder,}} />
                 </View>
               </View>

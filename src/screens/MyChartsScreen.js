@@ -534,7 +534,7 @@ useEffect(() => {
  <FlatList
   refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
   ListFooterComponent={<View style={styles.chartFooter} />}
-  style={styles.scrollableChartContainer}
+  style={{marginTop: height*.01}}
   data={loading ? Array(5).fill({}) : cartas} 
   keyExtractor={(item, index) => (loading ? index.toString() : item.id.toString())}
   nestedScrollEnabled={true}

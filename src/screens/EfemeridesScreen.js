@@ -414,7 +414,7 @@ const styles = (theme) => StyleSheet.create({
       height: height,
       marginTop:'auto',
       marginBottom: 0,
-      marginTop:height*.01,
+      marginTop:height*.02,
     },
     topEfemeridesSpace:{
       height: height*.08,
