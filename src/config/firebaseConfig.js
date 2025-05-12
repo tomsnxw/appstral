@@ -166,20 +166,41 @@ const resetPassword = async (email) => {
   }
 };
 
-async function guardarTokenFCM(token) {
-  const auth = getAuth();
-  const db = getFirestore();
-
+export async function guardarTokenFCM(token) {
   if (auth.currentUser) {
     const uid = auth.currentUser.uid;
     const userRef = doc(db, 'users', uid);
     const docSnap = await getDoc(userRef);
 
-    if (!docSnap.exists() || docSnap.data().fcm_token !== token) {
-      await setDoc(userRef, { fcm_token: token }, { merge: true });
+    // Datos a guardar/actualizar. Siempre incluimos 'notifications: true'
+    // porque esta función solo se llama si se ha obtenido un token,
+    // lo que implica que el usuario dio permiso.
+    const dataToUpdate = {
+      fcm_token: token,
+      notifications: true,
+    };
+
+    // Verificar si el documento existe y si 'notifications' es true
+    if (docSnap.exists() && docSnap.data().notifications === true) {
+      // Si el documento existe y las notificaciones están habilitadas,
+      // actualizamos el token siempre.
+      if (docSnap.data().fcm_token !== token) {
+        await setDoc(userRef, dataToUpdate, { merge: true });
+        console.log('✅ Token FCM actualizado (usuario ya tenía notificaciones habilitadas) para UID:', uid);
+      } else {
+        console.log('☑️ Token FCM ya actualizado y notificaciones habilitadas para UID:', uid);
+      }
+    } else {
+      // Si el documento no existe, o si existe pero 'notifications' no es true,
+      // entonces lo creamos/actualizamos y nos aseguramos de que 'notifications' sea true.
+      await setDoc(userRef, dataToUpdate, { merge: true });
+      console.log('✅ Token FCM y estado de notificaciones guardado/actualizado en Firestore para UID:', uid);
     }
+  } else {
+    console.warn('⚠️ Intento de guardar token FCM sin usuario autenticado.');
   }
 }
+
 
 const updateUserLanguage = async (lang) => {
   const auth = getAuth();
@@ -230,6 +251,7 @@ const enviarMensaje = async (email, asunto, mensaje) => {
     throw error;
   }
 };
+
 const checkAndUpdateSubscriptionStatus = async (customerInfoParam = null) => {
   try {
     const customerInfo = customerInfoParam || await Purchases.getCustomerInfo();

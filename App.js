@@ -70,53 +70,49 @@ Notifications.setNotificationHandler({
 });
 
 export async function registerForPushNotificationsAsync() {
-    let token;
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-  
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-  
-      if (finalStatus === 'granted') {
-        token = (await Notifications.getDevicePushTokenAsync()).data;
-        console.log('📱 Token FCM:', token);
-  
-        const auth = getAuth();
-        const db = getFirestore();
-        if (auth.currentUser) {
-          const uid = auth.currentUser.uid;
-          const userRef = doc(db, 'users', uid);
-  
-          await setDoc(userRef, {
-            fcm_token: token,
-            notifications: true,
-          }, { merge: true });
-        }
-      } else {
-        console.log('❌ Permiso de notificaciones denegado');
-      }
-    } else {
-      alert('Debes usar un dispositivo físico');
-    }
-  
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.HIGH, 
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-        sound: true,
-        enableVibrate: true,
-        shouldShowAlert: true,
-      });
-    }
-  
-    return token;
+  let token;
+  let finalStatus; // Para almacenar el estado final del permiso
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus === 'granted') {
+      token = (await Notifications.getDevicePushTokenAsync()).data;
+      console.log('📱 Token FCM:', token);
+    } else {
+      console.log('❌ Permiso de notificaciones denegado');
+      // Opcional: Puedes mostrar una alerta más amigable al usuario
+      // Alert.alert(
+      //   "Permiso de Notificaciones Denegado",
+      //   "Para recibir notificaciones importantes, por favor habilítalas desde la configuración de tu dispositivo."
+      // );
+    }
+  } else {
+    alert('Debes usar un dispositivo físico para notificaciones push');
+    finalStatus = 'denied'; // Considerar como denegado si no es un dispositivo físico
   }
 
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+      sound: true,
+      enableVibrate: true,
+      shouldShowAlert: true,
+    });
+  }
+
+  // Devolvemos tanto el token como el estado final del permiso
+  return { token, finalStatus };
+}
 const App = () => {
   const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
@@ -157,12 +153,25 @@ const App = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLoggedIn(true);
-        const token = await registerForPushNotificationsAsync();
-        if (token) {
-          guardarTokenFCM(token);
-        }
         console.log('✅ Usuario autenticado con Firebase:', user.uid);
-  
+
+        const { token, finalStatus } = await registerForPushNotificationsAsync(); // Obtener token y estado del permiso
+        const userRef = doc(db, 'users', user.uid); // Referencia al documento del usuario
+
+        if (token) {
+          // Si se obtuvo un token, guardarlo y asegurar 'notifications: true'
+          await guardarTokenFCM(token);
+        } else {
+          // Si no se obtuvo un token (permiso denegado, no es dispositivo físico, etc.)
+          // Asegurarse de que 'notifications' esté en false en Firestore
+          console.log('🔄 Actualizando estado de notificaciones a false para el usuario:', user.uid);
+          try {
+            await setDoc(userRef, { notifications: false }, { merge: true });
+          } catch (error) {
+            console.error('❌ Error al actualizar notifications a false en Firestore:', error);
+          }
+        }
+
         // Configurar RevenueCat con el UID del usuario
         Purchases.configure({
           apiKey: Platform.OS === 'ios'
@@ -170,16 +179,12 @@ const App = () => {
             : 'goog_kKDJcHBrPfeMtodupJQmiOyhCff',
           appUserID: user.uid,
         });
-  
+
         try {
-          // Obtener el estado del usuario en RevenueCat
           const customerInfo = await Purchases.getCustomerInfo();
-  
           const currentAppUserID = await Purchases.getAppUserID();
           console.log('🆔 RevenueCat App User ID:', currentAppUserID);
           console.log('📦 RevenueCat Entitlements:', customerInfo.entitlements);
-  
-          // Actualizar estado en Firestore
           await checkAndUpdateSubscriptionStatus(customerInfo);
         } catch (error) {
           console.error('❌ Error al obtener customerInfo de RevenueCat:', error);
@@ -189,14 +194,44 @@ const App = () => {
         console.log('🔒 Usuario no autenticado con Firebase');
         Purchases.reset();
       }
-  
+
       setAuthChecked(true);
     });
-  
+
     return unsubscribe;
   }, []);
 
-    const [fontsLoaded] = useFonts({
+  
+    useEffect(() => {
+      const checkAuthState = () => {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            setIsLoggedIn(true);
+            const userDocRef = doc(db, "users", user.uid);
+  
+            let userDocSnap = await getDoc(userDocRef);
+            let retries = 3;
+            while (!userDocSnap.exists() && retries > 0) {
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              userDocSnap = await getDoc(userDocRef);
+              retries--;
+            }
+  
+            if (!userDocSnap.exists()) {
+              console.log("No se encontró el documento del usuario después de varios intentos.");
+            }
+          } else {
+            setIsLoggedIn(false);
+          }
+  
+          setAuthChecked(true);
+        });
+      };
+  
+      checkAuthState();
+    }, []);
+
+        const [fontsLoaded] = useFonts({
       'Effra_Bold_Italic': require('./assets/fonts/Effra_Bold_Italic.ttf'),
       'Effra_Bold': require('./assets/fonts/Effra_Bold.ttf'),
       'Effra_Hairline_Italic': require('./assets/fonts/Effra_Hairline_Italic.ttf'),
@@ -231,35 +266,6 @@ const App = () => {
       };
   
       loadLanguage();
-    }, []);
-  
-    useEffect(() => {
-      const checkAuthState = () => {
-        onAuthStateChanged(auth, async (user) => {
-          if (user) {
-            setIsLoggedIn(true);
-            const userDocRef = doc(db, "users", user.uid);
-  
-            let userDocSnap = await getDoc(userDocRef);
-            let retries = 3;
-            while (!userDocSnap.exists() && retries > 0) {
-              await new Promise((resolve) => setTimeout(resolve, 500));
-              userDocSnap = await getDoc(userDocRef);
-              retries--;
-            }
-  
-            if (!userDocSnap.exists()) {
-              console.log("No se encontró el documento del usuario después de varios intentos.");
-            }
-          } else {
-            setIsLoggedIn(false);
-          }
-  
-          setAuthChecked(true);
-        });
-      };
-  
-      checkAuthState();
     }, []);
   
     useEffect(() => {
