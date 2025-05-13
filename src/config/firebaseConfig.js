@@ -311,7 +311,6 @@ export {
   logInUser,
   resetPassword,
   getFirestore,
-  guardarTokenFCM,
   updateUserLanguage,
   updateUserNotifications,
   enviarMensaje,
