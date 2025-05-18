@@ -150,6 +150,7 @@
     "Completar": "You must complete all mandatory fields.",
     "Coordenadas": "The coordinates of the city are not valid.",
     "Guardado": "Chart saved successfully!",
+    "No_More_Charts": "You've reached the limit of free cards",
     "Auth": "There was an issue. You are not authenticated.",
     "Ups": "Oops, something went wrong.",
     "Ingresar_Correo": "You must enter your email address.",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { View, Text,TextInput, FlatList, StyleSheet, Dimensions, Easing, Animated, ScrollView, Alert, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, } from 'react-native';
-import { auth, db, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from '../config/firebaseConfig';
+import { auth, db, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, increment } from '../config/firebaseConfig';
 import Svg, { Circle, Line, G, Image, Text as SvgText, Polygon,Path, Defs, Marker } from 'react-native-svg';
 import { useCasa } from '../contexts/CasaContext';
 import { useFonts } from 'expo-font';
@@ -1013,56 +1013,69 @@ const CalculateScreen = () => {
       );
     };
 
-    const guardarNuevaCarta = async () => {
-      if (!auth.currentUser) {
-        showToast({ message: t("toast.Auth"), type: "error" });
+const guardarNuevaCarta = async () => {
+  if (!auth.currentUser) {
+    showToast({ message: t("toast.Auth"), type: "error" });
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      showToast({ message: t("toast.Auth"), type: "error" });
+      return;
+    }
+
+    const userData = userSnap.data();
+
+    const cartasRef = collection(db, "users", auth.currentUser.uid, "cartas");
+    const cartasSnap = await getDocs(cartasRef);
+
+    const cartasNormales = cartasSnap.docs.filter(doc => !doc.data().especial);
+    const totalCartas = cartasNormales.length;
+
+    // Lógica para usuarios no premium y límite de cartas
+    if (!userData.premium && totalCartas >= 3) {
+      // Si el usuario tiene 'extraCharts' y no es premium, permite guardar una carta si 'extraCharts' > 0
+      if (userData.extraCharts > 0) {
+        // No se hace nada aquí, se permite que la ejecución continúe para guardar la carta
+        // El descuento de 'extraCharts' se hará después de guardar la carta
+      } else {
+        showToast({
+          message: "toast.No_More_Charts",
+          type: "alert"
+        });
         return;
       }
-    
-      try {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const userSnap = await getDoc(userRef);
-    
-        if (!userSnap.exists()) {
-          showToast({ message: t("toast.Auth"), type: "error" });
-          return;
-        }
-    
-        const userData = userSnap.data();
-    
-        const cartasRef = collection(db, "users", auth.currentUser.uid, "cartas");
-        const cartasSnap = await getDocs(cartasRef);
-    
-        const cartasNormales = cartasSnap.docs.filter(doc => !doc.data().especial);
-        const totalCartas = cartasNormales.length;
-    
-        if (!userData.premium && totalCartas >= 3) {
-          showToast({
-            message: "Has alcanzado el límite de cartas gratuitas.",
-            type: "alert"
-          });
-          return;
-        }
-    
-        await addDoc(cartasRef, {
-          nombre,
-          apellido,
-          fecha,
-          hora,
-          pais,
-          ciudad,
-          creado: new Date(),
-        });
-    
-        showToast({ message: t("toast.Guardado"), type: "success" });
-    
-      } catch (error) {
-        showToast({ message: t("toast.No_Agregado"), type: "error" });
-        console.error(error);
-      }
-    };
-    
+    }
 
+    // Guarda la nueva carta
+    await addDoc(cartasRef, {
+      nombre,
+      apellido,
+      fecha,
+      hora,
+      pais,
+      ciudad,
+      creado: new Date(),
+    });
+
+    if (!userData.premium && userData.extraCharts > 0) {
+      await updateDoc(userRef, {
+        extraCharts: increment(-1) // decrementa en 1 el campo 'extraCharts'
+      });
+      showToast({ message: t("toast.Guardado"), type: "success" }); // Mensaje específico
+    } else {
+      showToast({ message: t("toast.Guardado"), type: "success" });
+    }
+
+  } catch (error) {
+    showToast({ message: t("toast.No_Agregado"), type: "error" });
+    console.error(error);
+  }
+};
   return (
     <View style={styles.calculateContainer}>
 

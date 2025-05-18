@@ -152,6 +152,7 @@
         "Guardado": "¡Carta guardada exitosamente!",
         "Auth": "Hubo un error. No estás autenticado",
         "Ups": "Ups, algo salió mal.",
+        "No_More_Charts": "Has alcanzado el límite de cartas gratuitas",
         "Ingresar_Correo": "Debes ingresar tu correo electrónico.",
         "No_Usuario": "No hay ningún usuario registrado con este correo.",
         "Registrado": "Este correo ya está registrado.",
