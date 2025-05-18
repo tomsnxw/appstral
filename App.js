@@ -155,15 +155,33 @@ const App = () => {
         setIsLoggedIn(true);
         console.log('✅ Usuario autenticado con Firebase:', user.uid);
 
-        const { token, finalStatus } = await registerForPushNotificationsAsync(); // Obtener token y estado del permiso
-        const userRef = doc(db, 'users', user.uid); // Referencia al documento del usuario
+        const userRef = doc(db, 'users', user.uid);
+        let userDocSnap = await getDoc(userRef);
 
+        // Intenta obtener el documento del usuario con reintentos
+        let retries = 3;
+        while (!userDocSnap.exists() && retries > 0) {
+          console.log(`⏳ Reintentando obtener el documento del usuario para ${user.uid}...`);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          userDocSnap = await getDoc(userRef);
+          retries--;
+        }
+
+        if (!userDocSnap.exists()) {
+          console.warn('⚠️ No se encontró el documento del usuario después de varios intentos. Creando uno nuevo si es necesario.');
+          // Puedes optar por crear el documento aquí con datos básicos si no existe
+          await setDoc(userRef, { createdAt: serverTimestamp(), notifications: false, vip: false }, { merge: true });
+          userDocSnap = await getDoc(userRef); // Obtenerlo de nuevo después de crearlo
+        }
+
+        const userData = userDocSnap.data();
+        const isVip = userData?.vip === true; // Verifica si el campo 'vip' existe y es true
+
+        // Lógica para notificaciones push (sin cambios relevantes para esta modificación)
+        const { token, finalStatus } = await registerForPushNotificationsAsync();
         if (token) {
-          // Si se obtuvo un token, guardarlo y asegurar 'notifications: true'
           await guardarTokenFCM(token);
         } else {
-          // Si no se obtuvo un token (permiso denegado, no es dispositivo físico, etc.)
-          // Asegurarse de que 'notifications' esté en false en Firestore
           console.log('🔄 Actualizando estado de notificaciones a false para el usuario:', user.uid);
           try {
             await setDoc(userRef, { notifications: false }, { merge: true });
@@ -180,14 +198,21 @@ const App = () => {
           appUserID: user.uid,
         });
 
-        try {
-          const customerInfo = await Purchases.getCustomerInfo();
-          const currentAppUserID = await Purchases.getAppUserID();
-          console.log('🆔 RevenueCat App User ID:', currentAppUserID);
-          console.log('📦 RevenueCat Entitlements:', customerInfo.entitlements);
-          await checkAndUpdateSubscriptionStatus(customerInfo);
-        } catch (error) {
-          console.error('❌ Error al obtener customerInfo de RevenueCat:', error);
+        if (isVip) {
+          console.log('✨ Usuario VIP detectado. No se verificará la suscripción de RevenueCat.');
+          // Opcional: Si quieres asegurarte de que premium y membresia estén correctos para VIPs en Firestore
+          await updateDoc(userRef, { premium: true, membresia: 'estelar' });
+        } else {
+          console.log('💳 Verificando suscripción para usuario no VIP.');
+          try {
+            const customerInfo = await Purchases.getCustomerInfo();
+            const currentAppUserID = await Purchases.getAppUserID();
+            console.log('🆔 RevenueCat App User ID:', currentAppUserID);
+            console.log('📦 RevenueCat Entitlements:', customerInfo.entitlements);
+            await checkAndUpdateSubscriptionStatus(customerInfo);
+          } catch (error) {
+            console.error('❌ Error al obtener customerInfo de RevenueCat:', error);
+          }
         }
       } else {
         setIsLoggedIn(false);
@@ -200,6 +225,7 @@ const App = () => {
 
     return unsubscribe;
   }, []);
+
 
   
     useEffect(() => {
