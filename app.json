@@ -7,6 +7,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/adaptive-icon-foreground.png",
+        "backgroundImage": "./assets/icons/adaptive-background.png"
+      },
       "package": "com.tomsnxw.appstral",
       "googleServicesFile": "./android/app/google-services.json",
       "permissions": ["com.android.vending.BILLING"]
