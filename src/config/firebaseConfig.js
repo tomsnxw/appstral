@@ -45,7 +45,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-// Inicializa la persistencia de Auth
 initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
   autoSave: true,
@@ -75,7 +74,12 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
       sistemaCasas: "T",
       membresia: "",
       extraCharts: 3,
-      
+      orbes: {
+        externos: 5,
+        internos: 5,
+        luminarias: 8,
+        otros: 3,
+      },
     };
 
     await setDoc(doc(db, "users", user.uid), userData);
@@ -96,7 +100,6 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
     throw error;
   }
 };
-
 const logInUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
