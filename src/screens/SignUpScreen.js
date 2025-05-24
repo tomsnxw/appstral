@@ -664,7 +664,7 @@ const styles = (theme) => StyleSheet.create({
   footerText:{
     fontSize: width*0.03,
     fontFamily: 'Effra_Light',
-    paddingTop: 15,
+    bottom: height*.06,
     marginHorizontal: 'auto',
     position:'absolute'
 },

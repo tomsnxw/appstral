@@ -33,6 +33,7 @@ const CalculateScreen = () => {
   const { showToast } = useToast();
     const [faseLunar, setFaseLunar] = useState(null);
   const [isPressable, setIsPressable] = useState(false);
+ const [isCartaGuardada, setIsCartaGuardada] = useState(false);
   const { t, i18n  } = useTranslation();
   const {userData} = useUser();
   const [nombre, setNombre] = useState(''); 
@@ -387,16 +388,15 @@ const CalculateScreen = () => {
       }
     };
   
-    const handleHoraChange = (calculateText) => {
-      let formattedText = calculateText.replace(/[^0-9]/g, ''); 
-      
-      if (formattedText.length > 2) {
-        formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
-      }
-      
-      setHora(formattedText);
-    };
-
+      const handleHoraChange = (text) => {
+        let formattedText = text.replace(/[^0-9]/g, ''); 
+        
+        if (formattedText.length > 2) {
+          formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
+        }
+        
+        setHora(formattedText);
+      };
   const widthInterpolation = progress.interpolate({
     inputRange: [0, 1],
     outputRange: ["0%", "100%"], 
@@ -473,6 +473,7 @@ const CalculateScreen = () => {
       setFormEnviado(true);
       setFaseLunar(data.fase_lunar);
       setEditModalVisible(false);
+      setIsCartaGuardada(false);
     } catch (error) {
       console.error("Error al calcular la carta:", error);
       showToast({ message: t("toast.Ups"), type: "error" });
@@ -1036,12 +1037,8 @@ const guardarNuevaCarta = async () => {
     const cartasNormales = cartasSnap.docs.filter(doc => !doc.data().especial);
     const totalCartas = cartasNormales.length;
 
-    // Lógica para usuarios no premium y límite de cartas
     if (!userData.premium && totalCartas >= 3) {
-      // Si el usuario tiene 'extraCharts' y no es premium, permite guardar una carta si 'extraCharts' > 0
       if (userData.extraCharts > 0) {
-        // No se hace nada aquí, se permite que la ejecución continúe para guardar la carta
-        // El descuento de 'extraCharts' se hará después de guardar la carta
       } else {
         showToast({
           message: "toast.No_More_Charts",
@@ -1070,12 +1067,13 @@ const guardarNuevaCarta = async () => {
     } else {
       showToast({ message: t("toast.Guardado"), type: "success" });
     }
-
+setIsCartaGuardada(true);
   } catch (error) {
     showToast({ message: t("toast.No_Agregado"), type: "error" });
     console.error(error);
   }
 };
+
   return (
     <View style={styles.calculateContainer}>
 
@@ -1233,9 +1231,12 @@ const guardarNuevaCarta = async () => {
           {faseLunar && renderLunarIcon()}
           </View>
           <View style={[styles.chartOptions, { opacity: isPressable ? 1 : 0.3 }]}>
-          <TouchableOpacity disabled={!isPressable} onPress={guardarNuevaCarta}>
-          <SaveIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
-          </TouchableOpacity>
+            {!isCartaGuardada && (// Solo muestra el botón si la carta NO ha sido guarda
+    <TouchableOpacity disabled={!isPressable} onPress={guardarNuevaCarta}>
+      <SaveIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
+    </TouchableOpacity>
+  )}
+
          
           <TouchableOpacity disabled={!isPressable} style={{ padding: 1 }} onPress={handleOpenEditModal}>
             <EditIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.secondary }} />
