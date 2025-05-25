@@ -29,6 +29,8 @@ import LunaMIcon from "../../assets/icons/LunaMIcon";
 import LunaCIcon from "../../assets/icons/LunaCIcon";
 import LunaNIcon from "../../assets/icons/LunaNIcon";
 import ConfirmEditModal from '../modals/ConfirmEditModal';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const { height: height, width: width } = Dimensions.get('screen');
 
@@ -934,7 +936,7 @@ const confirmarEliminacion = async () => {
         
   return (
      <View style={{margin: 'auto',
-      marginTop: height*.125,
+      marginTop: hp('12.25%'),
     height: height,
     width: width,
     backgroundColor: theme.background}}>
@@ -1032,10 +1034,8 @@ const confirmarEliminacion = async () => {
            ListFooterComponent={<View style={styles.chartResultListSpace} />}
          />
         )}
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.375, zIndex: 1}}/>
-
-          
-           {shareModalVisible && ( <ShareChartModal
+        <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
+{shareModalVisible && ( <ShareChartModal
         route={{ params: { cartaId: cartaId} }}
         visible={shareModalVisible}
         selectedPlanet={selectedPlanet}

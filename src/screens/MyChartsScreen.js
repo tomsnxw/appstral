@@ -32,6 +32,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const { height: height, width: width } = Dimensions.get('screen');
@@ -469,14 +470,12 @@ useEffect(() => {
 
   return  (
     
-    <View style={{  margin: 'auto',
-      marginTop: height*.125,
-    height: height,
+    <View style={{  margin: 'auto', height:height*1,marginTop:hp('13.5%'),
     width: width,
     backgroundColor: theme.background}}>
        
         <View style={{backgroundColor: theme.background}}>
-  <View style={{height: height*.092,flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', gap: 10}}>
+  <View style={{height: hp('7.5%'),flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center', gap: 10}}>
     <TouchableOpacity
       onPress={() => handleSort('alfabeticamente')}
       style={[
@@ -557,7 +556,7 @@ useEffect(() => {
 
 
         
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.4, zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('35%'), zIndex: 1}}/>
 
          <LinearGradient
         colors={[theme.buttonGradientTop, theme.buttonGradientBottom]}
@@ -573,13 +572,13 @@ useEffect(() => {
       <AddIcon style={styles.AddChartModalButtonIcon} />
       </TouchableOpacity>
     
-      </LinearGradient>
-
       {userData.membresia !== 'estelar' && (
 
       <Text style={styles.remainingChartsText}>{cartasRestantes}</Text>
 
     )}
+      </LinearGradient>
+
       <Modal
       animationType="none"
       statusBarTranslucent={true}

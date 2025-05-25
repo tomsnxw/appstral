@@ -120,15 +120,16 @@ const progress = useRef(new Animated.Value(0)).current;
     }
   };
 
-  const handleHoraChange = (text) => {
-    let formattedText = text.replace(/[^0-9]/g, '');
-    
-    if (formattedText.length > 2) {
-      formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
-    }
-    
-    setTempHora(formattedText);
-  };
+      const handleHoraChange = (text) => {
+        let formattedText = text.replace(/[^0-9]/g, ''); 
+        
+        if (formattedText.length > 2) {
+          formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
+        }
+        
+        setHora(formattedText);
+      };
+
   const widthInterpolation = progress.interpolate({
     inputRange: [0, 1],
     outputRange: ["0%", "100%"], 

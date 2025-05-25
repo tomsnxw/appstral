@@ -13,9 +13,13 @@ import ViewShot from 'react-native-view-shot';
 import { captureRef } from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import { useIsFocused } from '@react-navigation/native';
-const { height, width } = Dimensions.get('window');
-const viewShotWidth = width;
+import { RFValue } from "react-native-responsive-fontsize";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
+const { height, width } = Dimensions.get('window'); // You might still need this for initial calculations or if you prefer to mix and match
+const viewShotWidth = wp('100%'); // Use wp for full width
 const viewShotHeight = (viewShotWidth * 5) / 2.4;
+
 import CheckIcon from "../../assets/icons/CheckIcon"
 import { useToast } from "../contexts/ToastContext";
 import { useTranslation } from 'react-i18next';
@@ -210,52 +214,77 @@ return (
      }, 2000);
    };
  
-      const renderItem = ({ item, index }) => {
-        let signo, grado, minutos, casa, simbolo, retrogrado;
-        const ascendente = resultado.casas['1'];
-      
-        if (item === t("Ascendente") && ascendente) {
-          signo = ascendente.signo;
-          grado = ascendente.grado;
-          minutos = ascendente.minutos;
-          simbolo = 'c';  
-          retrogrado = false;
-        } else {
-          const cuerpoData = resultado.planetas[item];
-          if (!cuerpoData) return null;
-          ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
-          simbolo = simbolosPlanetas[item] || '';
-        }
-      
-        if (!signo || grado === undefined || minutos === undefined) return null;
-      
-        const gradoDisplay = grado === 0 ? '0' : grado;
-        const minutosDisplay = minutos === 0 ? '0' : minutos;
-        const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
-        const getOrdinal = (number) => {
-          const suffixes = ['th', 'st', 'nd', 'rd'];
-          const remainder = number % 100;
-          return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
-        };
-        const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
-      
-        return (
-          <View >
-       <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 'auto', paddingVertical: viewShotHeight*0.0055 , gap: 7 }}>
-       <Text style={{ color: theme.primary, fontFamily: 'Astronomicon', fontSize:viewShotHeight*0.015,  transform: [{ translateY: -viewShotHeight*0.00175}] }}>
-                  {simbolo}
-                </Text>
-                <Text style={{ fontSize: viewShotHeight*0.012, fontFamily: 'Effra_Regular', color: theme.primary, borderColor: theme.primaryBorder, borderBottomWidth: viewShotHeight * .00035, width: '100%' }}>
-                  {item === t("Ascendente")
-                    ? (i18n.language === 'en'
-                        ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
-                        : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
-                    : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
-                </Text>
-              </View>
-              </View>
-        );
-      };
+const renderItem = ({ item, index }) => {
+  let signo, grado, minutos, casa, simbolo, retrogrado;
+  const ascendente = resultado.casas['1'];
+
+  if (item === t("Ascendente") && ascendente) {
+    signo = ascendente.signo;
+    grado = ascendente.grado;
+    minutos = ascendente.minutos;
+    simbolo = 'c';
+    retrogrado = false;
+  } else {
+    const cuerpoData = resultado.planetas[item];
+    if (!cuerpoData) return null;
+    ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
+    simbolo = simbolosPlanetas[item] || '';
+  }
+
+  if (!signo || grado === undefined || minutos === undefined) return null;
+
+  const gradoDisplay = grado === 0 ? '0' : grado;
+  const minutosDisplay = minutos === 0 ? '0' : minutos;
+  const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
+  const getOrdinal = (number) => {
+    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const remainder = number % 100;
+    return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
+  };
+  const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
+
+  return (
+    <View >
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 'auto',
+        // Use hp for vertical padding
+        paddingVertical: hp('0.55%'), // Equivalent to viewShotHeight * 0.0055
+        // Use wp for gap
+        gap: wp('1.75%') // Equivalent to 7 units, adjusted for responsiveness
+      }}>
+        <Text style={{
+          color: theme.primary,
+          fontFamily: 'Astronomicon',
+          // Use RFValue for font size
+          fontSize: RFValue(hp('1.5%')), // Equivalent to viewShotHeight * 0.015
+          // Use hp for translateY transformation
+          transform: [{ translateY: -hp('0.175%') }] // Equivalent to -viewShotHeight * 0.00175
+        }}>
+          {simbolo}
+        </Text>
+        <Text style={{
+          // Use RFValue for font size
+          fontSize: RFValue(hp('1%')), // Equivalent to viewShotHeight * 0.012
+          fontFamily: 'Effra_Regular',
+          color: theme.primary,
+          borderColor: theme.primaryBorder,
+          // Use hp for borderBottomWidth
+          borderBottomWidth: hp('0.035%'), // Equivalent to viewShotHeight * 0.00035
+          width: '100%' // Keep '100%' for full width within the container
+        }}>
+          {item === t("Ascendente")
+            ? (i18n.language === 'en'
+              ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
+              : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
+            : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
  const signosSimbolos = [
    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
  ];
@@ -700,41 +729,41 @@ return (
 const styles = (theme) => StyleSheet.create({
   modalShareContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    paddingHorizontal: 40,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: wp('10%'), // Example: 10% of screen width
     justifyContent: 'center',
   },
   modalShareContent: {
     justifyContent: 'center',
   },
   shareChartResultList: {
-    paddingLeft: width*0.15,
+    paddingLeft: wp('15%'), // Example: 15% of screen width
   },
   chartResultSeparator:{
-    height: .6,
-    marginLeft: 15,
+    height: hp('.07%'), // Example: .6 of screen height
+    marginLeft: wp('4%'), // Example: 15 units converted to 4% of screen width
     backgroundColor: theme.secondary,
   },
   roundedShareContainer: {
     borderRadius: 10,
     overflow: 'hidden',
-    width: viewShotWidth,
-    minHeight: viewShotHeight,
+    width: viewShotWidth, // Already responsive
+    minHeight: viewShotHeight, // Already responsive
     alignSelf: 'center',
     backgroundColor: theme.background,
-    transform: [{scale:.85}],
+    transform: [{scale:.85}], // Scale can remain static if you prefer
   },
   scrollableChartContainer:{
-  marginLeft: 20
+  marginLeft: wp('5%') // Example: 20 units converted to 5% of screen width
   },
   shareChartInfoSeparator:{
-    height:20,
-    width: 2,
+    height: hp('2.5%'), // Example: 20 units converted to 2.5% of screen height
+    width: wp('0.5%'), // Example: 2 units converted to 0.5% of screen width
     backgroundColor: theme.primaryBorder,
   },
   chartText: {
-    fontSize: 17,
-    fontFamily: 'Effra_Regular', 
+    fontSize: RFValue(17), // Use RFValue for font size
+    fontFamily: 'Effra_Regular',
     color: theme.secondaryBorder
   },
   shareChartResultCircle:{
@@ -743,33 +772,32 @@ const styles = (theme) => StyleSheet.create({
   ScreenshotFooter:{
     margin: 'auto',
     flexDirection: 'row',
-    gap: 5,
-    marginBottom: 5
+    gap: wp('1.2%'), // Example: 5 units converted to 1.2% of screen width
+    marginBottom: hp('0.6%') // Example: 5 units converted to 0.6% of screen height
   },
   ScreenshotFooterText:{
     margin: 'auto',
     textAlign: 'center',
     fontFamily: 'Effra_Regular',
     color: theme.secondaryBorder,
-    fontSize: viewShotHeight*0.013,
-    height: viewShotHeight*0.0155
-
+    fontSize: RFValue(viewShotHeight*0.01), // Use RFValue with a responsive base
+    height: RFValue(viewShotHeight*0.0155) // Use RFValue with a responsive base
   },
   ScreenshotFooterIcon:{
-    width: viewShotHeight*0.013,
+    width: wp('3.5%'), // Example: Scale based on percentage width
     margin: 'auto',
-    height: viewShotHeight*0.02
+    height: hp('2.5%') // Example: Scale based on percentage height
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 10,
+    gap: wp('2.5%'), // Example: 10 units converted to 2.5% of screen width
   },
   shareChartDetailsContainer: {
-    width: viewShotWidth,
-    minHeight: viewShotHeight,
+    width: viewShotWidth, // Already responsive
+    minHeight: viewShotHeight, // Already responsive
     alignSelf: 'center',
     backgroundColor: theme.background,
-    paddingVertical: 5
+    paddingVertical: hp('0.6%') // Example: 5 units converted to 0.6% of screen height
   },
   shareChartDetailsHeader:{
     marginHorizontal: 'auto',
@@ -777,37 +805,37 @@ const styles = (theme) => StyleSheet.create({
   shareChartTitle:{
     alignItems: 'center',
     flexDirection: 'row',
-    maxWidth: width*.8,
+    maxWidth: wp('80%'), // Example: 80% of screen width
     marginHorizontal: 'auto',
-    gap: 6,
+    gap: wp('1.5%'), // Example: 6 units converted to 1.5% of screen width
     justifyContent: 'space-around'
   },
   shareChartTitleText:{
-    fontSize: height*0.025,
+    fontSize: RFValue(height*0.020), // Use RFValue with a responsive base
     color: theme.black,
     fontFamily: 'Effra_Regular',
-    marginVertical: 2,
-    marginTop: 10,
+    marginVertical: hp('0.25%'), // Example: 2 units converted to 0.25% of screen height
+    marginTop: hp('1.2%'), // Example: 10 units converted to 1.2% of screen height
   },
   shareChartInfo:{
     margin: 'auto',
-    width: width*.9,
-    paddingTop: 5,
+    width: wp('90%'), // Example: 90% of screen width
+    paddingTop: hp('0.6%'), // Example: 5 units converted to 0.6% of screen height
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     },
     shareChartInfoText:{
-      minWidth: width*.2,
-      maxWidth: width*.4,
+      minWidth: wp('20%'), // Example: 20% of screen width
+      maxWidth: wp('45%'), // Example: 40% of screen width
       textAlign: 'center',
-      fontSize: height*0.018,
+      fontSize: RFValue(14), // Use RFValue with a responsive base
       fontFamily: 'Effra_Regular',
       color: theme.secondary,
       },
       shareChartInfoTime:{
-        maxWidth: width*.25,
+        maxWidth: wp('25%'), // Example: 25% of screen width
         textAlign: 'center',
-        fontSize: height*0.018,
+        fontSize: RFValue(14), // Use RFValue with a responsive base
         fontFamily: 'Effra_Regular',
         color: theme.secondary,
         },

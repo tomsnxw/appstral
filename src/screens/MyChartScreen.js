@@ -24,6 +24,7 @@ import SolarPremiumModal from '../modals/SolarPremiumModal';
 import { auth, db, getDoc, doc} from '../config/firebaseConfig';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const MyChartScreen = ({navigation}) => {
  const {userData} = useUser();
@@ -890,7 +891,7 @@ stroke={theme.tertiary} strokeWidth=".75"
   ListFooterComponent={<View style={styles.chartResultListSpace} />}
 />
         )}
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.375, zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
 
             <ShareMyChartModal
         visible={modalVisible}

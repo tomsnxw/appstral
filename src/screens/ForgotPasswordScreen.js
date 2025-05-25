@@ -3,6 +3,8 @@ import { View, Text, TextInput, Image, Alert, StyleSheet, Dimensions, TouchableO
 import { resetPassword } from "../config/firebaseConfig"; 
 import {LinearGradient} from 'expo-linear-gradient';
 import colors from '../utils/colors'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const { height: height, width: width } = Dimensions.get('screen');
 const { height: wHeight, width: wWidth } = Dimensions.get('window');
@@ -99,56 +101,54 @@ const handleResetPassword = async () => {
 const styles = StyleSheet.create({
   gradient: {
     height: height,
-    
   },
   container: {
     height: height,
-    
   },
   formContainer: {
-    height: height * 0.85, 
+    height: hp('85%'),
     justifyContent: 'center',
     alignSelf: 'center',
-    gap: 15
+    gap: hp('1.8%') // Aproximadamente 15 / 812 * 100%
   },
   scrollContainer: {
     justifyContent: 'space-between',
-    marginTop: height*0.04
+    marginTop: hp('4%') // 4% de la altura de la pantalla
   },
   keyboardAvoidingView: {
     flex: 1,
   },
   title: {
-    fontSize:  height * 0.045,
+    fontSize: RFValue(36), // Equivalente a height * 0.045
     fontFamily: 'Effra_Bold',
     textAlign: "center",
-    lineHeight: height * 0.055,
-    maxWidth: width*0.9,
+    lineHeight: RFValue(44), // Equivalente a height * 0.055
+    maxWidth: wp('90%'), // 90% del ancho de la pantalla
     marginHorizontal: 'auto',
   },
   subtitle: {
-    fontSize: height * 0.03,
+    fontSize: RFValue(24), // Equivalente a height * 0.03
     marginHorizontal: 'auto',
     fontFamily: 'Effra_Light',
     textAlign: "center",
-    lineHeight: height * 0.04,
-    maxWidth: width*0.8,
-    marginVertical: 5
+    lineHeight: RFValue(32), // Equivalente a height * 0.04
+    maxWidth: wp('80%'), // 80% del ancho de la pantalla
+    marginVertical: hp('0.6%') // Aproximadamente 5 / 812 * 100%
   },
   text: {
-    fontSize: height*0.015,
+    fontSize: RFValue(12), // Equivalente a height * 0.015
     fontFamily: 'Effra_Regular',
     textAlign: "start",
     color: '#808080',
-    paddingLeft: 10,
+    paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: height*0.045,
+    height: hp('4.5%'), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
-    borderRadius: 50,
-    paddingHorizontal: 15,
+    borderRadius: RFValue(50),
+    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     justifyContent: 'center',
   },
   focusedBorder:{
@@ -167,56 +167,55 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: height*0.016,
-    height: height*0.047,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
+    height: hp('4.7%'), // Equivalente a height * 0.047
     fontFamily: 'Effra_Regular',
     color: '#808080'
   },
-
   datePicker: {
-    height: height*0.045,
+    height: hp('4.5%'), // Equivalente a height * 0.045
     borderColor: '#808080',
     backgroundColor: 'transparent',
     borderWidth: 1,
     padding: 0,
-    width: width*0.9,
-    borderRadius: 50,
+    width: wp('90%'), // 90% del ancho de la pantalla
+    borderRadius: RFValue(50),
     fontFamily: 'Effra_Regular',
-    fontSize: 15,
+    fontSize: RFValue(15),
     margin: 'auto'
   },
   pickerPlaceContainer:{
   },
   dropdownBox:{
-    height: height*0.045,
-    borderRadius: 20,
+    height: hp('4.5%'), // Equivalente a height * 0.045
+    borderRadius: RFValue(20),
   },
   dropdownList:{
-    position: 'absolute', 
-    top: height*0.04,
-    width: width*0.85,
+    position: 'absolute',
+    top: hp('4%'), // Equivalente a height * 0.04
+    width: wp('85%'), // 85% del ancho de la pantalla
     alignSelf: 'center',
-    maxHeight: height*0.2, 
+    maxHeight: hp('20%'), // 20% de la altura de la pantalla
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ccc',
-    elevation: 3, 
+    elevation: 3,
     zIndex: 2
   },
   inputStyles:{
     color: '#808080',
     fontFamily: 'Effra_Regular',
-    fontSize: height*0.016,
-    lineHeight: height*0.017,
-    },
+    fontSize: RFValue(13), // Equivalente a height * 0.016
+    lineHeight: RFValue(14), // Equivalente a height * 0.017
+  },
   dropdownTextStyles:{
     color: '#808080',
-    fontSize: height*0.016,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',
   },
   titleDatePicker: {
     color: '#808080',
-    fontSize: height*0.016,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',
     padding: 0,
     margin: 0
@@ -227,12 +226,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 5
+    gap: RFValue(5)
   },
   button: {
-    width: width*0.4,
-    height: height*0.04,
-    borderRadius: 100,
+    width: wp('40%'), // 40% del ancho de la pantalla
+    height: hp('4%'), // 4% de la altura de la pantalla
+    borderRadius: RFValue(100),
     marginHorizontal: 'auto',
     overflow: "hidden",
     justifyContent: "center",
@@ -246,45 +245,45 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     position: "absolute",
-    left: 0, 
+    left: 0,
     height: "100%",
     backgroundColor: "#666666",
   },
   buttonText: {
-    fontSize: 15,
-    color: colors.alwaysWhite,
+    fontSize: RFValue(15), // Se mantuvo el valor fijo y se aplicó RFValue
+    color: 'colors.alwaysWhite', // Asegúrate de que 'colors' esté definido o usa un valor hexadecimal
     fontFamily: 'Effra_Regular',
     transform: [{ translateY: 1 }]
   },
   loginText:{
-    fontSize: height*0.016,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
     color: '#333333',
     fontFamily: 'Effra_Light',
   },
   loginButton:{
     color: '#A358B5',
-    fontSize: height*0.016,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Medium',
   },
   footerText:{
-    fontSize: width*0.03,
+    fontSize: wp('3%'), // 3% del ancho de la pantalla
     color: '#333333',
     fontFamily: 'Effra_Light',
-    bottom: height*.06,
+    bottom: hp('7%'), // 6% de la altura de la pantalla
 },
-footer:{
-  position: "absolute",
-  bottom: height*0.02,
-  width: width,
-  height: height*0.25,
-  alignItems: "center",
-  justifyContent: "center",
+  footer:{
+    position: "absolute",
+    bottom: hp('2%'), // Equivalente a height * 0.02
+    width: wp('100%'), // 100% del ancho de la pantalla
+    height: hp('25%'), // 25% de la altura de la pantalla
+    alignItems: "center",
+    justifyContent: "center",
 },
   Image:{
-     width: "100%",
-  height: "100%",
-  opacity: 0.5,
-  transform: [{scaleX: -1}]
+    width: "100%",
+    height: "100%",
+    opacity: 0.5,
+    transform: [{scaleX: -1}]
   }
 });
 

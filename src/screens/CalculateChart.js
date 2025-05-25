@@ -26,6 +26,8 @@ import LunaMIcon from "../../assets/icons/LunaMIcon";
 import LunaCIcon from "../../assets/icons/LunaCIcon";
 import LunaNIcon from "../../assets/icons/LunaNIcon";
 import countryTranslations from '../utils/countryTranslations'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize"; 
 
 const CalculateScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -1144,8 +1146,7 @@ setIsCartaGuardada(true);
   <View style={styles.pickerPlaceContainer}>
       <TouchableOpacity style={[styles.inputContainer, dropdownVisible.country ? styles.focusedBorder : styles.defaultBorder]} onPress={() => toggleDropdown("country")}>
         <TextInput style={[styles.CalculateInput, dropdownVisible.country ? styles.focusedText : styles.defaultText]} editable={false}
-          onBlur={() => setFocusedField(null)}>
-          {pais || t('Seleccion_Pais')}
+         value={i18n.language === 'es' ? countryTranslations[pais] || pais : pais}  onBlur={() => setFocusedField(null)}>
         </TextInput>
       </TouchableOpacity>
   {dropdownVisible.country && (
@@ -1315,7 +1316,7 @@ setIsCartaGuardada(true);
 
         handleCloseShareModal={handleCloseShareModal}
       />)}
- <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.25 , zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('12%'), zIndex: 1}}/>
 
         </SafeAreaView>
       )}

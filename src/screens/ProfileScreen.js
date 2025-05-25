@@ -1,5 +1,7 @@
 import React, { useState, useContext, useMemo, useEffect, useCallback, useRef } from 'react';
 import { View, Appearance , useColorScheme , Text, Modal, Switch, TextInput, BackHandler, Dimensions, Easing,StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize"; 
 import {  
   auth, 
   reauthenticateUser,
@@ -291,7 +293,7 @@ const handleHoraChange = (text) => {
       setIsDeleteOpen(false);
       setIsLanguageOpen(false);
       setIsDarkModeOpen(false);
-      systemHeight.value = withTiming(isSystemOpen ? 0 : 55, { duration: 200 });
+      systemHeight.value = withTiming(isSystemOpen ? 0 : 60, { duration: 200 });
       emailHeight.value = withTiming(0, { duration: 200 });
       passwordHeight.value = withTiming(0, { duration: 200 });
       deleteHeight.value = withTiming(0, {duration: 200})
@@ -300,7 +302,7 @@ const handleHoraChange = (text) => {
     };
 
     const toggleSystemOptions = () => {
-      const isOpen = systemHeight.value === 220;
+      const isOpen = systemHeight.value === 250;
       setIsSystemOptionsOpen(!isOpen);
     
       setIsEmailOpen(false);
@@ -309,7 +311,7 @@ const handleHoraChange = (text) => {
       setIsLanguageOpen(false);
       setIsDarkModeOpen(false);
     
-      systemHeight.value = withTiming(isOpen ? 55 : 220, { duration: 300 });
+      systemHeight.value = withTiming(isOpen ? 60 : 250, { duration: 300 });
       emailHeight.value = withTiming(0, { duration: 200 });
       passwordHeight.value = withTiming(0, { duration: 200 });
       deleteHeight.value = withTiming(0, { duration: 200 });
@@ -495,7 +497,7 @@ const handleHoraChange = (text) => {
 
 
   return (
-    <View style={{ height: height, backgroundColor: theme.background }}>
+    <View style={{ height: hp('100%'), margin: 0 }}>
     
     <LogOutModal
       visible={showLogoutModal}
@@ -503,7 +505,7 @@ const handleHoraChange = (text) => {
       onCancel={() => setShowLogoutModal(false)}
       t={t}
     />
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false} contentContainerStyle={{ height: height*1.1, gap: 15 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: hp('96%'), gap: 15, marginBottom: 0, marginTop:'auto' }}>
       {userData?.premium ?
       <View style={styles.ProfileInfoContainer}>
       <View style={styles.ProfileNameContainer}>
@@ -567,7 +569,7 @@ const handleHoraChange = (text) => {
         <View style={styles.changePasswordForm}>
         <View style={styles.inputProfileContainer}>
         <TextInput
-          style={{color: theme.secondaryBorder, fontSize: width * 0.035, marginVertical:5, marginTop: 15,fontFamily: 'Effra_Light',}}
+          style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 15,fontFamily: 'Effra_Light',}}
           placeholderTextColor={ theme.secondaryBorder}
           value={email}
           onChangeText={setEmail}
@@ -575,7 +577,7 @@ const handleHoraChange = (text) => {
         /></View>
          <View style={styles.inputProfileContainer}>
         <TextInput
-          style={{ color: theme.secondaryBorder, fontSize: width * 0.035, marginVertical: 5, marginTop: 20, fontFamily: 'Effra_Light',}}
+          style={{ color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical: 5, marginTop: 20, fontFamily: 'Effra_Light',}}
           placeholderTextColor= {theme.secondaryBorder}
           value={currentPassword}
           onChangeText={setCurrentPassword}
@@ -585,7 +587,7 @@ const handleHoraChange = (text) => {
          <TouchableOpacity style={{width: 115, height: 40, marginVertical: 15, borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
   <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center",}}>
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
-    <Text style={{ fontSize: width*0.03,
+    <Text style={{ fontSize: RFValue(14),
     color: theme.alwaysWhite,
     fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>
   </View>
@@ -600,7 +602,7 @@ const handleHoraChange = (text) => {
 
         <View style={styles.changePasswordForm}>
         <View style={styles.inputProfileContainer}>
-        <TextInput style={{color:  theme.secondaryBorder, fontSize: width * 0.035, marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}}
+        <TextInput style={{color:  theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}}
           placeholderTextColor={ theme.secondaryBorder}
           value={currentPassword}
           onChangeText={setCurrentPassword}
@@ -608,13 +610,13 @@ const handleHoraChange = (text) => {
           secureTextEntry
         /></View>
          <View style={styles.inputProfileContainer}>
-        <TextInput style={{color: theme.secondaryBorder, fontSize: width * 0.035, marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}} placeholderTextColor= {theme.secondaryBorder} value={newPassword} onChangeText={setNewPassword}  placeholder={t("profile.Nueva_Contraseña")}  secureTextEntry
+        <TextInput style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}} placeholderTextColor= {theme.secondaryBorder} value={newPassword} onChangeText={setNewPassword}  placeholder={t("profile.Nueva_Contraseña")}  secureTextEntry
         /></View>
         
                  <TouchableOpacity style={{width: 115, height: 40, marginVertical: 15, borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
   <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center",}}>
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
-    <Text style={{ fontSize: width*0.035, color: theme.alwaysWhite, fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>
+    <Text style={{ fontSize: RFValue(14), color: theme.alwaysWhite, fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>
 
   </View>
 </TouchableOpacity>
@@ -627,7 +629,7 @@ const handleHoraChange = (text) => {
       <Animated.View style={[styles.changeSystemForm, animatedSystemStyle]}>
       
       <TouchableOpacity style={{ height: height*0.045, flexDirection: 'row', borderWidth: 1,  borderColor: theme.secondary, borderRadius: 50, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 'auto', marginVertical: 10,width: width*.8}} onPress={toggleSystemOptions}>
-              <TextInput style={{flex: 1, fontSize: width * 0.035, lineHeight: height*0.017, fontFamily: 'Effra_Regular',marginHorizontal: 5, color: theme.secondary,}} editable={false}>
+              <TextInput style={{flex: 1, fontSize: RFValue(12), fontFamily: 'Effra_Regular',marginHorizontal: 5, color: theme.secondary,}} editable={false}>
               {sistemaSeleccionado?.label || 'Seleccionar sistema de casas'}
               </TextInput>
               {isSystemOptionsOpen ? (
@@ -653,7 +655,7 @@ const handleHoraChange = (text) => {
 )}
 </TouchableOpacity>
       
-        <View style={{borderWidth: 1, borderColor: theme.secondary, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, width: width*.75, paddingVertical: 10, gap: 7.5, marginHorizontal: 'auto'}}>
+        <View style={{borderWidth: 1, borderColor: theme.secondary, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, width: width*.75, paddingVertical: 10, gap: 10, marginHorizontal: 'auto'}}>
       {opcionesCasas.map((opcion) => (
       <TouchableOpacity
         key={opcion.value}
@@ -663,7 +665,7 @@ const handleHoraChange = (text) => {
           sistemaCasas === opcion.value && {opacity: .25},
         ]}
       >
-        <Text style={{color: theme.secondary, fontSize: width * 0.03}}>{opcion.label}</Text>
+        <Text style={{color: theme.secondary, fontSize: RFValue(12)}}>{opcion.label}</Text>
       </TouchableOpacity>
     ))}
     </View>
@@ -773,7 +775,7 @@ const handleHoraChange = (text) => {
 
         <View style={styles.changePasswordForm}>
         <View style={styles.inputProfileContainer}>
-        <TextInput style={{color:  theme.secondaryBorder, fontSize: width*0.035, marginVertical:5, marginTop: 10, fontFamily: 'Effra_Light'}}
+        <TextInput style={{color:  theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 10, fontFamily: 'Effra_Light'}}
           placeholderTextColor={ theme.secondaryBorder}
           value={currentPassword}
           onChangeText={setCurrentPassword}
@@ -801,7 +803,7 @@ const handleHoraChange = (text) => {
     left: 0, 
     height: "100%",
     backgroundColor: "#666666", animatedStyle}} />
-    <Text style={{ fontSize: width * 0.0355,
+    <Text style={{ fontSize: RFValue(14),
     color: theme.alwaysWhite,
     fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Eliminar")}</Text>
   </View>
@@ -829,7 +831,7 @@ const handleHoraChange = (text) => {
         countries={countries}
       />
 
-      <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: (height - wHeight) - height*0.05, left: 0,right: 0,height: (height - wHeight) + height*0.2 , zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('25%'), zIndex: 1}}/>
     
 
     </View>

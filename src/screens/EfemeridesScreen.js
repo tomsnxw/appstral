@@ -17,6 +17,8 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import retrogradacionesInterpretaciones from '../data/eventos/retrogradaciones_interpretaciones.json';
 import lunacionesInterpretaciones from '../data/eventos/lunaciones_interpretaciones.json'; 
 import cambiosSignosInterpretaciones from '../data/eventos/cambios_signos_interpretaciones.json'; // Importa el nuevo archivo JSON
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const SkeletonItem = ({theme}) => {
   const opacity = useSharedValue(0.3);
@@ -266,7 +268,7 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
         }
         ListFooterComponent={<View style={styles(theme).efemeridesFooter} />}
       />
-      <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.4, zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('17%'), zIndex: 1}}/>
       {shareModalVisible && (
         <ShareEventModal
           visible={shareModalVisible}
@@ -311,7 +313,7 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, hand
 
   const height = useSharedValue(0);
   useEffect(() => {
-    height.value = withSpring(expandedIndex === index ? 300 : 0, { damping: 20, stiffness: 90 });
+    height.value = withSpring(expandedIndex === index ? 500 : 0, { damping: 20, stiffness: 90 });
   }, [expandedIndex]);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -355,7 +357,7 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, hand
         style={styles(theme).eventContainer}
         activeOpacity={canToggle ? 0.8 : 1} 
       >
-        <View style={{ width: width * 0.75, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ width: width * 0.77, flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles(theme).eventTitle}>{item.title}</Text>
           {showShareButton && ( // Renderiza el botón de compartir solo si showShareButton es true
             <TouchableOpacity style={{ zIndex: 10, width: 25, height: 25 }} onPress={handleOpenShareModal}>
@@ -383,170 +385,173 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, hand
     </View>
   );
 };
+
+
 const styles = (theme) => StyleSheet.create({
-    skeletonEventContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingLeft: 15,
-      gap: 10,
-      height: height*0.095,
-      borderRadius: 10,
-    },
-    skeletonEventCircle: {
-      width: height*0.055,
-      height: height*0.055,
-      borderRadius: 25,
-      backgroundColor: "#ddd",
-      marginTop: 0,
-      margin: 'auto'
-    },
-    skeletonEventTextContainer: {
-      flex: 1,
-      marginBottom: 10
-    },
-    skeletonEventLine: {
-      height: 15,
-      backgroundColor: "#e6e6e6",
-      borderRadius: 4,
-      marginVertical: 5,
-    },
-    efemeridesContainer:{
-      height: height,
-      marginTop:'auto',
-      marginBottom: 0,
-      marginTop:height*.02,
-    },
-    topEfemeridesSpace:{
-      height: height*.08,
-    },
-    efemeridesCard: {
-      paddingTop: 10,
-      flexDirection: 'row', 
-      gap: 10,
-      paddingLeft: 15
-    },
-    categoriaEventoLetra: {
-      textAlign: 'center',
-      margin: 'auto',
-      color: theme.alwaysWhite,
-      fontSize: height*0.05,
-      fontFamily: 'Astronomicon',
-      lineHeight: height*0.045,
-    },
-    categoriaCirculo: {
-      width: height*0.055,
-      height: height*0.055,
+  skeletonEventContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: wp(4), // Approximation of 15 based on typical screen width
+    gap: wp(2.5), // Approximation of 10 based on typical screen width
+    height: hp(9.5), // height*0.095
+    borderRadius: wp(2.5), // Approximation of 10
+  },
+  skeletonEventCircle: {
+    width: hp(5.5), // height*0.055
+    height: hp(5.5), // height*0.055
+    borderRadius: RFValue(25), // Adjusted for font size
+    backgroundColor: "#ddd",
+    marginTop: 0,
+    margin: 'auto'
+  },
+  skeletonEventTextContainer: {
+    flex: 1,
+    marginBottom: hp(1.2), // Approximation of 10
+  },
+  skeletonEventLine: {
+    height: RFValue(15), // Adjusted for font size
+    backgroundColor: "#e6e6e6",
+    borderRadius: RFValue(4), // Adjusted for font size
+    marginVertical: hp(0.6), // Approximation of 5
+  },
+  efemeridesContainer: {
+    height: hp('100%'), // height
+    marginTop: 'auto',
+    marginBottom: 0,
+    marginTop: hp(15), // height*.02
+  },
+  topEfemeridesSpace: {
+    height: hp(6.5), // height*.08
+  },
+  efemeridesCard: {
+    paddingTop: hp(1.2), // Approximation of 10
+    flexDirection: 'row',
+    gap: wp(2.5), // Approximation of 10
+    paddingLeft: wp(4), // Approximation of 15
+  },
+  categoriaEventoLetra: {
+    textAlign: 'center',
+    margin: 'auto',
+    color: theme.alwaysWhite,
+    fontSize: hp(5), // height*0.05
+    fontFamily: 'Astronomicon',
+    lineHeight: hp(4.5), // height*0.045
+  },
+  categoriaCirculo: {
+    width: hp(5.5), // height*0.055
+    height: hp(5.5), // height*0.055
     marginVertical: 'auto',
     marginTop: 0,
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 100,
-    },
-    signoEstilo:{
-      textAlign: 'center',
-      margin: 'auto',
-      color: theme.alwaysWhite,
-      fontSize: height*0.04,
-      lineHeight: height*0.04,
-      fontFamily: 'Astronomicon',
-    },
-    retroEstilo:{
-      textAlign: 'center',
-      margin: 'auto',
-      marginTop: height*0.007,
-      marginLeft: height*0.019,
-      color: theme.alwaysWhite,
-      fontSize: height*0.06,
-      fontFamily: 'Astronomicon',
-    },
-    lunaEstilo:{
-      textAlign: 'center',
-      color: theme.alwaysWhite,
-      margin: 'auto',
-      marginTop: 'auto',
-      fontSize: height*0.04,
-      fontFamily: 'Astronomicon',
-      textAlign: 'left',
-      transform: [
-        { translateY: .5 }, { translateX:2 }
-      ],
-    },
-    eventContainer:{
-      borderColor: theme.primaryBorder,
-      borderBottomWidth: height*.000325,
-      width: width*1,
-      paddingBottom: 10,
-    },
-    eventTitle: {
-      fontSize: height * 0.018,
-      color: theme.primary,
-      fontFamily: 'Effra_Medium',
-      maxWidth: '90%',
-      flexWrap: 'wrap',
-    },
-    eventShareIcon: {
-      fill: theme.secondaryBorder,
-      width: height*0.018,
-      height: height*0.018,
-      margin: 'auto',
-    },
-    eventInfo: {
-      fontSize:  height*0.019,
-      fontFamily: 'Effra_Regular',
-      color: theme.secondaryBorder
-    },
-    noEventsContainer:{
-      paddingTop: height*0.06,
-      textAlign: 'center',
-      justifyContent: 'center',
+    borderRadius: RFValue(100), // Adjusted for font size
+  },
+  signoEstilo: {
+    textAlign: 'center',
+    margin: 'auto',
+    color: theme.alwaysWhite,
+    fontSize: hp(4), // height*0.04
+    lineHeight: hp(4), // height*0.04
+    fontFamily: 'Astronomicon',
+  },
+  retroEstilo: {
+    textAlign: 'center',
+    margin: 'auto',
+    marginTop: hp(0.7), // height*0.007
+    marginLeft: hp(1.9), // height*0.019
+    color: theme.alwaysWhite,
+    fontSize: hp(6), // height*0.06
+    fontFamily: 'Astronomicon',
+  },
+  lunaEstilo: {
+    textAlign: 'center',
+    color: theme.alwaysWhite,
+    margin: 'auto',
+    marginTop: 'auto',
+    fontSize: hp(4), // height*0.04
+    fontFamily: 'Astronomicon',
+    textAlign: 'left',
+    transform: [
+      { translateY: RFValue(0.5) }, // Adjusted for font size
+      { translateX: RFValue(2) } // Adjusted for font size
+    ],
+  },
+  eventContainer: {
+    borderColor: theme.primaryBorder,
+    borderBottomWidth: hp(0.1), // height*.000325
+    width: wp(100), // width*1
+    paddingBottom: hp(1.2), // Approximation of 10
+  },
+  eventTitle: {
+    fontSize: hp(2), // height * 0.018
+    color: theme.primary,
+    fontFamily: 'Effra_Medium',
+    maxWidth: wp(90), // '90%'
+    flexWrap: 'wrap',
+  },
+  eventShareIcon: {
+    fill: theme.secondaryBorder,
+    width: hp(1.8), // height*0.018
+    height: hp(1.8), // height*0.018
+    margin: 'auto',
+  },
+  eventInfo: {
+    fontSize: hp(1.9), // height*0.019
+    fontFamily: 'Effra_Regular',
+    color: theme.secondaryBorder
+  },
+  noEventsContainer: {
+    paddingTop: hp(6), // height*0.06
+    textAlign: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: height*0.015
-    },
-    noEventsText: {
-    justifyContent: 'center', 
+    gap: hp(1.5), // height*0.015
+  },
+  noEventsText: {
+    justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    fontSize: height*0.022,
-    lineHeight: height*0.035,
+    fontSize: hp(2.2), // height*0.022
+    lineHeight: hp(3.5), // height*0.035
     color: theme.secondary,
-    marginHorizontal: 60,
-    marginTop: 5,
+    marginHorizontal: wp(15), // Approximation of 60
+    marginTop: hp(0.6), // Approximation of 5
     fontFamily: 'Effra_Light',
-    },
-    noEventsTitle: {
-    fontSize:  height*0.04,
-    lineHeight: height*0.045,
-    width: width*0.7,
-    marginTop: 10,
+  },
+  noEventsTitle: {
+    fontSize: hp(4), // height*0.04
+    lineHeight: hp(4.5), // height*0.045
+    width: wp(70), // width*0.7
+    marginTop: hp(1.2), // Approximation of 10
     textAlign: 'center',
     fontFamily: 'Effra_Light',
     color: theme.secondaryBorder
-    },
-    noEventsIcon:{
-      width: width*0.6,
-      height: width*0.6,
-      margin: 'auto',
-      fill: theme.secondaryBorder
-    },  
-    expandedContent: {
+  },
+  noEventsIcon: {
+    width: wp(60), // width*0.6
+    height: wp(60), // width*0.6
+    margin: 'auto',
+    fill: theme.secondaryBorder
+  },
+  expandedContent: {
     overflow: 'hidden',
   },
-  eventDetailsContainer:{
-    marginTop: 10,
+  eventDetailsContainer: {
+    marginTop: hp(1.2), // Approximation of 10
     marginBottom: 0,
-    width: width*.765,
+    width: wp(76.5), // width*.765
   },
   eventDetails: {
-    fontSize: height*0.017,
+    fontSize: hp(1.7), // height*0.017
     fontFamily: 'Effra_Regular',
     color: theme.primary,
-    lineHeight: height*0.024,
+    lineHeight: hp(2.4), // height*0.024
     marginVertical: 'auto',
   },
-  efemeridesFooter:{
-    height: height*0.4,
+  efemeridesFooter: {
+    height: hp(40), // height*0.4
   },
-  });
+});
 
 export default EfemeridesScreen;

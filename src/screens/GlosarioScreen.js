@@ -15,6 +15,8 @@ const { height: wHeight, width: wWidth } = Dimensions.get('window');
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import * as Clipboard from "expo-clipboard";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 
 const Glosario = () => {
@@ -69,58 +71,55 @@ const Glosario = () => {
     .filter((item) => item.data.length > 0);
   
   return (
-    <View style={{height: height, backgroundColor: theme.background}}>
-         <View style={{paddingTop: height*.0375, paddingBottom: height*.0155, justifyContent: 'center'}}>
-                    <View style={styles.searchBar}>
-                      <SearchIcon style={styles.searchBarIcon} />
-                      <TextInput
-                        style={styles.searchBarInput}
-                        value={searchQuery}
-                        placeholderTextColor={theme.secondary}
-                        onChangeText={setSearchQuery}
-                        placeholder={t('buscar')}
-                      />
-                    </View>
-                  </View>
+    <View style={{ height:height*1,marginTop:hp('13.5%'), backgroundColor: theme.background }}>
+      <View style={{ justifyContent: 'center',alignItems:'center', height:hp('8%')}}>
+        <View style={styles.searchBar}>
+          <SearchIcon style={styles.searchBarIcon} />
+          <TextInput
+            style={styles.searchBarInput}
+            value={searchQuery}
+            placeholderTextColor={theme.secondary}
+            onChangeText={setSearchQuery}
+            placeholder={t('buscar')}
+          />
+        </View>
+      </View>
       <FlatList
-          ListFooterComponent={
-            <View style={styles.glosarioFooter}></View>
-          }
-          data={glosarioLista}
-          keyExtractor={(item) => item.letra}
-          renderItem={({ item, index }) => {
-            const circleColor = theme.glosarioCircles[index % theme.glosarioCircles.length];
-    
-            return (
-              <View style={{marginHorizontal: 15,
-                marginTop: height *.01,
-                flexDirection: 'row', 
-                gap: 10,}}>
-                <View
-                  style={[styles.categoriaCirculo, { backgroundColor: circleColor }]}>
-                  <Text style={styles.categoriaLetra}>{item.letra}</Text>
-                </View>
-                <View style={styles.termList}>
-                  {item.data.map((term, index) => (
-                    <AccordionItem
-                      key={`${term.nombre}-${index}`}
-                      item={term}
-                      styles={styles}
-                      theme={theme}
-                      index={`${term.nombre}-${index}`}
-                      expandedIndex={expandedIndex}
-                      toggleAccordion={toggleAccordion}
-                    />
-                  ))}
-                  <View style={{ minHeight: height *.001,maxHeight: height *.001, marginTop: height *.01,
-        backgroundColor: theme.primaryBorder,}} />
-                </View>
+        ListFooterComponent={
+          <View style={styles.glosarioFooter}></View>
+        }
+        data={glosarioLista}
+        keyExtractor={(item) => item.letra}
+        renderItem={({ item, index }) => {
+          const circleColor = theme.glosarioCircles[index % theme.glosarioCircles.length];
+
+          return (
+            <View style={styles.glosarioFlatListWrapper}>
+              <View
+                style={[styles.categoriaCirculo, { backgroundColor: circleColor }]}>
+                <Text style={styles.categoriaLetra}>{item.letra}</Text>
               </View>
-            );
-          }}
-        />
-   <LinearGradient colors={['transparent',  theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: height*0.025,left: 0,right: 0,height: height*0.45,zIndex: 1}}/>
-   </View>
+              <View style={styles.termList}>
+                {item.data.map((term, index) => (
+                  <AccordionItem
+                    key={`${term.nombre}-${index}`}
+                    item={term}
+                    styles={styles}
+                    theme={theme}
+                    index={`${term.nombre}-${index}`}
+                    expandedIndex={expandedIndex}
+                    toggleAccordion={toggleAccordion}
+                  />
+                ))}
+                <View style={styles.termListSeparator} />
+              </View>
+            </View>
+          );
+        }}
+      />
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
+
+    </View>
   );
 };
 

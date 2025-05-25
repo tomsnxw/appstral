@@ -22,10 +22,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useTranslation } from 'react-i18next';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const SpecialChartModal = ({handleCloseSpecialChartModal, visible}) => {
   const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
+      const { t, i18n  } = useTranslation();
+    
   const [cartaEspecial, setCartaEspecial] = useState(null);
   const [loading, setLoading] = useState(true);
   const [translateY, setTranslateY] = useState(new Animated.Value(height));  
@@ -138,48 +143,60 @@ const SpecialChartModal = ({handleCloseSpecialChartModal, visible}) => {
     obtenerCartaEspecial();
   }, []);
 
-  return (
-       <Modal animationType="none" transparent={true} statusBarTranslucent={true} visible={isModalVisible} onRequestClose={handleCloseSpecialChartModal}>
-            
-                  <Animated.View  style={[styles.modalSpecialChartContainer,{ opacity: fadeAnim }]}>
-                  
-                   <Animated.View style={{...styles.modalSpecialChartContent, transform: [{ translateY }], }} >
-                   {cartaEspecial ? (
-                  <> 
-                  
-                    <ImageBackground
-            source={{ uri: imageUrl }}
-            style={styles.specialChartBackgroundImage}
-            {...panResponder.panHandlers}
-          >
-                              <View style={styles.specialChartModalSlider}/>
+    const renderTextWithBreaks = (text) => {
+    if (!text) return null;
+    const paragraphs = text.split('<br/>');
+    return paragraphs.map((paragraph, index) => (
+      <Text key={index} style={styles.specialDetails}>
+        {paragraph}
+      </Text>
+    ));
+  };
 
-            <View style={styles.arrowSpecialChartContainer}>
-            <Text style={styles.arrowSpecialChartText}>LA CARTA DE HOY</Text>
-            <View style={styles.arrowSpecialChart}>
-              </View>
+  return (
+    <Modal animationType="none" transparent={true} statusBarTranslucent={true} visible={isModalVisible} onRequestClose={handleCloseSpecialChartModal}>
+      <Animated.View style={[styles.modalSpecialChartContainer, { opacity: fadeAnim }]}>
+        <Animated.View style={{ ...styles.modalSpecialChartContent, transform: [{ translateY }] }} >
+          {cartaEspecial ? (
+            <>
+              <ImageBackground
+                source={{ uri: imageUrl }}
+                style={styles.specialChartBackgroundImage}
+                {...panResponder.panHandlers}
+              >
+                <View style={styles.specialChartModalSlider} />
+
+                <View style={styles.arrowSpecialChartContainer}>
+                  <Text style={styles.arrowSpecialChartText}>{t('todayChart')}</Text>
+                  <View style={styles.arrowSpecialChart} />
+                </View>
+                <View style={styles.specialTitleContainer}>
+                  <Text style={styles.specialTitle}>
+                    {cartaEspecial.nombre} {cartaEspecial.apellido}: {cartaEspecial[`title_${i18n.language}`]}
+                  </Text>
+                  <Text style={styles.specialSubtitle}>
+                    {cartaEspecial[`subtitle_${i18n.language}`]}
+                  </Text>
+                </View>
+              </ImageBackground>
+              <ScrollView style={styles.specialDetailsContainer}>
+                {renderTextWithBreaks(cartaEspecial[`body_${i18n.language}`])}
+               <View style={{height:hp('25')}}></View>
+              </ScrollView>
+             
+            </>
+          ) : (
+            <View style={{
+              height: height,
+              justifyContent: 'center', alignItems: 'center',
+            }}>
+              <ActivityIndicator size="large" color="#ab89e9" />
             </View>
-            <View style={styles.specialTitleContainer}>
-              <Text style={styles.specialTitle}>{cartaEspecial.nombre} {cartaEspecial.apellido}: {cartaEspecial.subtitulo}</Text>
-              <Text style={styles.specialSubtitle}>{cartaEspecial.ocupacion}</Text>
-            
-            </View>
-          </ImageBackground>
-          <ScrollView style={styles.specialDetailsContainer}>
-                    <Text style={styles.specialDetails}>{cartaEspecial.detalles}</Text>
-                    </ScrollView>
-                  </>
-                ) : (
-                          <View style={{ 
-                                        height:height,
-                                        justifyContent: 'center', alignItems: 'center', 
-                                      }}>
-                                        <ActivityIndicator size="large" color="#ab89e9" />
-                                      </View>
-                )}
-                  <LinearGradient pointerEvents="none" colors={['transparent',  theme.shadowBackground]} style={{  position: 'absolute',bottom: 0 , left: 0,right: 0,height: height*0.2 , zIndex: 1}}/>
-                
-                </Animated.View></Animated.View></Modal>
+          )}
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('10%'), zIndex: 1}}/>
+        </Animated.View>
+      </Animated.View>
+    </Modal>
   );
 };
 

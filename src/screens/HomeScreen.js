@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { lightTheme, darkTheme } from '../utils/theme';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 
@@ -771,7 +772,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
          />
         )}</SafeAreaView>
 
- <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.25 , zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('10%'), zIndex: 1}}/>
       </LinearGradient>
     );
     

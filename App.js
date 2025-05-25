@@ -55,6 +55,10 @@ const { height: wHeight, width: wWidth } = Dimensions.get('window');
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Purchases from 'react-native-purchases';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
+
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -94,7 +98,6 @@ export async function registerForPushNotificationsAsync() {
       // );
     }
   } else {
-    alert('Debes usar un dispositivo físico para notificaciones push');
     finalStatus = 'denied'; // Considerar como denegado si no es un dispositivo físico
   }
 
@@ -389,118 +392,147 @@ const App = () => {
       );
     }
 
-    const EfemeridesTabBar = ({ state, descriptors, navigation, filtroCategoria, setFiltroCategoria, categorias }) => {
-      const [activeTab, setActiveTab] = useState(state.index);
-      const scrollProgress = useRef(new Animated.Value(0)).current;
-      const { theme } = useContext(ThemeContext);
-      const handleTabPress = (index) => {
-        setActiveTab(index);
-        navigation.navigate(state.routeNames[index]);
-      };
-    
-      Animated.timing(scrollProgress, {
-        toValue: activeTab,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    
-      return (
-        <View  style={{position: 'absolute', backgroundColor: theme.background, width: width, height:height*0.135 }}>
-        <View style={{width: width*.9, height:height*0.135,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
-        <Text style={{fontSize: height*0.036,transform: [{translateY: height*0.01}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('efemerides')}</Text>
-    
-            {/* Tab Bar */}
-            <View style={{flexDirection: 'row',height: height*0.045}}>
-              {state.routeNames.map((routeName, index) => {
-                const isFocused = state.index === index;
-                return (
-                  <TouchableOpacity
-                    key={routeName}
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      color: theme.black
-                    }}
-                    onPress={() => handleTabPress(index)}
-                  >
-                   <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.black}]}>
+const EfemeridesTabBar = ({ state, descriptors, navigation, filtroCategoria, setFiltroCategoria, categorias }) => {
+  const [activeTab, setActiveTab] = useState(state.index);
+  const scrollProgress = useRef(new Animated.Value(0)).current;
+  const { theme } = useContext(ThemeContext);
+  const { t } = useTranslation();
 
-                      {routeName}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-    
-            {/* Animated Indicator */}
-            <Animated.View
-              style={[
-                {bottom: -height*0.001, height: height*0.001,backgroundColor: theme.black,},
+  const handleTabPress = (index) => {
+    setActiveTab(index);
+    navigation.navigate(state.routeNames[index]);
+  };
+
+  Animated.timing(scrollProgress, {
+    toValue: activeTab,
+    duration: 300,
+    useNativeDriver: true,
+  }).start();
+
+  return (
+    <View style={{
+      position: 'absolute',
+      top: 0, // Ensure it's at the very top
+      left: 0,
+      right: 0,
+      backgroundColor: theme.background,
+      width: wp('100%'),
+      // Calculate total height needed for both sections
+      height: hp('13.5%') + (activeTab !== 3 ? hp('7.5%') : 0), // Base height + categories height if active
+    }}>
+      {/* Top section: Title and Main Tabs */}
+      <View style={{
+        width: wp('90%'),
+        height: hp('13.5%'), // This is the height of the main tab bar section
+        justifyContent: 'flex-end',
+        alignSelf: 'center',
+        marginBottom: 0,
+        borderBottomWidth: hp('0.1%'),
+        borderColor: theme.tertiary
+      }}>
+        <Text style={{ fontSize: RFValue(22), transform: [{ translateY: hp('0%') }], fontFamily: 'Effra_Regular', textAlign: 'start', color: theme.primary }}>{t('efemerides')}</Text>
+
+        {/* Tab Bar */}
+        <View style={{ flexDirection: 'row', height: hp('4.5%') }}>
+          {state.routeNames.map((routeName, index) => {
+            const isFocused = state.index === index;
+            return (
+              <TouchableOpacity
+                key={routeName}
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  color: theme.black
+                }}
+                onPress={() => handleTabPress(index)}
+              >
+                <Text style={[{ fontFamily: 'Effra_Regular', fontSize: RFValue(14), textAlign: 'center', color: theme.tertiary }, isFocused && { fontFamily: 'Effra_Regular', fontSize: RFValue(14), textAlign: 'center', color: theme.black }]}>
+                  {routeName}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Animated Indicator */}
+        <Animated.View
+          style={[
+            { bottom: -hp('0.1%'), height: hp('0.1%'), backgroundColor: theme.black, },
+            {
+              width: wp('90%') / state.routeNames.length,
+              transform: [
                 {
-                  width: width * 0.9 / state.routeNames.length,
-                  transform: [
-                    {
-                      translateX: scrollProgress.interpolate({
-                        inputRange: [0, state.routeNames.length - 1],
-                        outputRange: [0, width * 0.9 - (width * 0.9 / state.routeNames.length)],
-                      }),
-                    },
-                  ],
+                  translateX: scrollProgress.interpolate({
+                    inputRange: [0, state.routeNames.length - 1],
+                    outputRange: [0, wp('90%') - (wp('90%') / state.routeNames.length)],
+                  }),
                 },
-              ]}
-            />
-          </View>
+              ],
+            },
+          ]}
+        />
+      </View>
 
-          {/* Filtros: Categorías para todas las pestañas excepto "Glosario" */}
-          {activeTab !== 3 && (
-            <View style={{}}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={{flexDirection: 'row',justifyContent: 'space-around', gap: 7.5, backgroundColor: theme.background,height:height*.072,justifyContent: 'center',alignItems: 'center',paddingHorizontal: width*0.06}}>
-          {categorias.map((categoria, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => setFiltroCategoria(categoria)}
-              style={[{
-                height:height*.035,
-                paddingTop: 5,
-                paddingBottom: 3,
-                 borderColor: theme.secondary,
-                width: 'auto',
-                backgroundColor: theme.background,
-                paddingHorizontal: 20,
-                borderRadius: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 1
-              }, filtroCategoria === categoria && {
-                backgroundColor: theme.black, 
-                borderColor: theme.black,
-              }]}
-            >
-             <Text style={filtroCategoria === categoria ? 
-  {
-    color: theme.white,
-    fontFamily: 'Effra_Regular',
-    fontSize: height*0.015
-  }
-  : 
-  {
-    color: theme.black, 
-    fontFamily: 'Effra_Regular',
-    fontSize: height*0.015
-  }
-}>
-                {t(categoria)} {/* 👈 Traducción dinámica */}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-              </ScrollView>
-            </View>
-          )}
-        </View>
-      );
-    };
+      {/* Filtros: Categorías para todas las pestañas excepto "Glosario" */}
+      {activeTab !== 3 && ( // Assuming "Glosario" is the 4th tab (index 3)
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              gap: wp('3%'),
+              backgroundColor: theme.background,
+              height: hp('7.5%'),
+              paddingHorizontal: wp('6.25%'),
+            }}
+          >
+            {categorias.map((categoria, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => setFiltroCategoria(categoria)}
+                style={[{
+                  height: hp('3%'),
+                  borderColor: theme.secondary,
+                  width: 'auto',
+                  backgroundColor: theme.background,
+                  paddingHorizontal: wp('6.25%'),
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  paddingTop: hp('.25%'),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }, filtroCategoria === categoria && {
+                  backgroundColor: theme.black,
+                  borderColor: theme.black,
+                }]}
+              >
+                <Text
+                  style={filtroCategoria === categoria ?
+                    {
+                      color: theme.white,
+                      fontFamily: 'Effra_Regular',
+                      fontSize: RFValue(12)
+                    }
+                    :
+                    {
+                      color: theme.black,
+                      fontFamily: 'Effra_Regular',
+                      fontSize: RFValue(12)
+                    }
+                  }
+                >
+                  {t(categoria)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+      )}
+    </View>
+  );
+};
 
     if (!isConnected) {
       return (
@@ -545,42 +577,42 @@ const App = () => {
   const [filtroFecha, setFiltroFecha] = useState('');
   const categorias = ['todo', 'retrogradaciones', 'cambios', 'lunaciones'];
 
-  return (
-    <Tab.Navigator 
-      tabBar={props => (
-        <EfemeridesTabBar 
-          {...props} 
-          theme={theme}
-          filtroCategoria={filtroCategoria} 
-          setFiltroCategoria={setFiltroCategoria}
-          categorias={categorias}
-        />
-      )}
-      screenOptions={{
-        animationEnabled: true,
-        gestureEnabled: true,
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}
-    >
-<Tab.Screen
-  name={t('Hoy')}
-  children={() => <EfemeridesScreen rangoTiempo="hoy" filtroCategoria={filtroCategoria} />} 
-/>
-<Tab.Screen
-  name={t('Semana')}
-  children={() => <EfemeridesScreen rangoTiempo="semana" filtroCategoria={filtroCategoria} />} 
-/>
-<Tab.Screen
-  name={t('Mes')}
-  children={() => <EfemeridesScreen rangoTiempo="mes" filtroCategoria={filtroCategoria} />} 
-/>
-
-      <Tab.Screen
-        name={t('Glosario')}
-        children={() => <Glosario />}
+return (
+  <Tab.Navigator
+    tabBar={props => (
+      <EfemeridesTabBar
+        {...props}
+        theme={theme}
+        filtroCategoria={filtroCategoria}
+        setFiltroCategoria={setFiltroCategoria}
+        categorias={categorias}
       />
-    </Tab.Navigator>
-  );
+    )}
+    screenOptions={{
+      animationEnabled: true,
+      gestureEnabled: true,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      headerShown: false
+    }}
+  >
+    <Tab.Screen
+      name={t('Hoy')}
+      children={() => <EfemeridesScreen rangoTiempo="hoy" filtroCategoria={filtroCategoria} />}
+    />
+    <Tab.Screen
+      name={t('Semana')}
+      children={() => <EfemeridesScreen rangoTiempo="semana" filtroCategoria={filtroCategoria} />}
+    />
+    <Tab.Screen
+      name={t('Mes')}
+      children={() => <EfemeridesScreen rangoTiempo="mes" filtroCategoria={filtroCategoria} />}
+    />
+    <Tab.Screen
+      name={t('Glosario')}
+      children={() => <Glosario />}
+    />
+  </Tab.Navigator>
+);
 };
 
 
@@ -637,10 +669,10 @@ const App = () => {
     }).start();
   
     return (
-      <View  style={{position: 'absolute', backgroundColor: theme.background, width: width, height:height*0.135 }}>
-      <View style={{width: width*.9,height:height*0.135,justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: height*0.001,borderColor: theme.tertiary }}>
-      <Text style={{fontSize: height*0.036,transform: [{translateY: height*0.01}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('perfil')}</Text>
-        <View style={{flexDirection: 'row',height: height*0.045}}>
+      <View  style={{position: 'absolute', backgroundColor: theme.background, width: wp('100%'),height: hp('13.5%'),  }}>
+      <View style={{width: wp('90%'),height: hp('13.5%'),justifyContent: 'flex-end',margin: 'auto',marginTop: 'auto',marginBottom: 0,borderBottomWidth: hp('0.1%'),borderColor: theme.tertiary }}>
+      <Text style={{fontSize: RFValue(22),transform: [{translateY: hp('0%')}],fontFamily: 'Effra_Regular',textAlign: 'start',color: theme.primary}}>{t('perfil')}</Text>
+        <View style={{flexDirection: 'row', height: hp('4.5%')}}>
           {state.routeNames.map((routeName, index) => {
             const isFocused = state.index === index;
             const color = isFocused ? '#673ab7' : '#222';
@@ -654,7 +686,7 @@ const App = () => {
               }}
               onPress={() => handleTabPress(index)}
             >
-                <Text style={[{fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: width*.04,textAlign: 'center',color: theme.black}]}>
+                <Text style={[{fontFamily: 'Effra_Regular', fontSize: RFValue(14),textAlign: 'center',color: theme.tertiary }, isFocused && {fontFamily: 'Effra_Regular', fontSize: RFValue(14),textAlign: 'center',color: theme.black}]}>
                   {routeName}
                 </Text>
               </TouchableOpacity>
@@ -665,7 +697,7 @@ const App = () => {
         {/* Indicador Animado */}
         <Animated.View
           style={[
-            {bottom: -height*0.001, height: height*0.001,backgroundColor: theme.black,},
+            {bottom: -hp('0.1%'), height: hp('0.1%'),backgroundColor: theme.black,},
             {
               width: width * 0.9 / state.routeNames.length, 
               transform: [

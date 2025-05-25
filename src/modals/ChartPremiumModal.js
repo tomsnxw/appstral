@@ -186,8 +186,8 @@ const handlePurchase = async () => {
                    <Animated.View style={{...styles.modalPremiumContent, transform: [{ translateY }], }} >
                      <View style={styles.modalPremiumSlider}/>
                    <View style={styles.premiumModal} {...panResponder.panHandlers}>
-      <Text style={styles.modalPremiumTitle}>{t("pricing.solarTitle")}</Text>
-      <Text style={styles.modalPremiumSubtitle}>{t("pricing.solarSubtitle")} <Text style={styles.modalPremiumSubtitleBold}>{t("pricing.solarSubtitleBold")}</Text></Text>
+      <Text style={styles.modalPremiumTitle}>{t("pricing.chartTitle")}</Text>
+      <Text style={styles.modalPremiumSubtitle}>{t("pricing.chartSubtitle")}</Text>
 
       <View style={styles.pricingOptions}>
                 {estelarMonthly && (

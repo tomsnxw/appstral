@@ -15,16 +15,24 @@ import AlertIcon from "../../assets/icons/AlertIcon";
 import AddIcon from '../../assets/icons/AddIcon';
 import colors from '../utils/colors';
 import { SelectList } from 'react-native-dropdown-select-list';
-const { height: height, width: width } = Dimensions.get('screen');
-const viewShotWidth = width;
-const viewShotHeight = (viewShotWidth * 16) / 9;
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
-const eventWidth = viewShotWidth / 1.25;
-const eventHeight = viewShotHeight / 1.25;
-const contentWidth = viewShotWidth / 2;
-const contentHeight = viewShotHeight / 2.4;
-const textWidth = viewShotWidth / 2.5;
-const baseFontSize = viewShotWidth * 0.03;
+// Elimina estas constantes si ya no las necesitas, o úsalas con wp/hp si aplica
+const { height: height, width: width } = Dimensions.get('screen');
+// const viewShotWidth = width;
+// const viewShotHeight = (viewShotWidth * 16) / 9;
+
+// Ahora puedes definir tus tamaños base usando wp y hp directamente
+const eventWidth = wp('80%'); // 100% / 1.25
+const eventHeight = hp('70%'); // Un aproximado para (viewShotWidth * 16) / 9 / 1.25
+const contentWidth = wp('55%'); // 100% / 2
+const contentHeight = hp('45%'); // 87.5% / 2.4
+const textWidth = wp('42%'); // 100% / 2.5
+
+// Usa RFValue para los tamaños de fuente
+const baseFontSize = RFValue(12); // Puedes ajustar este valor base
+
 import CustomToast from "../components/CustomToast";
 import ViewShot, { captureRef } from 'react-native-view-shot';
 
@@ -175,28 +183,29 @@ const ShareEventModal =  ({ route, visible, handleCloseShareModal }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    width:width,
-    height: height,
-    backgroundColor: 'rgba(0, 0, 0, 0.95)', 
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
   },
   modalContent: {
-    width:width*.9,
-    height: height*.875,
+    width: wp('90%'),
+    height: hp('87.5%'),
     marginHorizontal: 'auto',
-    marginTop: height*.0375,
+    marginTop: hp('3.75%'),
     justifyContent: 'space-between',
+    gap: hp('2%')
   },
-  shotContainer:{
+  shotContainer: {
     width: eventWidth,
     height: eventHeight,
     justifyContent: 'center',
-    borderRadius: 25,
+    borderRadius: wp('6.25%'), // 25 de 400 (width) es 6.25%
     alignContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(30, 30, 30)',
     marginHorizontal: 'auto',
     overflow: 'hidden'
-  },  
+  },
   eventStoryContainer: {
     width: eventWidth,
     height: eventHeight,
@@ -208,18 +217,18 @@ const styles = StyleSheet.create({
   },
   eventStoryContent: {
     width: contentWidth,
-    minHeight: contentHeight, 
+    minHeight: contentHeight,
     marginHorizontal: 'auto',
-    borderRadius: 15,
-    paddingTop: 20,
-    paddingBottom: 5,
-    gap: 2,
+    borderRadius: wp('3.75%'), // 15 de 400 (width) es 3.75%
+    paddingTop: hp('2.5%'), // 20 de 800 (height) es 2.5%
+    paddingBottom: hp('0.625%'), // 5 de 800 (height) es 0.625%
+    gap: hp('0.25%'), // 2 de 800 (height) es 0.25%
   },
   title: {
     width: textWidth,
     marginHorizontal: 'auto',
-    fontSize: baseFontSize * 1.35,
-    lineHeight: baseFontSize * 1.66, 
+    fontSize: RFValue(1.35 * 12), // Puedes ajustar la base de RFValue o multiplicar por la que ya tienes
+    lineHeight: RFValue(1.66 * 12),
     color: 'white',
     fontFamily: 'Effra_Bold',
   },
@@ -227,105 +236,104 @@ const styles = StyleSheet.create({
     width: textWidth,
     marginHorizontal: 'auto',
     textTransform: 'uppercase',
-    fontSize: baseFontSize * 0.8,
+    fontSize: RFValue(0.8 * 12),
     color: 'white',
     fontFamily: 'Effra_Medium',
   },
   info: {
     width: textWidth,
     marginHorizontal: 'auto',
-    fontSize: baseFontSize * 0.85,
+    fontSize: RFValue(0.85 * 12),
     color: 'white',
     textTransform: 'uppercase',
-    lineHeight: 29,
+    lineHeight: RFValue(29), // Ajusta si 29 es un valor fijo o depende del tamaño de fuente
     fontFamily: 'Effra_Regular',
   },
   linkText: {
     width: textWidth,
     margin: 'auto',
-    fontSize: baseFontSize * 0.66, 
+    fontSize: RFValue(0.66 * 12),
     color: 'white',
     marginBottom: 0,
-    lineHeight: 29,
+    lineHeight: RFValue(29),
     fontFamily: 'Effra_Regular',
   },
   details: {
     width: textWidth,
     marginHorizontal: 'auto',
-    fontSize: baseFontSize * 0.8, 
+    fontSize: RFValue(0.8 * 12),
     color: 'white',
-    lineHeight: baseFontSize * 1.12, 
+    lineHeight: RFValue(1.12 * 12),
     fontFamily: 'Effra_Regular',
-    marginTop: 10,
+    marginTop: hp('1.25%'), // 10 de 800 (height) es 1.25%
   },
-    buttonsContainer: {
-        flexDirection: 'row',
-        gap: 10,
-        marginHorizontal:'auto'
-    },
-    buttonContainer: {
-      zIndex: 1000,
-      elevation: 10, 
-    },
-    selectTitle: {
-        marginHorizontal: 'auto',
-        fontSize: 16,
-        color: 'white',
-        textAlign: 'center',
-        fontFamily: 'Effra_Light',
-    },
-    button:{
-        width: 45,
-        height: 45,
-        borderRadius: 100,
-    },
-    activeButton: {
-      borderRadius: 100,
-      borderWidth: 3,
-      borderColor: 'rgb(180, 180, 180)',
-    },
-    shareButton: {
-        width: 150,
-        height: 35,
-        borderRadius: 100,
-        backgroundColor: 'white',
-        marginHorizontal:'auto',
-        zIndex: 2
-    },
-    shareText: {
-        margin: 'auto',
-        fontSize: 16,
-        color: 'black',
-        transform: [{translateY: 1}],
-        textAlign: 'center',
-        fontFamily: 'Effra_Regular',
-    },
-    modalTitleContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems:'flex-end',
+  buttonsContainer: {
+    flexDirection: 'row',
+    gap: wp('2.5%'), // 10 de 400 (width) es 2.5%
+    marginHorizontal: 'auto'
   },
-    modalTitle: {
-        color: 'white',
-        fontFamily: 'Effra_Regular',
-        fontSize: 30,
-        marginVertical: 'auto',
-    },
-    modalClose:{
-        width: 20,
-        height: 20,
-        marginVertical: 'auto',
-        borderRadius: 100,
-        backgroundColor: '#ffffff',
-        zIndex: 5
-    },
-    modalCloseIcon:{
-        width: 13,
-        height: 13,
-        margin: 'auto',
-        fill: '#333333',
-        transform: [{ rotate: '45deg' }]
-    }
-  });
-
+  buttonContainer: {
+    zIndex: 1000,
+    elevation: 10,
+  },
+  selectTitle: {
+    marginHorizontal: 'auto',
+    fontSize: RFValue(16),
+    color: 'white',
+    textAlign: 'center',
+    fontFamily: 'Effra_Light',
+  },
+  button: {
+    width: wp('11.25%'), // 45 de 400 (width) es 11.25%
+    height: hp('5.625%'), // 45 de 800 (height) es 5.625%
+    borderRadius: wp('25%'), // Para que sea un círculo, el radio es la mitad del ancho/alto
+  },
+  activeButton: {
+    borderRadius: wp('25%'),
+    borderWidth: 3,
+    borderColor: 'rgb(180, 180, 180)',
+  },
+  shareButton: {
+    width: wp('37.5%'), // 150 de 400 (width) es 37.5%
+    height: hp('4.375%'), // 35 de 800 (height) es 4.375%
+    borderRadius: wp('25%'),
+    backgroundColor: 'white',
+    marginHorizontal: 'auto',
+    zIndex: 2
+  },
+  shareText: {
+    margin: 'auto',
+    fontSize: RFValue(16),
+    color: 'black',
+    transform: [{ translateY: 1 }],
+    textAlign: 'center',
+    fontFamily: 'Effra_Regular',
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  modalTitle: {
+    color: 'white',
+    fontFamily: 'Effra_Regular',
+    fontSize: RFValue(30),
+    marginVertical: 'auto',
+  },
+  modalClose: {
+    width: wp('5%'), // 20 de 400 (width) es 5%
+    height: hp('2.5%'), // 20 de 800 (height) es 2.5%
+    marginVertical: 'auto',
+    borderRadius: wp('12.5%'), // Para que sea un círculo
+    backgroundColor: '#ffffff',
+    zIndex: 5
+  },
+  modalCloseIcon: {
+    width: wp('3.25%'), // 13 de 400 (width) es 3.25%
+    height: hp('1.625%'), // 13 de 800 (height) es 1.625%
+    margin: 'auto',
+    fill: '#333333',
+    transform: [{ rotate: '45deg' }]
+  }
+});
 export default ShareEventModal;

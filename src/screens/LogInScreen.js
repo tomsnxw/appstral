@@ -9,6 +9,8 @@ import { useToast } from "../contexts/ToastContext";
 import SeeIcon from '../../assets/icons/SeeIcon';
 import NoSeeIcon from '../../assets/icons/NoSeeIcon';
 import { useTranslation } from "react-i18next";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const { height: height, width: width } = Dimensions.get('screen');
 const { height: wHeight, width: wWidth } = Dimensions.get('window');
@@ -133,6 +135,7 @@ const LogInScreen = ({ gotoForgot }) => {
   );
   
 };
+
 const styles = StyleSheet.create({
   gradient: {
     height: height,
@@ -141,37 +144,41 @@ const styles = StyleSheet.create({
     height: height,
   },
   formContainer: {
-    height: height * 0.85, 
+    height: hp('85%'), // 85% de la altura de la pantalla
     justifyContent: 'center',
     alignSelf: 'center',
+    margin: 'auto',
+    marginBottom: hp('15%'),
+    marginHorizontal: hp('2%')
   },
   titleContainer:{
     marginHorizontal: 'auto',
-    marginBottom: 35
+    marginBottom: hp('4.3%')
+    
   },
   title: {
-    fontSize:  height * 0.045,
+    fontSize: RFValue(34), // Equivalente a height * 0.045
     fontFamily: 'Effra_Bold',
     textAlign: "center",
-    lineHeight: 50,
+    lineHeight: RFValue(34), // Puedes ajustar esto también con RFValue si es necesario
     color: '#333333'
   },
   text: {
-    fontSize: 18,
+    fontSize: RFValue(18),
     fontFamily: 'Effra_Regular',
     textAlign: "start",
     color: '#808080',
-    paddingLeft: 10
+    paddingLeft: wp('2.5%') // Aproximadamente 10 / 375 (ancho típico de un iPhone X) * 100%
   },
   inputContainer: {
-    height: height*0.045,
+    height: hp('4.5%'),
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
-    borderRadius: 50,
-    paddingHorizontal: 15,
+    borderRadius: RFValue(50), // Para el radio de borde, puedes usar RFValue o un valor fijo
+    paddingHorizontal: wp('4%'),
     justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: hp('1.2%') // Aproximadamente 10 / 812 * 100%
   },
   focusedBorder:{
     borderWidth: 1,
@@ -188,56 +195,56 @@ const styles = StyleSheet.create({
     color: '#808080',
   },
   passwordIcon:{
-  width: 20,
-  height: 20,
-  marginVertical: 'auto',
+    width: wp('5.3%'), // Aproximadamente 20 / 375 * 100%
+    height: hp('2.5%'), // Aproximadamente 20 / 812 * 100%
+    marginVertical: 'auto',
   },
   focusedPassword:{
-  fill:'black'
-  }, 
+    fill:'black'
+  },
   defaultPassword:{
-  fill:'#808080'
-  },  
+    fill:'#808080'
+  },
   input: {
     flex: 1,
-    fontSize: height*0.016,
-    height: height*0.046,
+    fontSize: RFValue(13), // Equivalente a height * 0.016
+    height: hp('4.6%'), // Equivalente a height * 0.046
     fontFamily: 'Effra_Regular'
   },
   pickerContainer: {
-    paddingHorizontal: 5,
+    paddingHorizontal: wp('1.3%'), // Aproximadamente 5 / 375 * 100%
     borderWidth: 1,
     borderColor: '#808080',
     padding: 'auto',
-    borderRadius: 35,
+    borderRadius: RFValue(35),
     color: '#808080',
-    fontSize: 16,
+    fontSize: RFValue(16),
     fontFamily: 'Effra_Regular',
-    marginBottom: 15
+    marginBottom: hp('1.8%') // Aproximadamente 15 / 812 * 100%
   },
   picker: {
     color: '#808080',
-    fontSize: 16,
+    fontSize: RFValue(16),
     fontFamily: 'Effra_Regular',
   },
   datePicker: {
-    height: 50,
+    height: hp('6.1%'), // Aproximadamente 50 / 812 * 100%
     borderColor: '#808080',
     backgroundColor: 'transparent',
     borderWidth: 1,
-    marginTop: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    width: 250,
+    marginTop: hp('0.6%'), // Aproximadamente 5 / 812 * 100%
+    marginBottom: hp('1.8%'), // Aproximadamente 15 / 812 * 100%
+    paddingHorizontal: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
+    width: wp('66.7%'), // Aproximadamente 250 / 375 * 100%
     paddingVertical: 0,
-    borderRadius: 20,
+    borderRadius: RFValue(20),
     fontFamily: 'Effra_Regular',
-    fontSize: 16,
+    fontSize: RFValue(16),
     margin: 'auto'
   },
   titleDatePicker: {
     color: '#808080',
-    fontSize: 16,
+    fontSize: RFValue(16),
     fontFamily: 'Effra_Regular',
     padding: 0,
     margin: 0
@@ -245,16 +252,16 @@ const styles = StyleSheet.create({
   navigate: {
     display: 'flex',
     textAlign: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    margin: 20,
-    gap: 5
+    margin: RFValue(20),
+    gap: RFValue(5)
   },
   button: {
-    width: width*0.4,
-    height: height*0.04,
-    borderRadius: 100,
+    width: wp('30%'), // 40% del ancho de la pantalla
+    height: hp('4%'), // 4% de la altura de la pantalla
+    borderRadius: RFValue(100),
     marginHorizontal: 'auto',
     overflow: "hidden",
     justifyContent: "center",
@@ -268,7 +275,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     position: "absolute",
-    left: 0, 
+    left: 0,
     height: "100%",
     backgroundColor: "#666666",
   },
@@ -279,33 +286,32 @@ const styles = StyleSheet.create({
     transform: [{ translateY: 1 }]
   },
   loginText:{
-    fontSize: height*0.017,
+    fontSize: RFValue(14), // Equivalente a height * 0.017
     color: '#333333',
     fontFamily: 'Effra_Light',
   },
   loginButton:{
     color: '#A358B5',
-    fontSize: height*0.017,
+    fontSize: RFValue(14), // Equivalente a height * 0.017
     fontFamily: 'Effra_Medium',
   },
   footerText:{
-    fontSize: width*0.03,
+    fontSize: wp('3%'), // 3% del ancho de la pantalla
     color: '#333333',
     fontFamily: 'Effra_Light',
-    bottom: height*.06,
-},
-footer:{
-  position: "absolute",
-  bottom: height*.02,
-  width: width,
-  height: height*0.25,
-  alignItems: "center",
-  justifyContent: "center",
-},
+    bottom: hp('7%'), // 6% de la altura de la pantalla
+  },
+  footer:{
+    position: "absolute",
+    bottom: hp('2%'), // 2% de la altura de la pantalla
+    width: wp('100%'), // 100% del ancho de la pantalla
+    height: hp('25%'), // 25% de la altura de la pantalla
+    alignItems: "center",
+    justifyContent: "center",
+  },
   Image:{
-     width: "100%",
-  height: "100%",
+    width: "100%",
+    height: "100%",
   }
 });
-
 export default LogInScreen;
