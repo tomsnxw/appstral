@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
-import { View, StatusBar, ActivityIndicator, Text, FlatList, TextInput, Animated,Dimensions, Easing,StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StatusBar, ActivityIndicator, Text, FlatList, TextInput, Animated,Dimensions, Easing,StyleSheet, Alert, TouchableOpacity, ScrollView, PixelRatio } from 'react-native';
 import { Button } from 'react-native-elements';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
