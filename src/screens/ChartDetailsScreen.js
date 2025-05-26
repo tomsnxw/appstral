@@ -618,36 +618,67 @@ const renderCirculoZodiacal = () => {
     ];
   });
   
-  const renderizarLineasAspectos = (planeta1, index) => {
-    return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpo) => {
-        if (selectedPlanet === t("Ascendente")) {
-            if (planeta1.nombre !== t("Ascendente") && otroCuerpo !== t("Ascendente")) {
-                return null;
-            }
-        } else {
-            if (otroCuerpo === t("Ascendente")) {
-                return null;
-            }
-            if (selectedPlanet && planeta1.nombre !== selectedPlanet && otroCuerpo !== selectedPlanet) {
-                return null;
+const renderizarLineasAspectos = (planeta1Data, index) => { // Renombré 'planeta1' a 'planeta1Data' para mayor claridad
+    const nombrePlaneta1 = planeta1Data.nombre; // Asumiendo que planeta1Data.nombre contiene el nombre del planeta
+    const orbesUsuario = userData.orbes; // Acceso a los orbes del usuario
+
+    return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpoNombre) => {
+        // ... (Tu lógica existente para filtrar por selectedPlanet se mantiene igual) ...
+        if (selectedPlanet) {
+            if (selectedPlanet === t("Ascendente")) {
+                if (nombrePlaneta1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
+                    return null;
+                }
+            } else {
+                if (nombrePlaneta1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
+                    return null;
+                }
             }
         }
 
         let signo2, grado2, minutos2;
-        if (otroCuerpo === t("Ascendente")) {
+        if (otroCuerpoNombre === t("Ascendente")) {
             ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.casas["1"]);
         } else {
-            ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpo]);
+            ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpoNombre]);
         }
 
         const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
-        const posicion1 = calcularPosicion(planeta1.angle, DISTANCIA_ASPECTOS);
+        const posicion1 = calcularPosicion(planeta1Data.angle, DISTANCIA_ASPECTOS);
         const posicion2 = calcularPosicion(
             (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
             DISTANCIA_ASPECTOS
         );
 
-        const diferenciaAngular = calcularDiferenciaAngular(planeta1.angle, posicion2.angle);
+        const diferenciaAngular = calcularDiferenciaAngular(planeta1Data.angle, posicion2.angle);
+
+        // --- Lógica para determinar el orbe a usar ---
+        let orbeMaximo;
+
+        const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
+        const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
+        const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
+
+        // Determinamos las categorías de ambos cuerpos celestes
+        const categoriaPlaneta1 = esLuminaria(nombrePlaneta1) ? 'luminarias' : esInterno(nombrePlaneta1) ? 'internos' : esExterno(nombrePlaneta1) ? 'externos' : 'otros';
+        const categoriaOtroCuerpo = esLuminaria(otroCuerpoNombre) ? 'luminarias' : esInterno(otroCuerpoNombre) ? 'internos' : esExterno(otroCuerpoNombre) ? 'externos' : 'otros';
+
+        // Usamos el orbe más permisivo (el mayor) entre los dos cuerpos
+        orbeMaximo = Math.max(
+            orbesUsuario[categoriaPlaneta1] || 0, // Asegura que no sea undefined si una categoría no existe
+            orbesUsuario[categoriaOtroCuerpo] || 0
+        );
+
+        // Si el Ascendente está involucrado, podrías tener una lógica específica para él,
+        // por ejemplo, usar el orbe de 'otros' o un orbe fijo si lo prefieres para puntos cardinales.
+        // Aquí asumo que el Ascendente caería en 'otros' por defecto si no es un planeta.
+        if (nombrePlaneta1 === t("Ascendente")) {
+            orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0); // O podrías definir un orbe específico para el Ascendente
+        } else if (otroCuerpoNombre === t("Ascendente")) {
+            orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0);
+        }
+        // --- Fin de la lógica del orbe ---
+
         const aspectos = [
             { angulo: 90, color: "#d194ff" },
             { angulo: 30, color: "#ffe278" },
@@ -658,11 +689,12 @@ const renderCirculoZodiacal = () => {
         ];
 
         return aspectos.map(({ angulo, color }) =>
-            Math.abs(diferenciaAngular - angulo) < 5 ? (
-                <AnimatedLine key={`Line-${planeta1.nombre}-${otroCuerpo}-${angulo}`}
+            // Aquí se usa el orbeMaximo calculado dinámicamente
+            Math.abs(diferenciaAngular - angulo) < orbeMaximo ? (
+                <AnimatedLine key={`Line-${nombrePlaneta1}-${otroCuerpoNombre}-${angulo}`}
                     x1={posicion1.x} y1={posicion1.y}
                     x2={posicion2.x} y2={posicion2.y}
-                    stroke={color} strokeWidth="1.25" 
+                    stroke={color} strokeWidth="1.25"
                     opacity={opacityAnimLine}
                 />
             ) : null
@@ -698,7 +730,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
   if (cantidadEnGrupo <= 3) {
     DISTANCIA_EXTRA_TOTAL = 10;
   } else {
-    DISTANCIA_EXTRA_TOTAL = 30;
+    DISTANCIA_EXTRA_TOTAL = 25;
   }
 
   let distancia;
@@ -706,7 +738,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
     distancia = DISTANCIA_BASE; 
   } else {
     const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
-    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 6) + paso * posicionEnGrupo;
+    const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
 
     distancia = DISTANCIA_BASE + offset;
   }
@@ -799,53 +831,53 @@ stroke={theme.tertiary} strokeWidth=".75"
               return (
                 <G key={planeta}>
                   
-                  {renderizarLineasAspectos(posicion, planeta, index)}
+{renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)} 
                   <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                     {simbolosPlanetas[planeta]}
                   </AnimatedText>
-                 {planeta !== "Nodo Norte" && planeta !== "North Node" && (
-                  <>
-                    {estacionario && !retrógrado && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        st
-                      </SvgText>
-                    )}
-                    {retrógrado && !estacionario && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        Rx
-                      </SvgText>
-                    )}
-                    {retrógrado && estacionario && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        stRx
-                      </SvgText>
-                    )}
-                  </>
-                )}
+                  {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                   <>
+                     {estacionario && !retrógrado && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         st
+                       </SvgText>
+                     )}
+                     {retrógrado && !estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         Rx
+                       </SvgText>
+                     )}
+                     {retrógrado && estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         stRx
+                       </SvgText>
+                     )}
+                   </>
+                 )}
                 </G>
               );
             })}     
@@ -865,7 +897,7 @@ stroke={theme.tertiary} strokeWidth=".75"
         y={pos.y} 
         fontFamily="Effra_Regular" 
         fontSize={height*0.01}
-        textAnchor="middle"
+        textAnchor="middle" 
         alignmentBaseline="middle" 
         fill={theme.background}
       >
@@ -900,7 +932,7 @@ stroke={theme.tertiary} strokeWidth=".75"
 
       
   );
-}; 
+};
        
 const [showAlert, setShowAlert] = useState(false);
 const eliminarCarta = async () => {

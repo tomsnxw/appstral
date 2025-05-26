@@ -171,14 +171,15 @@ const styles = StyleSheet.create({
     paddingLeft: wp('2.5%') // Aproximadamente 10 / 375 (ancho típico de un iPhone X) * 100%
   },
   inputContainer: {
-    height: hp('4.5%'),
+    height: hp('4.5%'), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
-    borderRadius: RFValue(50), // Para el radio de borde, puedes usar RFValue o un valor fijo
-    paddingHorizontal: wp('4%'),
-    justifyContent: 'center',
-    marginBottom: hp('1.2%') // Aproximadamente 10 / 812 * 100%
+    borderRadius: RFValue(50),
+    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
+    justifyContent: 'space-between',
+        marginBottom: hp('1.2%') // Aproximadamente 10 / 812 * 100%
+
   },
   focusedBorder:{
     borderWidth: 1,
@@ -206,10 +207,14 @@ const styles = StyleSheet.create({
     fill:'#808080'
   },
   input: {
-    flex: 1,
+    height: hp('4.75%'), // Equivalente a height * 0.0475
+    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    borderRadius: RFValue(20),
+    textAlign: 'left',
+    color: '#808080',
     fontSize: RFValue(13), // Equivalente a height * 0.016
-    height: hp('4.6%'), // Equivalente a height * 0.046
-    fontFamily: 'Effra_Regular'
+    fontFamily: 'Effra_Regular',
+    width: '90%',
   },
   pickerContainer: {
     paddingHorizontal: wp('1.3%'), // Aproximadamente 5 / 375 * 100%

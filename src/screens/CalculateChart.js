@@ -635,7 +635,7 @@ const CalculateScreen = () => {
       t("signos.aquarius"),
       t("signos.pisces")
     ];
-    
+
     const renderCirculoZodiacal = () => {
       if (!resultado) return null;
       const SVG_SIZE = width * 0.96;
@@ -734,36 +734,67 @@ const CalculateScreen = () => {
         ];
       });
       
-      const renderizarLineasAspectos = (planeta1, index) => {
-        return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpo) => {
-            if (selectedPlanet === t("Ascendente")) {
-                if (planeta1.nombre !== t("Ascendente") && otroCuerpo !== t("Ascendente")) {
-                    return null;
-                }
-            } else {
-                if (otroCuerpo === t("Ascendente")) {
-                    return null;
-                }
-                if (selectedPlanet && planeta1.nombre !== selectedPlanet && otroCuerpo !== selectedPlanet) {
-                    return null;
+    const renderizarLineasAspectos = (planeta1Data, index) => { // Renombré 'planeta1' a 'planeta1Data' para mayor claridad
+        const nombrePlaneta1 = planeta1Data.nombre; // Asumiendo que planeta1Data.nombre contiene el nombre del planeta
+        const orbesUsuario = userData.orbes; // Acceso a los orbes del usuario
+    
+        return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpoNombre) => {
+            // ... (Tu lógica existente para filtrar por selectedPlanet se mantiene igual) ...
+            if (selectedPlanet) {
+                if (selectedPlanet === t("Ascendente")) {
+                    if (nombrePlaneta1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
+                        return null;
+                    }
+                } else {
+                    if (nombrePlaneta1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
+                        return null;
+                    }
                 }
             }
     
             let signo2, grado2, minutos2;
-            if (otroCuerpo === t("Ascendente")) {
+            if (otroCuerpoNombre === t("Ascendente")) {
                 ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.casas["1"]);
             } else {
-                ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpo]);
+                ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpoNombre]);
             }
     
             const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
-            const posicion1 = calcularPosicion(planeta1.angle, DISTANCIA_ASPECTOS);
+            const posicion1 = calcularPosicion(planeta1Data.angle, DISTANCIA_ASPECTOS);
             const posicion2 = calcularPosicion(
                 (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
                 DISTANCIA_ASPECTOS
             );
     
-            const diferenciaAngular = calcularDiferenciaAngular(planeta1.angle, posicion2.angle);
+            const diferenciaAngular = calcularDiferenciaAngular(planeta1Data.angle, posicion2.angle);
+    
+            // --- Lógica para determinar el orbe a usar ---
+            let orbeMaximo;
+    
+            const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
+            const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
+            const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
+    
+            // Determinamos las categorías de ambos cuerpos celestes
+            const categoriaPlaneta1 = esLuminaria(nombrePlaneta1) ? 'luminarias' : esInterno(nombrePlaneta1) ? 'internos' : esExterno(nombrePlaneta1) ? 'externos' : 'otros';
+            const categoriaOtroCuerpo = esLuminaria(otroCuerpoNombre) ? 'luminarias' : esInterno(otroCuerpoNombre) ? 'internos' : esExterno(otroCuerpoNombre) ? 'externos' : 'otros';
+    
+            // Usamos el orbe más permisivo (el mayor) entre los dos cuerpos
+            orbeMaximo = Math.max(
+                orbesUsuario[categoriaPlaneta1] || 0, // Asegura que no sea undefined si una categoría no existe
+                orbesUsuario[categoriaOtroCuerpo] || 0
+            );
+    
+            // Si el Ascendente está involucrado, podrías tener una lógica específica para él,
+            // por ejemplo, usar el orbe de 'otros' o un orbe fijo si lo prefieres para puntos cardinales.
+            // Aquí asumo que el Ascendente caería en 'otros' por defecto si no es un planeta.
+            if (nombrePlaneta1 === t("Ascendente")) {
+                orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0); // O podrías definir un orbe específico para el Ascendente
+            } else if (otroCuerpoNombre === t("Ascendente")) {
+                orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0);
+            }
+            // --- Fin de la lógica del orbe ---
+    
             const aspectos = [
                 { angulo: 90, color: "#d194ff" },
                 { angulo: 30, color: "#ffe278" },
@@ -774,18 +805,19 @@ const CalculateScreen = () => {
             ];
     
             return aspectos.map(({ angulo, color }) =>
-                Math.abs(diferenciaAngular - angulo) < 5 ? (
-                    <AnimatedLine key={`Line-${planeta1.nombre}-${otroCuerpo}-${angulo}`}
+                // Aquí se usa el orbeMaximo calculado dinámicamente
+                Math.abs(diferenciaAngular - angulo) < orbeMaximo ? (
+                    <AnimatedLine key={`Line-${nombrePlaneta1}-${otroCuerpoNombre}-${angulo}`}
                         x1={posicion1.x} y1={posicion1.y}
                         x2={posicion2.x} y2={posicion2.y}
-                        stroke={color} strokeWidth="1.25" 
+                        stroke={color} strokeWidth="1.25"
                         opacity={opacityAnimLine}
                     />
                 ) : null
             ).filter(Boolean);
         });
     };
-  
+    
     const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => { 
       const DISTANCIA_BASE = DISTANCIA_PLANETAS;
       const UMBRAL_ANGULO = 7; 
@@ -822,14 +854,16 @@ const CalculateScreen = () => {
         distancia = DISTANCIA_BASE; 
       } else {
         const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
-        const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 3) + paso * posicionEnGrupo;
+        const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
     
         distancia = DISTANCIA_BASE + offset;
       }
     
       return calcularPosicion(anguloActual, distancia);
     };
-  
+    
+    
+    
       return (
                     <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
         
@@ -837,7 +871,7 @@ const CalculateScreen = () => {
             
          
     
-            <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.secondary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(${-ASCENDENTROTATION + 1}, ${CENTER.x}, ${CENTER.y})`}/>
+            <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.tertiary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(${-ASCENDENTROTATION + 1}, ${CENTER.x}, ${CENTER.y})`}/>
           
             {signosSimbolos.map((signo, index) => {
               const angle = (-index * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION;
@@ -845,7 +879,7 @@ const CalculateScreen = () => {
               const linePos = calcularPosicion(angle, LINE_LENGTH);
     
               const isSelected = selectedSign === signo;
-              const textColor = isSelected ? theme.primary : theme.secondary;
+              const textColor = isSelected ? theme.primary : theme.tertiary;
     
               return (
                  <G key={signo}>
@@ -883,7 +917,7 @@ const CalculateScreen = () => {
     y1={CENTER.y + RADIO * Math.sin(angleCasa * (Math.PI / 180))}
     x2={CENTER.x + RADIO * Math.cos((angleCasa + 180) * (Math.PI / 180))}
     y2={CENTER.y + RADIO * Math.sin((angleCasa + 180) * (Math.PI / 180))}
-    stroke={theme.secondary} strokeWidth=".75"
+    stroke={theme.tertiary} strokeWidth=".75"
     />
     ))}
     
@@ -892,10 +926,10 @@ const CalculateScreen = () => {
     
     <Defs>
     <Marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="10" markerHeight="10">
-    <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.secondary} />
+    <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
     </Marker>
     </Defs>
-    <Line  markerEnd="url(#arrow)"  x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.secondary} strokeWidth="1.5" />
+    <Line  markerEnd="url(#arrow)"  x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
     
             <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
     
@@ -907,14 +941,14 @@ const CalculateScreen = () => {
                   const planetSignoIndex = signosZodiacales.indexOf(signo);
                   const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
                   const isSelected = planeta === selectedPlanet;
-                  const planetaColor = isSelected ? theme.focusedItem : theme.secondary; 
+                  const planetaColor = isSelected ? theme.focusedItem : theme.tertiary; 
     
                   
                   return (
                     <G key={planeta}>
                       
-                      {renderizarLineasAspectos(posicion, planeta, index)}
-                      <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.0225} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
+    {renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)} 
+                      <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                         {simbolosPlanetas[planeta]}
                       </AnimatedText>
                       {planeta !== "Nodo Norte" && planeta !== "North Node" && (
@@ -971,7 +1005,7 @@ const CalculateScreen = () => {
           cx={pos.x} 
           cy={pos.y} 
           r={width*0.015}
-          fill={theme.secondary} 
+          fill={theme.tertiary} 
         />
         <AnimatedG >
           <SvgText  
@@ -991,7 +1025,7 @@ const CalculateScreen = () => {
     </G>
               </AnimatedSvg>
               </Animated.View>
-              <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.secondary} fill="none" strokeWidth="1.5" />
+              <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
     
           </AnimatedSvg>
           
@@ -1015,7 +1049,6 @@ const CalculateScreen = () => {
           
       );
     };
-
 const guardarNuevaCarta = async () => {
   if (!auth.currentUser) {
     showToast({ message: t("toast.Auth"), type: "error" });

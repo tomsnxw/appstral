@@ -843,7 +843,7 @@ homeWelcomeTitles:{
     color: theme.secondary,
   },
   chartResultListSpace: {
-    height: hp('32.5%'), // height*0.325 a hp
+    height: hp('30%'), // height*0.325 a hp
   },
 
   policyScrollContainer: {
@@ -921,12 +921,16 @@ homeWelcomeTitles:{
     paddingLeft: wp('2.5%'), // 10px to wp
   },
   inputContainer: {
+    height: hp('4.5%'), // Equivalente a height * 0.045
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#808080',
+    borderRadius: RFValue(50),
+    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     height: hp('4.5%'), // height*0.045 to hp
     flexDirection: 'row',
     borderWidth: 1, // Keep fixed
     borderColor: theme.secondary,
-    borderRadius: 50, // Keep fixed, as it's a shape descriptor
-    paddingHorizontal: wp('3.75%'), // 15px to wp
     textAlign: 'center',
     justifyContent: 'center',
     width: wp('90%'), // width*.9 to wp
@@ -946,16 +950,19 @@ homeWelcomeTitles:{
     color: theme.secondary,
   },
   CalculateInput: {
-    flex: 1,
-    fontSize: RFValue(13), // height*0.016, assuming RFValue(13) works well for this size
-    height: hp('4.6%'), // height*0.046 to hp
+    height: hp('4.8%'), // Equivalente a height * 0.0475
+    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    borderRadius: RFValue(20),
+    textAlign: 'left',
+    color: '#808080',
+    fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',
-    color: theme.secondary,
+    width: '90%',
   },
   inputDateTime: {
     paddingHorizontal: wp('18.75%'), // 75px to wp
     fontSize: RFValue(13), // height*0.016, assuming RFValue(13) works well for this size
-    height: hp('4.6%'), // height*0.046 to hp
+    height: hp('4.8%'), // Equivalente a height * 0.0475
     fontFamily: 'Effra_Regular',
     textAlign: 'center',
     color: theme.secondary,
@@ -1152,24 +1159,22 @@ homeWelcomeTitles:{
     marginHorizontal: 'auto',
   },
   modalText: {
-    fontSize: RFValue(15), // 15px a RFValue
+    fontSize: RFValue(13), // 15px a RFValue
     fontFamily: 'Effra_Regular',
     textAlign: 'start',
     color: '#f2f2f2',
     paddingLeft: wp('2.5%'), // 10px a wp
   },
   modalInput: {
-    height: hp('4.5%'), // height*0.045 a hp
-    paddingBottom: hp('0.375%'), // 3px a hp
-    paddingHorizontal: wp('5%'), // 20px a wp
-    paddingTop: hp('0.625%'), // 5px a hp
-    borderRadius: 20, // Se mantiene fijo
-    borderWidth: 0.5, // Se mantiene fijo
+    height: hp('4.5%'), // Equivalente a height * 0.045
+    flexDirection: 'row',
+    borderWidth: 1,
     borderColor: theme.sheetBorder,
     backgroundColor: theme.background,
     color: theme.secondary,
-    fontSize: RFValue(13), // 16px a RFValue
-    fontFamily: 'Effra_Regular',
+    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
+    borderRadius: RFValue(50),
+    width: wp('90%'), // width*.9 to wp
   },
   modalDateTimeInput: {
     height: hp('4.5%'), // height*0.045 a hp
@@ -1181,16 +1186,19 @@ homeWelcomeTitles:{
     borderColor: theme.sheetBorder,
     backgroundColor: theme.background,
     color: theme.secondary,
-    fontSize: RFValue(13), // 16px a RFValue
+    fontSize: RFValue(12), // 16px a RFValue
     fontFamily: 'Effra_Regular',
     textAlign: 'center',
   },
   input: {
+    height: hp('4.75%'), // Equivalente a height * 0.0475
+    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    borderRadius: RFValue(20),
     borderColor: theme.sheetBorder,
     color: theme.secondary,
-    fontSize: RFValue(12), // height*.018 con la equivalencia de RFValue(12)
-    lineHeight: hp('2.5%'), // height*.02 a hp
+    fontSize: RFValue(12), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',
+    width: '90%',
   },
   modalPickerContainer: {
     // No hay cambios aquí ya que no hay propiedades fijas que necesiten conversión.
@@ -1199,7 +1207,6 @@ homeWelcomeTitles:{
     color: theme.secondary,
     fontFamily: 'Effra_Regular',
     marginVertical: 'auto',
-    transform: [{ translateY: -10 }], // Se mantiene fijo
   },
   modalView: {
     width: wp('100%'), // width a wp

@@ -467,12 +467,13 @@ const styles = (theme) => StyleSheet.create({
     paddingHorizontal: wp('5.3%'), // Aproximadamente 20 / 375 * 100%
   },
   title: {
-    fontSize: RFValue(36), // Equivalente a height * 0.045
+    fontSize: RFValue(34), // Equivalente a height * 0.045
     fontFamily: 'Effra_Bold',
     textAlign: "center",
     lineHeight: RFValue(36), // Equivalente a height * 0.045
     maxWidth: wp('90%'), // 90% del ancho de la pantalla
     marginHorizontal: 'auto',
+    color: '#333333'
   },
   subtitle: {
     fontSize: RFValue(24), // Equivalente a height * 0.03
@@ -589,7 +590,6 @@ const styles = (theme) => StyleSheet.create({
   },
   modalInput: {
     height: hp('4.5%'), // Equivalente a height * 0.045
-    paddingBottom: hp('0.4%'), // Aproximadamente 3 / 812 * 100%
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     borderRadius: RFValue(20),
     borderWidth: 1,
@@ -600,7 +600,6 @@ const styles = (theme) => StyleSheet.create({
   },
   input: {
     height: hp('4.75%'), // Equivalente a height * 0.0475
-    paddingBottom: hp('0.4%'), // Aproximadamente 3 / 812 * 100%
     paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
     borderRadius: RFValue(20),
     textAlign: 'left',

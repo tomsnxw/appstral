@@ -119,19 +119,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: RFValue(36), // Equivalente a height * 0.045
+    fontSize: RFValue(34), // Equivalente a height * 0.045
     fontFamily: 'Effra_Bold',
     textAlign: "center",
     lineHeight: RFValue(44), // Equivalente a height * 0.055
-    maxWidth: wp('90%'), // 90% del ancho de la pantalla
+    maxWidth: wp('95%'), // 90% del ancho de la pantalla
     marginHorizontal: 'auto',
   },
   subtitle: {
-    fontSize: RFValue(24), // Equivalente a height * 0.03
+    fontSize: RFValue(22), // Equivalente a height * 0.03
     marginHorizontal: 'auto',
     fontFamily: 'Effra_Light',
     textAlign: "center",
-    lineHeight: RFValue(32), // Equivalente a height * 0.04
+    lineHeight: RFValue(26), // Equivalente a height * 0.04
     maxWidth: wp('80%'), // 80% del ancho de la pantalla
     marginVertical: hp('0.6%') // Aproximadamente 5 / 812 * 100%
   },
@@ -143,13 +143,14 @@ const styles = StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
+     height: hp('4.5%'), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+
   },
   focusedBorder:{
     borderWidth: 1,
@@ -166,11 +167,14 @@ const styles = StyleSheet.create({
     color: '#808080',
   },
   input: {
-    flex: 1,
+    height: hp('4.75%'), // Equivalente a height * 0.0475
+    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    borderRadius: RFValue(20),
+    textAlign: 'left',
+    color: '#808080',
     fontSize: RFValue(13), // Equivalente a height * 0.016
-    height: hp('4.7%'), // Equivalente a height * 0.047
     fontFamily: 'Effra_Regular',
-    color: '#808080'
+    width: '80%',
   },
   datePicker: {
     height: hp('4.5%'), // Equivalente a height * 0.045
@@ -250,8 +254,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#666666",
   },
   buttonText: {
-    fontSize: RFValue(15), // Se mantuvo el valor fijo y se aplicó RFValue
-    color: 'colors.alwaysWhite', // Asegúrate de que 'colors' esté definido o usa un valor hexadecimal
+    fontSize: height*0.016,
+    color: colors.alwaysWhite,
     fontFamily: 'Effra_Regular',
     transform: [{ translateY: 1 }]
   },

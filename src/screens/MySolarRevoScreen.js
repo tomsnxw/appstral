@@ -16,6 +16,7 @@ const { height: height, width: width } = Dimensions.get('screen');
 const { height: wHeight, width: wWidth } = Dimensions.get('window');
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const MySolarRevoScreen = ({navigation}) => {
  const {userData} = useUser();
@@ -411,7 +412,6 @@ const renderCirculoZodiacal = () => {
     resultado.distancia_ascendente_casa6 || 0,
     
   ].map(distancia => -distancia);
-
   const planetas = Object.keys(resultado.planetas);
   const simbolosPlanetas = i18n.language === 'es' ? {
     "Sol": "Q",
@@ -442,7 +442,6 @@ const renderCirculoZodiacal = () => {
     "Chiron": "q",  
     "North Node": "g",  
   };    
-
 
         
         const rotateInterpolate = rotateAnim.interpolate({
@@ -485,37 +484,67 @@ const renderCirculoZodiacal = () => {
     ];
   });
   
-  const renderizarLineasAspectos = (planeta1, index) => {
-    return [...planetas.slice(index + 1), "Ascendente"].flatMap((otroCuerpo) => {
-     
-        if (selectedPlanet === "Ascendente") {
-            if (planeta1.nombre !== "Ascendente" && otroCuerpo !== "Ascendente") {
-                return null;
-            }
-        } else {
-            if (otroCuerpo === "Ascendente") {
-                return null;
-            }
-            if (selectedPlanet && planeta1.nombre !== selectedPlanet && otroCuerpo !== selectedPlanet) {
-                return null;
+const renderizarLineasAspectos = (planeta1Data, index) => { // Renombré 'planeta1' a 'planeta1Data' para mayor claridad
+    const nombrePlaneta1 = planeta1Data.nombre; // Asumiendo que planeta1Data.nombre contiene el nombre del planeta
+    const orbesUsuario = userData.orbes; // Acceso a los orbes del usuario
+
+    return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpoNombre) => {
+        // ... (Tu lógica existente para filtrar por selectedPlanet se mantiene igual) ...
+        if (selectedPlanet) {
+            if (selectedPlanet === t("Ascendente")) {
+                if (nombrePlaneta1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
+                    return null;
+                }
+            } else {
+                if (nombrePlaneta1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
+                    return null;
+                }
             }
         }
 
         let signo2, grado2, minutos2;
-        if (otroCuerpo === "Ascendente") {
+        if (otroCuerpoNombre === t("Ascendente")) {
             ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.casas["1"]);
         } else {
-            ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpo]);
+            ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpoNombre]);
         }
 
         const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
-        const posicion1 = calcularPosicion(planeta1.angle, DISTANCIA_ASPECTOS);
+        const posicion1 = calcularPosicion(planeta1Data.angle, DISTANCIA_ASPECTOS);
         const posicion2 = calcularPosicion(
             (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
             DISTANCIA_ASPECTOS
         );
 
-        const diferenciaAngular = calcularDiferenciaAngular(planeta1.angle, posicion2.angle);
+        const diferenciaAngular = calcularDiferenciaAngular(planeta1Data.angle, posicion2.angle);
+
+        // --- Lógica para determinar el orbe a usar ---
+        let orbeMaximo;
+
+        const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
+        const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
+        const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
+
+        // Determinamos las categorías de ambos cuerpos celestes
+        const categoriaPlaneta1 = esLuminaria(nombrePlaneta1) ? 'luminarias' : esInterno(nombrePlaneta1) ? 'internos' : esExterno(nombrePlaneta1) ? 'externos' : 'otros';
+        const categoriaOtroCuerpo = esLuminaria(otroCuerpoNombre) ? 'luminarias' : esInterno(otroCuerpoNombre) ? 'internos' : esExterno(otroCuerpoNombre) ? 'externos' : 'otros';
+
+        // Usamos el orbe más permisivo (el mayor) entre los dos cuerpos
+        orbeMaximo = Math.max(
+            orbesUsuario[categoriaPlaneta1] || 0, // Asegura que no sea undefined si una categoría no existe
+            orbesUsuario[categoriaOtroCuerpo] || 0
+        );
+
+        // Si el Ascendente está involucrado, podrías tener una lógica específica para él,
+        // por ejemplo, usar el orbe de 'otros' o un orbe fijo si lo prefieres para puntos cardinales.
+        // Aquí asumo que el Ascendente caería en 'otros' por defecto si no es un planeta.
+        if (nombrePlaneta1 === t("Ascendente")) {
+            orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0); // O podrías definir un orbe específico para el Ascendente
+        } else if (otroCuerpoNombre === t("Ascendente")) {
+            orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0);
+        }
+        // --- Fin de la lógica del orbe ---
+
         const aspectos = [
             { angulo: 90, color: "#d194ff" },
             { angulo: 30, color: "#ffe278" },
@@ -526,18 +555,18 @@ const renderCirculoZodiacal = () => {
         ];
 
         return aspectos.map(({ angulo, color }) =>
-            Math.abs(diferenciaAngular - angulo) < 5 ? (
-                <Line key={`Line-${planeta1.nombre}-${otroCuerpo}-${angulo}`}
+            // Aquí se usa el orbeMaximo calculado dinámicamente
+            Math.abs(diferenciaAngular - angulo) < orbeMaximo ? (
+                <AnimatedLine key={`Line-${nombrePlaneta1}-${otroCuerpoNombre}-${angulo}`}
                     x1={posicion1.x} y1={posicion1.y}
                     x2={posicion2.x} y2={posicion2.y}
-                    stroke={color} strokeWidth="1.25" 
+                    stroke={color} strokeWidth="1.25"
                     opacity={opacityAnimLine}
                 />
             ) : null
         ).filter(Boolean);
     });
 };
-
 
 const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => { 
   const DISTANCIA_BASE = DISTANCIA_PLANETAS;
@@ -586,9 +615,9 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
 
 
   return (
-                <View>
+                <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
     
-      <Svg width={SVG_SIZE} height={SVG_SIZE}>
+      <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
         
      
 
@@ -605,7 +634,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
           return (
              <G key={signo}>
               
-                  <SvgText
+                  <AnimatedText
                     x={textPos.x}
                     y={textPos.y}
                     fontSize={height * 0.035}
@@ -616,7 +645,7 @@ const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
                     transform={`rotate(${angle + 75}, ${textPos.x}, ${textPos.y})`}
                   >
                     {signo}
-                  </SvgText>
+                  </AnimatedText>
                   
                   <Circle 
                     cx={textPos.x} 
@@ -647,14 +676,14 @@ stroke={theme.tertiary} strokeWidth=".75"
 
 <Defs>
 <Marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="10" markerHeight="10">
-<Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === "Ascendente" ? theme.focusedItem : theme.tertiary} />
+<Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
 </Marker>
 </Defs>
-<Line  markerEnd="url(#arrow)"  x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === "Ascendente" ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
+<Line  markerEnd="url(#arrow)"  x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
 
-        <View>
+        <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
 
-          <Svg width={SVG_SIZE} height={SVG_SIZE}>
+          <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
 
             
             {planetas.map((planeta, index) => {
@@ -668,67 +697,67 @@ stroke={theme.tertiary} strokeWidth=".75"
               return (
                 <G key={planeta}>
                   
-                  {renderizarLineasAspectos(posicion, planeta, index)}
-                  <SvgText x={posicion.x} y={posicion.y} fontSize={height*.0225} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
+{renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)} 
+                  <AnimatedText x={posicion.x} y={posicion.y} fontSize={height*.022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
                     {simbolosPlanetas[planeta]}
-                  </SvgText>
+                  </AnimatedText>
                   {planeta !== "Nodo Norte" && planeta !== "North Node" && (
-  <>
-    {estacionario && !retrógrado && (
-      <SvgText
-        x={posicion.x + 7.5}
-        y={posicion.y + 10}
-        fontSize={height * 0.008}
-        textAnchor="start"
-        alignmentBaseline="middle"
-        fill={planetaColor}
-        fontFamily="Effra_SemiBold"
-      >
-        st
-      </SvgText>
-    )}
-    {retrógrado && !estacionario && (
-      <SvgText
-        x={posicion.x + 7.5}
-        y={posicion.y + 10}
-        fontSize={height * 0.008}
-        textAnchor="start"
-        alignmentBaseline="middle"
-        fill={planetaColor}
-        fontFamily="Effra_SemiBold"
-      >
-        Rx
-      </SvgText>
-    )}
-    {retrógrado && estacionario && (
-      <SvgText
-        x={posicion.x + 7.5}
-        y={posicion.y + 10}
-        fontSize={height * 0.008}
-        textAnchor="start"
-        alignmentBaseline="middle"
-        fill={planetaColor}
-        fontFamily="Effra_SemiBold"
-      >
-        stRx
-      </SvgText>
-    )}
-  </>
-)}
+                   <>
+                     {estacionario && !retrógrado && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         st
+                       </SvgText>
+                     )}
+                     {retrógrado && !estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         Rx
+                       </SvgText>
+                     )}
+                     {retrógrado && estacionario && (
+                       <SvgText
+                         x={posicion.x + 7.5}
+                         y={posicion.y + 10}
+                         fontSize={height * 0.008}
+                         textAnchor="start"
+                         alignmentBaseline="middle"
+                         fill={planetaColor}
+                         fontFamily="Effra_SemiBold"
+                       >
+                         stRx
+                       </SvgText>
+                     )}
+                   </>
+                 )}
                 </G>
               );
             })}     
 <G>
 {posicionesCasas.map(({ numero, pos }, index) => (
   <React.Fragment key={numero}>
-    <Circle  
+    <AnimatedCircle  
       
       cx={pos.x} 
       cy={pos.y} 
       r={width*0.015}
       fill={theme.tertiary} 
     />
-    <G >
+    <AnimatedG >
       <SvgText  
         x={pos.x} 
         y={pos.y} 
@@ -740,15 +769,15 @@ stroke={theme.tertiary} strokeWidth=".75"
       >
         {numero}
       </SvgText>
-    </G>
+    </AnimatedG>
   </React.Fragment>
 ))}
 </G>
-          </Svg>
-          </View>
-          <Circle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
+          </AnimatedSvg>
+          </Animated.View>
+          <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
 
-      </Svg>
+      </AnimatedSvg>
       
       {tooltip.visible && (
       <View style={{
@@ -765,7 +794,7 @@ stroke={theme.tertiary} strokeWidth=".75"
         <Text style={{color: theme.background,fontFamily: 'Effra_Regular', fontSize: height*0.012}}>{tooltip.sign}</Text>
       </View>
     )}
-    </View>
+    </Animated.View>
 
       
   );
@@ -781,7 +810,7 @@ stroke={theme.tertiary} strokeWidth=".75"
     <View style={styles.myChartContainer}>
     <View style={{ width: width*.9,
 margin: 'auto',
-paddingTop: 20,
+paddingTop: hp('3.25%'),
 marginTop: 0,
 gap: 7.5}}>
     <View style={styles.chartTitle}>
@@ -845,7 +874,7 @@ gap: 7.5}}>
            ListFooterComponent={<View style={styles.chartResultListSpace} />}
          />
         )}
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0,height: height*0.375, zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
 
            {modalVisible && (<ShareMyChartModal
         visible={modalVisible}

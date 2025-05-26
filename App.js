@@ -718,7 +718,7 @@ return (
 
   const MyDataTabs = () => {
     return (
-      <Tab.Navigator initialRouteName={t('mi_carta')}
+      <Tab.Navigator initialRouteName={t('mis_cartas')}
         tabBar={props => <MyDataTabBar {...props}/>}
         screenOptions={{
           animationEnabled: true,
@@ -850,7 +850,7 @@ const AuthStack = () => {
     return (
       <NavigationContainer ref={navigationRef} key={reloadKey} theme={MyTheme}>
       <Tab.Navigator 
-      initialRouteName={initialRoute}
+      initialRouteName='Profile'
       swipeEnabled={true}
            screenOptions={{
             
