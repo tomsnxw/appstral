@@ -25,10 +25,10 @@ const { height: height, width: width } = Dimensions.get('screen');
 
 // Ahora puedes definir tus tamaños base usando wp y hp directamente
 const eventWidth = wp('80%'); // 100% / 1.25
-const eventHeight = hp('70%'); // Un aproximado para (viewShotWidth * 16) / 9 / 1.25
+const eventHeight = hp('65%'); // Un aproximado para (viewShotWidth * 16) / 9 / 1.25
 const contentWidth = wp('55%'); // 100% / 2
 const contentHeight = hp('45%'); // 87.5% / 2.4
-const textWidth = wp('42%'); // 100% / 2.5
+const textWidth = wp('44%'); // 100% / 2.5
 
 // Usa RFValue para los tamaños de fuente
 const baseFontSize = RFValue(12); // Puedes ajustar este valor base
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     width: wp('90%'),
     height: hp('87.5%'),
     marginHorizontal: 'auto',
-    marginTop: hp('3.75%'),
+    marginVertical: hp('3.75%'),
     justifyContent: 'space-between',
     gap: hp('2%')
   },
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Effra_Light',
   },
   button: {
-    width: wp('11.25%'), // 45 de 400 (width) es 11.25%
+    width: hp('5.625%'), // 45 de 400 (width) es 11.25%
     height: hp('5.625%'), // 45 de 800 (height) es 5.625%
     borderRadius: wp('25%'), // Para que sea un círculo, el radio es la mitad del ancho/alto
   },

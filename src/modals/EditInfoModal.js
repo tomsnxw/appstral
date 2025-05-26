@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from "../contexts/ToastContext";
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
+import countryTranslations from '../utils/countryTranslations'
 
 const EditInfoModal = ({ visible, handleCloseModal}) => {
   const { theme } = useContext(ThemeContext);
@@ -41,6 +42,8 @@ const EditInfoModal = ({ visible, handleCloseModal}) => {
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(true);
   const [filteredCities, setFilteredCities] = useState([]);
+    const [filteredCountries, setFilteredCountries] = useState([]);
+  const [searchTextCountry, setSearchTextCountry] = useState("");
   
   const dropdownAnim = {
     country: useRef(new Animated.Value(0)).current,
@@ -48,15 +51,25 @@ const EditInfoModal = ({ visible, handleCloseModal}) => {
   };
 
   useEffect(() => {
-    setCountries(Object.keys(cities)); 
-  }, []);
+    const sortedCountries = Object.keys(cities)
+      .sort((a, b) => {
+        const nameA = i18n.language === 'es' ? countryTranslations[a] || a : a;
+        const nameB = i18n.language === 'es' ? countryTranslations[b] || b : b;
+        return nameA.localeCompare(nameB);
+      });
 
-  useEffect(() => {
-    if (birthCountry && cities[birthCountry]) {
-      setCitiesList(cities[birthCountry]);
-      setFilteredCities(cities[birthCountry]);
+    setCountries(sortedCountries);
+    setFilteredCountries(sortedCountries); 
+  }, [i18n.language]);
+
+
+useEffect(() => {
+    if (birthCountry) {
+      setSearchTextCountry(i18n.language === 'es' ? countryTranslations[birthCountry] || birthCountry : birthCountry);
+    } else {
+      setSearchTextCountry(""); 
     }
-  }, [birthCountry]);
+  }, [birthCountry, i18n.language, countryTranslations]); // Dependencies ensure it runs when these values change
 
     const toggleDropdown = (type) => {
       setDropdownVisible((prev) => {
@@ -87,26 +100,42 @@ const EditInfoModal = ({ visible, handleCloseModal}) => {
       toggleDropdown("country");
     };
 
-      
-  const handleCitySearch = (text) => {
-    setBirthCity(text);
+const handleCitySearch = (text) => {
+  setBirthCity(text);
+  if (text === "") {
+    setFilteredCities(citiesList);
+    return;
+  }
+
+  let filtered = citiesList.filter(city =>
+    city.label.toLowerCase().startsWith(text.toLowerCase())
+  );
+
+  if (text.toLowerCase() === "caba") {
+    const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
+    if (!filtered.some(city => city.label === cabaOption.label)) {
+      filtered = [cabaOption, ...filtered];
+    }
+  }
+
+  setFilteredCities(filtered);
+};
+
+
+  const handleCountrySearch = (text) => {
+    setSearchTextCountry(text);
     if (text === "") {
-      setFilteredCities(citiesList);
+      setFilteredCountries(countries);
       return;
     }
-  
-    const regex = new RegExp(text, "i"); 
-    let filtered = citiesList.filter(city => regex.test(city.label));
-  
-    if (text.toLowerCase() === "caba") {
-      const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
-      if (!filtered.some(city => city.label === cabaOption.label)) {
-        filtered = [cabaOption, ...filtered];
-      }
-    }
-  
-    setFilteredCities(filtered);
+
+    const filtered = countries.filter(countryCode => {
+      const countryName = i18n.language === 'es' ? countryTranslations[countryCode] || countryCode : countryCode;
+      return countryName.toLowerCase().startsWith(text.toLowerCase());
+    });
+    setFilteredCountries(filtered);
   };
+  
   
   useEffect(() => {
     if (userData && isModalVisible) {
@@ -299,27 +328,49 @@ placeholderTextColor={theme.secondary}
   onFocus={() => setFocusedField('hora')}
   onBlur={() => setFocusedField(null)}
 />
-          <View style={styles.pickerPlaceContainer}>
-              <TouchableOpacity style={styles.modalInput} onPress={() => toggleDropdown("country")}>
-                <TextInput style={styles.input} editable={false}>
-                  {birthCountry || t('Seleccion_Pais')}
-                </TextInput>
-              </TouchableOpacity>
-        
-              {dropdownVisible.country && (
-              <Animated.View style={[styles.dropdownBox,{maxHeight: 150, minHeight: 35, height: dropdownAnim.country.interpolate({ inputRange: [0, 1], outputRange: [0, Math.min(countries.length * 35, 130)] }),},]}>
-                  <FlatList
-                    data={countries}
-                    keyExtractor={(item) => item}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity onPress={() => handleCountrySelect(item)}>
-                        <Text style={styles.dropdownTextStyles}>{item}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                </Animated.View>
-              )}
-        </View>
+<View style={styles.pickerPlaceContainer}>
+  <TouchableOpacity
+    style={styles.modalInput}
+    onPress={() => toggleDropdown("country")}
+  >
+    <TextInput
+      placeholderTextColor={theme.secondary}
+      style={styles.input}
+      placeholder={t('Seleccion_Ciudad')}
+      value={searchTextCountry}
+      onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
+      onFocus={() => { // Abre el dropdown cuando se enfoca el input
+        if (!dropdownVisible.country) {
+          toggleDropdown("country");
+        }
+      }}
+    />
+  </TouchableOpacity>
+
+  {dropdownVisible.country && (
+  <View
+    style={[
+      styles.dropdownBox,
+      { maxHeight: 100, overflow: 'hidden' }
+    ]}
+  >
+      <FlatList
+        data={filteredCountries.length > 0 ? filteredCountries : []} // Usa filteredCountries
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleCountrySelect(item)}>
+            <Text style={styles.dropdownTextStyles}>
+              {i18n.language === 'es' ? countryTranslations[item] || item : item}
+            </Text>
+          </TouchableOpacity>
+        )}
+        ListEmptyComponent={() => ( // Muestra mensaje si no hay resultados
+          <Text style={styles.dropdownTextStyles}>{t('No_Resultados')}</Text>
+        )}
+      />
+    </View>
+  )}
+</View>
         <View style={styles.pickerPlaceContainer}>
         <TouchableOpacity style={styles.modalInput}>
               <TextInput

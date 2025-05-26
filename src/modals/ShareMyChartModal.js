@@ -103,11 +103,24 @@ return (
       }
     };
 
-useEffect(() => {
-         if (viewReady && resultado) {
-           captureAndShare();
-         }
-       }, [viewReady, resultado]);
+  useEffect(() => {
+    let timeoutId; // Variable para almacenar el ID del timeout
+
+    if (viewReady && resultado) {
+      // Establece un timeout de 2000 milisegundos (2 segundos)
+      timeoutId = setTimeout(() => {
+        captureAndShare();
+      }, 2000);
+    }
+
+    // Función de limpieza para cancelar el timeout si los estados cambian
+    // antes de que pasen los 2 segundos, evitando llamadas no deseadas.
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [viewReady, resultado]); 
 
       const [fontsLoaded] = useFonts({
         'Astronomicon': require('../../assets/fonts/Astronomicon.ttf'),
@@ -742,7 +755,7 @@ const renderizarLineasAspectos = (planeta1Data, index) => { // Renombré 'planet
                 <View style={styles(theme).shareChartInfoSeparator} />
                 <Text style={styles(theme).shareChartInfoTime}>{formattedTime}</Text>
                 <View style={styles(theme).shareChartInfoSeparator} />
-                <Text style={styles(theme).shareChartInfoText}>{userData?.birthCity}</Text>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={styles(theme).shareChartInfoText}>{userData?.birthCity}</Text>
               </View>
             </View>):(
             <View style={styles(theme).shareChartDetailsHeader}>
@@ -891,14 +904,14 @@ const styles = (theme) => StyleSheet.create({
       minWidth: wp('20%'), // Example: 20% of screen width
       maxWidth: wp('45%'), // Example: 40% of screen width
       textAlign: 'center',
-      fontSize: RFValue(14), // Use RFValue with a responsive base
+      fontSize: RFValue(13), // Use RFValue with a responsive base
       fontFamily: 'Effra_Regular',
       color: theme.secondary,
       },
       shareChartInfoTime:{
         maxWidth: wp('25%'), // Example: 25% of screen width
         textAlign: 'center',
-        fontSize: RFValue(14), // Use RFValue with a responsive base
+        fontSize: RFValue(13), // Use RFValue with a responsive base
         fontFamily: 'Effra_Regular',
         color: theme.secondary,
         },

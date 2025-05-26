@@ -48,7 +48,9 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
   const [focusedField, setFocusedField] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState({ country: false, city: false });
   const [countries, setCountries] = useState([]);
+  const [filteredCountries, setFilteredCountries] = useState([]);
   const [citiesList, setCitiesList] = useState([]);
+const [searchTextCountry, setSearchTextCountry] = useState("");
   const [searchText, setSearchText] = useState(""); 
   const dropdownAnim = {
     country: useRef(new Animated.Value(0)).current,
@@ -62,9 +64,24 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
         const nameB = i18n.language === 'es' ? countryTranslations[b] || b : b;
         return nameA.localeCompare(nameB);
       });
-  
+
     setCountries(sortedCountries);
+    setFilteredCountries(sortedCountries); // Inicializa filteredCountries con todos los países
   }, [i18n.language]);
+
+    const handleCountrySearch = (text) => {
+    setSearchTextCountry(text);
+    if (text === "") {
+      setFilteredCountries(countries);
+      return;
+    }
+
+    const filtered = countries.filter(countryCode => {
+      const countryName = i18n.language === 'es' ? countryTranslations[countryCode] || countryCode : countryCode;
+      return countryName.toLowerCase().startsWith(text.toLowerCase());
+    });
+    setFilteredCountries(filtered);
+  };
 
   const toggleDropdown = (type) => {
     setDropdownVisible((prev) => {
@@ -93,6 +110,7 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
     setLongitud(null);
     setCitiesList(cities[country] || []);
     setFilteredCities(cities[country] || []);
+    setSearchTextCountry(i18n.language === 'es' ? countryTranslations[country] || country : country); 
     setSearchText(""); 
     toggleDropdown("country");
   };
@@ -106,25 +124,27 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
   };
 
   
-  const handleCitySearch = (text) => {
-    setCiudad(text);
-    if (text === "") {
-      setFilteredCities(citiesList);
-      return;
+const handleCitySearch = (text) => {
+  setCiudad(text);
+  if (text === "") {
+    setFilteredCities(citiesList);
+    return;
+  }
+
+  // Modificación aquí: usar startsWith para buscar solo desde el inicio
+  let filtered = citiesList.filter(city =>
+    city.label.toLowerCase().startsWith(text.toLowerCase())
+  );
+
+  if (text.toLowerCase() === "caba") {
+    const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
+    if (!filtered.some(city => city.label === cabaOption.label)) {
+      filtered = [cabaOption, ...filtered];
     }
-  
-    const regex = new RegExp(text, "i"); 
-    let filtered = citiesList.filter(city => regex.test(city.label));
-  
-    if (text.toLowerCase() === "caba") {
-      const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
-      if (!filtered.some(city => city.label === cabaOption.label)) {
-        filtered = [cabaOption, ...filtered];
-      }
-    }
-  
-    setFilteredCities(filtered);
-  };
+  }
+
+  setFilteredCities(filtered);
+};
   
 
   const progress = useRef(new Animated.Value(0)).current;
@@ -388,27 +408,49 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
              onFocus={() => setFocusedField('hora')}
                onBlur={() => setFocusedField(null)}
            />
-        <View style={styles.pickerPlaceContainer}>
-            <TouchableOpacity style={styles.modalInput} onPress={() => toggleDropdown("country")}>
-              <TextInput placeholderTextColor={theme.secondary} style={styles.input} editable={false}>
-                {pais || t('Seleccion_Pais')}
-              </TextInput>
-            </TouchableOpacity>
-      
-            {dropdownVisible.country && (
-              <Animated.View style={[styles.dropdownBox, { height: dropdownAnim.country.interpolate({ inputRange: [0, 1], outputRange: [0, 150] }) }]}>
-                <FlatList
-                  data={countries}
-                  keyExtractor={(item) => item}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleCountrySelect(item)}>
-                      <Text style={styles.dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </Animated.View>
-            )}
-      </View>
+<View style={styles.pickerPlaceContainer}>
+  <TouchableOpacity
+    style={styles.modalInput}
+    onPress={() => toggleDropdown("country")}
+  >
+    <TextInput
+      placeholderTextColor={theme.secondary}
+      style={styles.input}
+      value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
+      onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
+      onFocus={() => { // Abre el dropdown cuando se enfoca el input
+        if (!dropdownVisible.country) {
+          toggleDropdown("country");
+        }
+      }}
+      placeholder={t('Seleccion_Pais')}
+    />
+  </TouchableOpacity>
+
+  {dropdownVisible.country && (
+  <View
+    style={[
+      styles.dropdownBox,
+      { maxHeight: 100, overflow: 'hidden' }
+    ]}
+  >
+      <FlatList
+        data={filteredCountries.length > 0 ? filteredCountries : []} // Usa filteredCountries
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleCountrySelect(item)}>
+            <Text style={styles.dropdownTextStyles}>
+              {i18n.language === 'es' ? countryTranslations[item] || item : item}
+            </Text>
+          </TouchableOpacity>
+        )}
+        ListEmptyComponent={() => ( // Muestra mensaje si no hay resultados
+          <Text style={styles.dropdownTextStyles}>{t('No_Resultados')}</Text>
+        )}
+      />
+    </View>
+  )}
+</View>
       <View style={styles.pickerPlaceContainer}>
       <TouchableOpacity style={styles.modalInput}>
             <TextInput
@@ -422,11 +464,16 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
             />
       </TouchableOpacity>
             {dropdownVisible.city && pais && (
-              <Animated.View style={[styles.dropdownBox, { height: dropdownAnim.city.interpolate({ inputRange: [0, 1], outputRange: [0, 150] }) }]}>
-                <FlatList
+  <View
+    style={[
+      styles.dropdownBox,
+      { maxHeight: 100, overflow: 'hidden' }
+    ]}
+  >
+    <FlatList
                   data={filteredCities}
                   keyExtractor={(item) => item.value}
-                  ListEmptyComponent={<Text style={styles.dropdownTextStyles}>No hay resultados</Text>}
+                  ListEmptyComponent={<Text style={styles.dropdownTextStyles}>{t('No_Resultados')}</Text>}
                   renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => {
                       setCiudad(item.label);
@@ -437,7 +484,7 @@ const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
                     </TouchableOpacity>
                   )}
                 />
-              </Animated.View>
+              </View>
             )}
           
           </View>

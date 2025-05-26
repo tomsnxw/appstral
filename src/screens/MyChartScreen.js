@@ -25,6 +25,7 @@ import { auth, db, getDoc, doc} from '../config/firebaseConfig';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const MyChartScreen = ({navigation}) => {
  const {userData} = useUser();
@@ -376,56 +377,56 @@ const handleSolarRevo = () => {
     }, 2000);
   };
 
-  const renderItem = ({ item, index }) => {
-    let signo, grado, minutos, casa, simbolo, retrogrado;
-    const ascendente = resultado.casas['1'];
-  
-    if (item === t("Ascendente") && ascendente) {
-      signo = ascendente.signo;
-      grado = ascendente.grado;
-      minutos = ascendente.minutos;
-      simbolo = 'c'; 
-      retrogrado = false;
-    } else {
-      const cuerpoData = resultado.planetas[item];
-      if (!cuerpoData) return null;
-      ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
-      simbolo = simbolosPlanetas[item] || '';
-    }
-  
-    if (!signo || grado === undefined || minutos === undefined) return null;
-  
-    const gradoDisplay = grado === 0 ? '0' : grado;
-    const minutosDisplay = minutos === 0 ? '0' : minutos;
-    const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
-    const isSelected = selectedPlanet === item; 
-    const textColor = isSelected ? theme.focusedItem : theme.tertiary;
-    const getOrdinal = (number) => {
-      const suffixes = ['th', 'st', 'nd', 'rd'];
-      const remainder = number % 100;
-      return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
-    };
-    const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
-  
-    return (
-      <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>  
-        <Animated.View style={{ opacity: fadeAnims[index] }}>
-           <View style={{ flexDirection: 'row', alignItems: 'center',gap: 10, marginVertical: 'auto', paddingVertical: height*0.01  }}>
-            <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: width * 0.04, marginBottom: 'auto', transform: [{ translateY: width * 0.0025 }] }}>
-              {simbolo}
-            </Text>
-            <Text style={{ fontSize: width * 0.035, fontFamily: 'Effra_Regular', color: textColor, paddingBottom: 5, borderColor: theme.primaryBorder, borderBottomWidth: height * .000325, width: '100%' }}>
-              {item === t("Ascendente")
-                ? (i18n.language === 'en'
-                    ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
-                    : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
-                : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
-            </Text>
-          </View>
-        </Animated.View>
-      </TouchableOpacity>
-    );
+const renderItem = ({ item, index }) => {
+  let signo, grado, minutos, casa, simbolo, retrogrado;
+  const ascendente = resultado.casas['1'];
+
+  if (item === t("Ascendente") && ascendente) {
+    signo = ascendente.signo;
+    grado = ascendente.grado;
+    minutos = ascendente.minutos;
+    simbolo = 'c';
+    retrogrado = false;
+  } else {
+    const cuerpoData = resultado.planetas[item];
+    if (!cuerpoData) return null;
+    ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
+    simbolo = simbolosPlanetas[item] || '';
+  }
+
+  if (!signo || grado === undefined || minutos === undefined) return null;
+
+  const gradoDisplay = grado === 0 ? '0' : grado;
+  const minutosDisplay = minutos === 0 ? '0' : minutos;
+  const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
+  const isSelected = selectedPlanet === item;
+  const textColor = isSelected ? theme.focusedItem : theme.tertiary;
+  const getOrdinal = (number) => {
+    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const remainder = number % 100;
+    return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
   };
+  const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
+
+  return (
+    <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
+      <Animated.View style={{ opacity: fadeAnims[index] }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('.75%') }}>
+          <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
+            {simbolo}
+          </Text>
+          <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp('0.0325%'), width: '100%' }}>
+            {item === t("Ascendente")
+              ? (i18n.language === 'en'
+                  ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
+                  : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
+              : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
+          </Text>
+        </View>
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
 
 const signosSimbolos = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'

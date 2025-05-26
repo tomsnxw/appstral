@@ -36,6 +36,7 @@ const SignUpScreen = ({ goToLogin }) => {
   const [birthCountry, setBirthCountry] = useState("");  
   const [birthCity, setBirthCity] = useState(""); 
   const [filteredCities, setFilteredCities] = useState([]);
+  const [filteredCountries, setFilteredCountries] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false); 
   const [showTimePicker, setShowTimePicker] = useState(false); 
   const [fechaMostrada, setFechaMostrada] = useState('');
@@ -45,7 +46,7 @@ const SignUpScreen = ({ goToLogin }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState({ country: false, city: false });
-
+const [searchTextCountry, setSearchTextCountry] = useState("");
     const [countries, setCountries] = useState([]);
     const [citiesList, setCitiesList] = useState([]);
     const [searchText, setSearchText] = useState("");
@@ -57,16 +58,17 @@ const SignUpScreen = ({ goToLogin }) => {
       city: useRef(new Animated.Value(0)).current
     };
 
-useEffect(() => {
-  const sortedCountries = Object.keys(cities)
-    .sort((a, b) => {
-      const nameA = i18n.language === 'es' ? countryTranslations[a] || a : a;
-      const nameB = i18n.language === 'es' ? countryTranslations[b] || b : b;
-      return nameA.localeCompare(nameB);
-    });
+  useEffect(() => {
+    const sortedCountries = Object.keys(cities)
+      .sort((a, b) => {
+        const nameA = i18n.language === 'es' ? countryTranslations[a] || a : a;
+        const nameB = i18n.language === 'es' ? countryTranslations[b] || b : b;
+        return nameA.localeCompare(nameB);
+      });
 
-  setCountries(sortedCountries);
-}, [i18n.language]);
+    setCountries(sortedCountries);
+    setFilteredCountries(sortedCountries); 
+  }, [i18n.language]);
   
     const toggleDropdown = (type) => {
       setDropdownVisible((prev) => {
@@ -88,34 +90,51 @@ useEffect(() => {
       }).start();
     };
   
-    const handleCountrySelect = (country) => {
-      setBirthCountry(country);
-      setBirthCity(null);
-      setCitiesList(cities[country] || []);
-      setFilteredCities(cities[country] || []);
-      setSearchText(""); 
-      toggleDropdown("country");
-    }; 
+  const handleCountrySelect = (country) => {
+    setBirthCountry(country);
+    setBirthCity(null);
+    setCitiesList(cities[country] || []);
+    setFilteredCities(cities[country] || []);
+    setSearchTextCountry(i18n.language === 'es' ? countryTranslations[country] || country : country); // Establece el texto del input al nombre del país seleccionado
+    setSearchText(""); 
+    toggleDropdown("country");
+  };
   
-    const handleCitySearch = (text) => {
-      setBirthCity(text);
-      if (text === "") {
-        setFilteredCities(citiesList);
-        return;
-      }
-    
-      const regex = new RegExp(text, "i");
-      let filtered = citiesList.filter(city => regex.test(city.label));
-    
-      if (text.toLowerCase() === "caba") {
-        const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
-        if (!filtered.some(city => city.label === cabaOption.label)) {
-          filtered = [cabaOption, ...filtered];
-        }
-      }
-    
-      setFilteredCities(filtered);
-    };
+const handleCitySearch = (text) => {
+  setBirthCity(text);
+  if (text === "") {
+    setFilteredCities(citiesList);
+    return;
+  }
+
+  // Modificación aquí: usar startsWith para buscar solo desde el inicio
+  let filtered = citiesList.filter(city =>
+    city.label.toLowerCase().startsWith(text.toLowerCase())
+  );
+
+  if (text.toLowerCase() === "caba") {
+    const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
+    if (!filtered.some(city => city.label === cabaOption.label)) {
+      filtered = [cabaOption, ...filtered];
+    }
+  }
+
+  setFilteredCities(filtered);
+};
+
+  const handleCountrySearch = (text) => {
+    setSearchTextCountry(text);
+    if (text === "") {
+      setFilteredCountries(countries);
+      return;
+    }
+
+    const filtered = countries.filter(countryCode => {
+      const countryName = i18n.language === 'es' ? countryTranslations[countryCode] || countryCode : countryCode;
+      return countryName.toLowerCase().startsWith(text.toLowerCase());
+    });
+    setFilteredCountries(filtered);
+  };
     
     useEffect(() => {
       if (birthDate) {
@@ -358,25 +377,52 @@ useEffect(() => {
   </TouchableOpacity>
 </View>
   <View style={styles(theme).pickerPlaceContainer}>
-      <TouchableOpacity style={[styles(theme).inputContainer, dropdownVisible.country ? styles(theme).focusedBorder : styles(theme).defaultBorder]} onPress={() => toggleDropdown("country")}>
-        <TextInput placeholderTextColor={'#808080'} style={[styles(theme).input, dropdownVisible.country ? styles(theme).focusedText : styles(theme).defaultText]} editable={false}
-          onBlur={() => setFocusedField(null)}>
-          {birthCountry || t('Seleccion_Pais')}
-        </TextInput>
-      </TouchableOpacity>
-      {dropdownVisible.country && (
-  <Animated.View style={[styles(theme).dropdownBox, { height: dropdownAnim.country.interpolate({ inputRange: [0, 1], outputRange: [0, 120] }) }]}>
-      <ScrollView nestedScrollEnabled={true}>
-      {countries.map((item) => (
-  <TouchableOpacity key={item} onPress={() => handleCountrySelect(item)}>
-    <Text style={styles(theme).dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
-  </TouchableOpacity>
-))}
-    </ScrollView>
-  </Animated.View>
-)}
-
-</View>
+    <TouchableOpacity
+      style={[
+        styles(theme).inputContainer,
+        dropdownVisible.country ? styles(theme).focusedBorder : styles(theme).defaultBorder
+      ]}
+      onPress={() => toggleDropdown("country")}
+    >
+      <TextInput
+        style={[
+          styles(theme).input,
+          dropdownVisible.country ? styles(theme).focusedText : styles(theme).defaultText
+        ]}
+        placeholder={t('Seleccion_Pais')} 
+        placeholderTextColor={'#808080'}
+        value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
+        onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
+        onFocus={() => { // Abre el dropdown cuando se enfoca el input
+          if (!dropdownVisible.country) {
+            toggleDropdown("country");
+          }
+        }}
+      />
+    </TouchableOpacity>
+    {dropdownVisible.country && (
+  <View
+    style={[
+      styles(theme).dropdownBox,
+      { maxHeight: 100, overflow: 'hidden' }
+    ]}
+  ><ScrollView nestedScrollEnabled={true}>
+          {filteredCountries.length > 0 ? ( // Muestra la lista de países filtrados
+            filteredCountries.map((item) => (
+              <TouchableOpacity
+                key={item}
+                onPress={() => handleCountrySelect(item)}
+              >
+                <Text style={styles(theme).dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
+          )}
+        </ScrollView>
+      </View>
+    )}
+  </View>
 <View style={styles(theme).pickerPlaceContainer}>
 <TouchableOpacity disabled={!birthCountry} style={[styles(theme).inputContainer, dropdownVisible.city ? styles(theme).focusedBorder : styles(theme).defaultBorder]} onPress={() => toggleDropdown("city")}>
 <TextInput 
@@ -418,7 +464,7 @@ useEffect(() => {
           </TouchableOpacity>
         ))
       ) : (
-        <Text style={styles(theme).dropdownTextStyles}>No hay resultados</Text>
+        <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
       )}
     </ScrollView>
   </View>
@@ -558,7 +604,7 @@ const styles = (theme) => StyleSheet.create({
     borderBottomRightRadius: RFValue(20),
     borderBottomLeftRadius: RFValue(20),
     borderWidth: 1,
-    marginTop: hp('1.8%'), // Aproximadamente 15 / 812 * 100%
+    marginTop: hp('1%'), // Aproximadamente 15 / 812 * 100%
     marginHorizontal: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
     borderColor: '#808080',
     color: '#808080',

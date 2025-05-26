@@ -478,7 +478,7 @@ homeWelcomeTitles:{
       backgroundColor: theme.background
     },
     chartResultList: {
-      paddingLeft: wp('15%'), // width*0.15 a wp
+      paddingLeft: wp('12%'), // width*0.15 a wp
     },
     resultCircle:{
       alignSelf: 'center',
@@ -896,12 +896,13 @@ homeWelcomeTitles:{
   calculateContainer: {
     height: hp('100%'), // height to hp
     backgroundColor: theme.background,
-    marginTop: hp('3%')
+
   },
   calculateForm: {
     justifyContent: 'space-between',
     gap: hp('1.875%'), // 15px to hp
     marginHorizontal: 'auto',
+    marginTop: hp('3%'),
     paddingBottom: hp('5%'), // height*0.1 to hp
   },
   calculateFormTitle: {
@@ -926,7 +927,7 @@ homeWelcomeTitles:{
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
-    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
+    paddingHorizontal: wp('2%'), // Aproximadamente 15 / 375 * 100%
     height: hp('4.5%'), // height*0.045 to hp
     flexDirection: 'row',
     borderWidth: 1, // Keep fixed
@@ -951,7 +952,6 @@ homeWelcomeTitles:{
   },
   CalculateInput: {
     height: hp('4.8%'), // Equivalente a height * 0.0475
-    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
     borderRadius: RFValue(20),
     textAlign: 'left',
     color: '#808080',

@@ -127,7 +127,7 @@ const progress = useRef(new Animated.Value(0)).current;
           formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
         }
         
-        setHora(formattedText);
+        setTempHora(formattedText);
       };
 
   const widthInterpolation = progress.interpolate({
@@ -269,7 +269,7 @@ const progress = useRef(new Animated.Value(0)).current;
  <TextInput
  placeholderTextColor={theme.secondary}
    style={[styles.modalDateTimeInput, focusedField === 'hora' ? styles.focusedText : styles.defaultText]}
-   value={hora}
+   value={tempHora}
    keyboardType="numeric"
    placeholder="HH:MM"
    onChangeText={handleHoraChange}

@@ -278,7 +278,7 @@ const handleHoraChange = (text) => {
       setIsDeleteOpen(false);
       setIsLanguageOpen(false);
       setIsDarkModeOpen(false);
-      emailHeight.value = withTiming(emailHeight.value === 215 ? 55 : 215, { duration: 300 });
+      emailHeight.value = withTiming(emailHeight.value === 230 ? 55 : 230, { duration: 300 });
       passwordHeight.value = withTiming(0, { duration: 300 });
       systemHeight.value = withTiming(0, { duration: 300 });
       deleteHeight.value = withTiming(0, { duration: 200 });
@@ -327,7 +327,7 @@ const handleHoraChange = (text) => {
       setIsDeleteOpen(false);
       setIsLanguageOpen(false);
       setIsDarkModeOpen(false);
-      passwordHeight.value = withTiming(isPasswordOpen ? 0 : 165, { duration: 300 });
+      passwordHeight.value = withTiming(isPasswordOpen ? 0 : 200, { duration: 300 });
       emailHeight.value = withTiming(0, { duration: 300 });
       systemHeight.value = withTiming(0, { duration: 300 });
       deleteHeight.value = withTiming(0, {duration: 200})
@@ -569,7 +569,7 @@ const handleHoraChange = (text) => {
         <View style={styles.changePasswordForm}>
         <View style={styles.inputProfileContainer}>
         <TextInput
-          style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 15,fontFamily: 'Effra_Light',}}
+          style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical: hp('.02%'), marginTop: hp('.5%'),fontFamily: 'Effra_Light',}}
           placeholderTextColor={ theme.secondaryBorder}
           value={email}
           onChangeText={setEmail}
@@ -577,14 +577,14 @@ const handleHoraChange = (text) => {
         /></View>
          <View style={styles.inputProfileContainer}>
         <TextInput
-          style={{ color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical: 5, marginTop: 20, fontFamily: 'Effra_Light',}}
+          style={{ color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical: hp('.02%'), marginTop: hp('.5%'), fontFamily: 'Effra_Light',}}
           placeholderTextColor= {theme.secondaryBorder}
           value={currentPassword}
           onChangeText={setCurrentPassword}
           placeholder={t("profile.Actual_Contraseña")}
         /></View>
         
-         <TouchableOpacity style={{width: 115, height: 40, marginVertical: 15, borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
+         <TouchableOpacity style={{width: 115, height: 40, marginVertical:  hp('2%'), borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
   <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center",}}>
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
     <Text style={{ fontSize: RFValue(14),
@@ -602,7 +602,7 @@ const handleHoraChange = (text) => {
 
         <View style={styles.changePasswordForm}>
         <View style={styles.inputProfileContainer}>
-        <TextInput style={{color:  theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}}
+        <TextInput style={{color:  theme.secondaryBorder, fontSize: RFValue(14), marginVertical:hp('.02%'), marginTop: hp('.25%'), fontFamily: 'Effra_Light'}}
           placeholderTextColor={ theme.secondaryBorder}
           value={currentPassword}
           onChangeText={setCurrentPassword}
@@ -610,10 +610,10 @@ const handleHoraChange = (text) => {
           secureTextEntry
         /></View>
          <View style={styles.inputProfileContainer}>
-        <TextInput style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical:5, marginTop: 20, fontFamily: 'Effra_Light'}} placeholderTextColor= {theme.secondaryBorder} value={newPassword} onChangeText={setNewPassword}  placeholder={t("profile.Nueva_Contraseña")}  secureTextEntry
+        <TextInput style={{color: theme.secondaryBorder, fontSize: RFValue(14), marginVertical: hp('.02%'), marginTop: hp('.5%'), fontFamily: 'Effra_Light'}} placeholderTextColor= {theme.secondaryBorder} value={newPassword} onChangeText={setNewPassword}  placeholder={t("profile.Nueva_Contraseña")}  secureTextEntry
         /></View>
         
-                 <TouchableOpacity style={{width: 115, height: 40, marginVertical: 15, borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
+                 <TouchableOpacity style={{width: 115, height: 40, marginVertical: hp('2%'), borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
   <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center",}}>
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
     <Text style={{ fontSize: RFValue(14), color: theme.alwaysWhite, fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>

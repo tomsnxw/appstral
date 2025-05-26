@@ -183,11 +183,13 @@ const CalculateScreen = () => {
   const [citiesList, setCitiesList] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]); 
   const [searchTextCity, setSearchTextCity] = useState("");
+const [searchTextCountry, setSearchTextCountry] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
+
   const dropdownAnim = {
     country: useRef(new Animated.Value(0)).current,
     city: useRef(new Animated.Value(0)).current
   };
-
   useEffect(() => {
     const sortedCountries = Object.keys(cities)
       .sort((a, b) => {
@@ -195,8 +197,9 @@ const CalculateScreen = () => {
         const nameB = i18n.language === 'es' ? countryTranslations[b] || b : b;
         return nameA.localeCompare(nameB);
       });
-  
+
     setCountries(sortedCountries);
+    setFilteredCountries(sortedCountries); 
   }, [i18n.language]);
 
   const toggleDropdown = (type) => {
@@ -222,11 +225,10 @@ const CalculateScreen = () => {
   const handleCountrySelect = (country) => {
     setPais(country);
     setCiudad(null);
-    setLatitud(null);
-    setLongitud(null);
     setCitiesList(cities[country] || []);
     setFilteredCities(cities[country] || []);
-    setSearchTextCity("");
+    setSearchTextCountry(i18n.language === 'es' ? countryTranslations[country] || country : country); // Establece el texto del input al nombre del país seleccionado
+    setSearchTextCity(""); 
     toggleDropdown("country");
   };
 
@@ -238,26 +240,41 @@ const CalculateScreen = () => {
     }
   };
 
-  
-  const handleCitySearch = (calculateText) => {
-    setCiudad(calculateText);
-    if (calculateText === "") {
-      setFilteredCities(citiesList);
+const handleCitySearch = (text) => {
+  setCiudad(text);
+  if (text === "") {
+    setFilteredCities(citiesList);
+    return;
+  }
+
+  // Modificación aquí: usar startsWith para buscar solo desde el inicio
+  let filtered = citiesList.filter(city =>
+    city.label.toLowerCase().startsWith(text.toLowerCase())
+  );
+
+  if (text.toLowerCase() === "caba") {
+    const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
+    if (!filtered.some(city => city.label === cabaOption.label)) {
+      filtered = [cabaOption, ...filtered];
+    }
+  }
+
+  setFilteredCities(filtered);
+};
+
+
+  const handleCountrySearch = (text) => {
+    setSearchTextCountry(text);
+    if (text === "") {
+      setFilteredCountries(countries);
       return;
     }
-  
-    const regex = new RegExp(calculateText, "i");
-    let filtered = citiesList.filter(city => regex.test(city.label));
-  
-    if (calculateText.toLowerCase() === "caba") {
-      const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
 
-      if (!filtered.some(city => city.label === cabaOption.label)) {
-        filtered = [cabaOption, ...filtered];
-      }
-    }
-  
-    setFilteredCities(filtered);
+    const filtered = countries.filter(countryCode => {
+      const countryName = i18n.language === 'es' ? countryTranslations[countryCode] || countryCode : countryCode;
+      return countryName.toLowerCase().startsWith(text.toLowerCase());
+    });
+    setFilteredCountries(filtered);
   };
 
   useEffect(() => {
@@ -504,6 +521,8 @@ const CalculateScreen = () => {
         setLatitud('');
         setLongitud('');
         setCiudad('');
+        setSearchTextCountry(''); 
+        setSearchTextCity(''); 
         setPais('');
         setResultado(null);
         setAscendente(null);
@@ -566,56 +585,56 @@ const CalculateScreen = () => {
         }, 2000);
       };
     
-      const renderItem = ({ item, index }) => {
-        let signo, grado, minutos, casa, simbolo, retrogrado;
-        const ascendente = resultado.casas['1'];
-      
-        if (item === t("Ascendente") && ascendente) {
-          signo = ascendente.signo;
-          grado = ascendente.grado;
-          minutos = ascendente.minutos;
-          simbolo = 'c';
-          retrogrado = false;
-        } else {
-          const cuerpoData = resultado.planetas[item];
-          if (!cuerpoData) return null;
-          ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
-          simbolo = simbolosPlanetas[item] || '';
-        }
-      
-        if (!signo || grado === undefined || minutos === undefined) return null;
-      
-        const gradoDisplay = grado === 0 ? '0' : grado;
-        const minutosDisplay = minutos === 0 ? '0' : minutos;
-        const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
-        const isSelected = selectedPlanet === item; 
-        const textColor = isSelected ? theme.focusedItem : theme.tertiary;
-        const getOrdinal = (number) => {
-          const suffixes = ['th', 'st', 'nd', 'rd'];
-          const remainder = number % 100;
-          return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
-        };
-        const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
-      
-        return (
-          <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>  
-            <Animated.View style={{ opacity: fadeAnims[index] }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 'auto', paddingVertical: height * 0.0075 }}>
-                <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: width * 0.04, marginBottom: 'auto', transform: [{ translateY: width * 0.0025 }] }}>
-                  {simbolo}
-                </Text>
-                <Text style={{ fontSize: width * 0.035, fontFamily: 'Effra_Regular', color: textColor, paddingBottom: 5, borderColor: theme.primaryBorder, borderBottomWidth: height * .000325, width: '100%' }}>
-                  {item === t("Ascendente")
-                    ? (i18n.language === 'en'
-                        ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
-                        : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
-                    : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
-                </Text>
-              </View>
-            </Animated.View>
-          </TouchableOpacity>
-        );
-      };
+const renderItem = ({ item, index }) => {
+  let signo, grado, minutos, casa, simbolo, retrogrado;
+  const ascendente = resultado.casas['1'];
+
+  if (item === t("Ascendente") && ascendente) {
+    signo = ascendente.signo;
+    grado = ascendente.grado;
+    minutos = ascendente.minutos;
+    simbolo = 'c';
+    retrogrado = false;
+  } else {
+    const cuerpoData = resultado.planetas[item];
+    if (!cuerpoData) return null;
+    ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
+    simbolo = simbolosPlanetas[item] || '';
+  }
+
+  if (!signo || grado === undefined || minutos === undefined) return null;
+
+  const gradoDisplay = grado === 0 ? '0' : grado;
+  const minutosDisplay = minutos === 0 ? '0' : minutos;
+  const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
+  const isSelected = selectedPlanet === item;
+  const textColor = isSelected ? theme.focusedItem : theme.tertiary;
+  const getOrdinal = (number) => {
+    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const remainder = number % 100;
+    return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
+  };
+  const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
+
+  return (
+    <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
+      <Animated.View style={{ opacity: fadeAnims[index] }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('.75%') }}>
+          <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
+            {simbolo}
+          </Text>
+          <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp('0.0325%'), width: '100%' }}>
+            {item === t("Ascendente")
+              ? (i18n.language === 'en'
+                  ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
+                  : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
+              : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
+          </Text>
+        </View>
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
     
     const signosSimbolos = [
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
@@ -1177,22 +1196,46 @@ setIsCartaGuardada(true);
 </View>
 
   <View style={styles.pickerPlaceContainer}>
-      <TouchableOpacity style={[styles.inputContainer, dropdownVisible.country ? styles.focusedBorder : styles.defaultBorder]} onPress={() => toggleDropdown("country")}>
-        <TextInput style={[styles.CalculateInput, dropdownVisible.country ? styles.focusedText : styles.defaultText]} editable={false}
-         value={i18n.language === 'es' ? countryTranslations[pais] || pais : pais}  onBlur={() => setFocusedField(null)}>
-        </TextInput>
+    <TouchableOpacity
+      style={[styles.inputContainer,dropdownVisible.country ? styles.focusedBorder : styles.defaultBorder]} onPress={() => toggleDropdown("country")}>
+      <TextInput
+        style={[
+          styles.CalculateInput,
+          dropdownVisible.country ? styles.focusedText : styles.defaultText
+        ]}
+        placeholder={t('Seleccion_Pais')} 
+        placeholderTextColor={'#808080'}
+        value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
+        onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
+        onFocus={() => { // Abre el dropdown cuando se enfoca el input
+          if (!dropdownVisible.country) {
+            toggleDropdown("country");
+          }
+        }}
+      />
       </TouchableOpacity>
-  {dropdownVisible.country && (
-  <Animated.View style={[styles.dropdownBox, { height: dropdownAnim.country.interpolate({ inputRange: [0, 1], outputRange: [0, 120] }) }]}>
-      <ScrollView nestedScrollEnabled={true}>
-      {countries.map((item) => (
-        <TouchableOpacity key={item} onPress={() => handleCountrySelect(item)}>
-          <Text style={styles.dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  </Animated.View>
-)}
+    {dropdownVisible.country && (
+  <View
+    style={[
+      styles.dropdownBox,
+      { maxHeight: 100, overflow: 'hidden' }
+    ]}
+  ><ScrollView nestedScrollEnabled={true}>
+          {filteredCountries.length > 0 ? ( // Muestra la lista de países filtrados
+            filteredCountries.map((item) => (
+              <TouchableOpacity
+                key={item}
+                onPress={() => handleCountrySelect(item)}
+              >
+                <Text style={styles.dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={styles.dropdownTextStyles}>{t('No_Resultados')}</Text>
+          )}
+        </ScrollView>
+      </View>
+    )}
 </View>
 <View style={styles.pickerPlaceContainer}>
 <TouchableOpacity style={[styles.inputContainer, dropdownVisible.city ? styles.focusedBorder : styles.defaultBorder]}>
@@ -1232,7 +1275,7 @@ setIsCartaGuardada(true);
           </TouchableOpacity>
         ))
       ) : (
-        <Text style={styles.dropdownTextStyles}>No hay resultados</Text>
+        <Text style={styles.dropdownTextStyles}>{t('No_Resultados')}</Text>
       )}
     </ScrollView>
   </View>
