@@ -623,7 +623,7 @@ const renderItem = ({ item, index }) => {
           <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
             {simbolo}
           </Text>
-          <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp('0.0325%'), width: '100%' }}>
+          <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp(0.1), width: '100%' }}>
             {item === t("Ascendente")
               ? (i18n.language === 'en'
                   ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`

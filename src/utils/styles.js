@@ -1050,7 +1050,8 @@ homeWelcomeTitles:{
   },
   chartTitleContainer: {
     flexDirection: 'row',
-    paddingVertical: hp('1.25%'), // 10px a hp
+    paddingBottom: hp('1.25%'),
+    paddingTop: hp('.5%'),
     justifyContent: 'space-between',
   },
   chartOptions: {

@@ -538,13 +538,14 @@ const styles = (theme) => StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
+    height: hp('4%'), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     justifyContent: 'space-between',
+    alignItems:'center',
   },
   focusedBorder:{
     borderWidth: 1,
@@ -580,7 +581,7 @@ const styles = (theme) => StyleSheet.create({
     fill:'#808080'
   },
   datePicker: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
+    height: hp('4.6%'), // Equivalente a height * 0.045
     borderColor: '#808080',
     backgroundColor: 'transparent',
     borderWidth: 1,
@@ -592,8 +593,9 @@ const styles = (theme) => StyleSheet.create({
     margin: 'auto'
   },
   inputDateTime: {
-    fontSize: RFValue(13), // Equivalente a height * 0.016
-    height: hp('4.6%'), // Equivalente a height * 0.046
+    display:'flex',
+    fontSize: RFValue(12), // Equivalente a height * 0.016
+    height: hp('6%'), // Equivalente a height * 0.046
     fontFamily: 'Effra_Regular',
     marginHorizontal: 'auto',
     textAlign:'center',
@@ -635,7 +637,7 @@ const styles = (theme) => StyleSheet.create({
     paddingVertical: hp('0.6%') // Aproximadamente 5 / 812 * 100%
   },
   modalInput: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
+    height: hp('4.6%'), // Equivalente a height * 0.045
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     borderRadius: RFValue(20),
     borderWidth: 1,
@@ -645,10 +647,10 @@ const styles = (theme) => StyleSheet.create({
     fontFamily: 'Effra_Regular',
   },
   input: {
-    height: hp('4.75%'), // Equivalente a height * 0.0475
     paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
     borderRadius: RFValue(20),
     textAlign: 'left',
+    height: hp('7%'),
     color: '#808080',
     fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',

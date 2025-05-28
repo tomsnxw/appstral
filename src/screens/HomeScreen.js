@@ -372,7 +372,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
           <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(14), marginBottom: 'auto', transform: [{ translateY: hp('0.25%')}] }}>
             {simbolosPlanetas[item]}
           </Text>
-          <Text style={{ fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp('0.0325%'), width: '100%' }}>
+          <Text style={{ fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp(0.1), width: '100%' }}>
             {t('planet_position', { planet: item, sign: signo, degree: grado, minutes: minutos, estacionario: estacionario ? ' st' : '', retro: retrogrado ? 'Rx' : '' })}
           </Text>
         </View>
@@ -692,7 +692,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
 
     return (
       <LinearGradient style={styles.homeGradientContainer}
-      colors={[theme.homeBackground1,theme.homeBackground4, theme.background,  theme.background,  theme.homeBackground1]}>
+      colors={[theme.homeBackground1,theme.homeBackground4,theme.homeBackground4, theme.background]}>
       {theme === darkTheme && <ShootingStar />}
       <SkyStars style={styles.skyStarsTop}></SkyStars>
       <SkyStars style={styles.skyStarsBottom}></SkyStars>
@@ -716,9 +716,9 @@ const simbolosPlanetas = i18n.language === 'es' ? {
           </Text>}
         >
           <LinearGradient
-            colors={['#5488E3', '#A358B5']}
+            colors={['#00b3ff', '#9352ff']}
             start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
+            end={{ x: 0, y: .75 }}
             style={styles.gradient}
           />
         </MaskedView>
@@ -767,7 +767,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
          />
         )}</SafeAreaView>
 
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('10%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.background, theme.background]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('16%'), zIndex: 1}}/>
       </LinearGradient>
     );
     
