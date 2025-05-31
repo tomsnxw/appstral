@@ -167,14 +167,14 @@ const styles = StyleSheet.create({
     color: '#808080',
   },
   input: {
-    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    paddingHorizontal: wp('0.5%'),
     borderRadius: RFValue(20),
     textAlign: 'left',
-    height: hp('7%'),
+    height: RFValue(32),
     color: '#808080',
-    fontSize: RFValue(13), // Equivalente a height * 0.016
+    fontSize: RFValue(13),
     fontFamily: 'Effra_Regular',
-    width: '80%',
+    width: '90%',
   },
   datePicker: {
     height: hp('4.5%'), // Equivalente a height * 0.045

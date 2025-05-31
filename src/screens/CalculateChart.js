@@ -1204,7 +1204,7 @@ setIsCartaGuardada(true);
           dropdownVisible.country ? styles.focusedText : styles.defaultText
         ]}
         placeholder={t('Seleccion_Pais')} 
-        placeholderTextColor={'#808080'}
+        placeholderTextColor={theme.secondary}
         value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
         onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
         onFocus={() => { // Abre el dropdown cuando se enfoca el input

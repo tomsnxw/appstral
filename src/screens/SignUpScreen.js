@@ -538,12 +538,12 @@ const styles = (theme) => StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: RFValue(28), // Equivalente a height * 0.045
+    height: RFValue(28),
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
-    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
+    paddingHorizontal: wp('4%'),
     justifyContent: 'space-between',
     alignItems:'center',
   },
@@ -594,13 +594,13 @@ const styles = (theme) => StyleSheet.create({
   },
   inputDateTime: {
     display:'flex',
-    fontSize: RFValue(12), // Equivalente a height * 0.016
-    height: RFValue(36), // Equivalente a height * 0.046
+    fontSize: RFValue(12), 
+    height: RFValue(32),
     fontFamily: 'Effra_Regular',
     marginHorizontal: 'auto',
     textAlign:'center',
     color: '#808080',
-    paddingHorizontal: wp('25%'), // 25% del ancho de la pantalla
+    paddingHorizontal: wp('25%'),
   },
   dropdownBox:{
     borderBottomRightRadius: RFValue(20),
@@ -647,12 +647,12 @@ const styles = (theme) => StyleSheet.create({
     fontFamily: 'Effra_Regular',
   },
   input: {
-    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    paddingHorizontal: wp('0.5%'),
     borderRadius: RFValue(20),
     textAlign: 'left',
-    height: hp('7%'),
+    height: RFValue(32),
     color: '#808080',
-    fontSize: RFValue(13), // Equivalente a height * 0.016
+    fontSize: RFValue(13),
     fontFamily: 'Effra_Regular',
     width: '90%',
   },

@@ -349,19 +349,6 @@ export const createStyles = (theme) => {
       color: '#f2f2f2',
       paddingLeft: wp('2.5%') // 10px convertido a porcentaje del ancho
     },
-    modalInput: {
-      marginBottom: hp('1.8%'), // 15px convertido a porcentaje del alto
-      paddingBottom: hp('0.3%'), // 3px convertido a porcentaje del alto
-      paddingHorizontal: wp('5%'), // 20px convertido a porcentaje del ancho
-      paddingTop: hp('0.6%'), // 5px convertido a porcentaje del alto
-      borderRadius: 20,
-      borderWidth: 0.5,
-      borderColor: theme.sheetBorder,
-      backgroundColor: theme.background,
-      color: theme.secondary,
-      fontSize: RFValue(14), // 16px a RFValue
-      fontFamily: 'Effra_Regular',
-    },
     modalPickerContainer: {
     },
     modalPicker: {
@@ -900,7 +887,7 @@ homeWelcomeTitles:{
   },
   calculateForm: {
     justifyContent: 'space-between',
-    gap: hp('1.875%'), // 15px to hp
+    gap: hp('3%'), // 15px to hp
     marginHorizontal: 'auto',
     marginTop: hp('3%'),
     paddingBottom: hp('5%'), // height*0.1 to hp
@@ -922,19 +909,14 @@ homeWelcomeTitles:{
     paddingLeft: wp('2.5%'), // 10px to wp
   },
   inputContainer: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
+    height: RFValue(32),
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#808080',
-    borderRadius: RFValue(50),
-    paddingHorizontal: wp('2%'), // Aproximadamente 15 / 375 * 100%
-    height: hp('4.5%'), // height*0.045 to hp
-    flexDirection: 'row',
-    borderWidth: 1, // Keep fixed
     borderColor: theme.secondary,
-    textAlign: 'center',
-    justifyContent: 'center',
-    width: wp('90%'), // width*.9 to wp
+    borderRadius: RFValue(50),
+    paddingHorizontal: wp('4%'),
+    justifyContent: 'space-between',
+    alignItems:'center'
   },
   focusedBorder: {
     borderWidth: 1, // Keep fixed
@@ -951,21 +933,23 @@ homeWelcomeTitles:{
     color: theme.secondary,
   },
   CalculateInput: {
-    height: hp('4.8%'), // Equivalente a height * 0.0475
     borderRadius: RFValue(20),
     textAlign: 'left',
+    height: RFValue(36),
     color: '#808080',
-    fontSize: RFValue(13), // Equivalente a height * 0.016
+    fontSize: RFValue(13),
     fontFamily: 'Effra_Regular',
     width: '90%',
   },
   inputDateTime: {
-    paddingHorizontal: wp('18.75%'), // 75px to wp
-    fontSize: RFValue(13), // height*0.016, assuming RFValue(13) works well for this size
-    height: hp('4.8%'), // Equivalente a height * 0.0475
+    display:'flex',
+    fontSize: RFValue(12), 
+    height: RFValue(32),
     fontFamily: 'Effra_Regular',
-    textAlign: 'center',
+    marginHorizontal: 'auto',
+    textAlign:'center',
     color: theme.secondary,
+    paddingHorizontal: wp('25%'),
   },
   dropdownBox: {
     borderBottomRightRadius: 20, // Keep fixed
@@ -1016,11 +1000,11 @@ homeWelcomeTitles:{
     margin: 0, // Keep fixed
   },
   calculateButtonContainer: {
-    borderRadius: 25, // Keep fixed, as it's a shape descriptor
-    overflow: 'hidden', // Keep fixed
+    borderRadius: 25, // Se mantiene fijo
+    overflow: 'hidden', // Se mantiene fijo
     alignSelf: 'center',
-    width: wp('30%'), // width*0.3 to wp
-    height: hp('5%'), // height*0.04 to hp
+    width: wp('30%'), // width*0.3 a wp
+    height: hp('4%'), // height*0.04 a hp
   },
   gradientBackground: {
     paddingVertical: hp('0.875%'), // 7px to hp
@@ -1045,8 +1029,7 @@ homeWelcomeTitles:{
     fontSize: RFValue(13), // 16px to RFValue
     fontFamily: 'Effra_Regular',
     color: theme.alwaysWhite,
-    zIndex: 5, // Keep fixed
-    transform: [{ translateY: 1 }], // Keep fixed
+    zIndex: 5,
   },
   chartTitleContainer: {
     flexDirection: 'row',
@@ -1167,39 +1150,39 @@ homeWelcomeTitles:{
     paddingLeft: wp('2.5%'), // 10px a wp
   },
   modalInput: {
-    height: hp('4.5%'), // Equivalente a height * 0.045
-    flexDirection: 'row',
+    paddingHorizontal: wp('5%'),
+    borderRadius: RFValue(20),
+    textAlign: 'left',
+    height: RFValue(32),
     borderWidth: 1,
     borderColor: theme.sheetBorder,
     backgroundColor: theme.background,
     color: theme.secondary,
-    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
-    borderRadius: RFValue(50),
-    width: wp('90%'), // width*.9 to wp
+    fontSize: RFValue(13),
+    fontFamily: 'Effra_Regular',
   },
   modalDateTimeInput: {
-    height: hp('4.5%'), // height*0.045 a hp
-    paddingBottom: hp('0.375%'), // 3px a hp
-    paddingHorizontal: wp('5%'), // 20px a wp
-    paddingTop: hp('0.625%'), // 5px a hp
-    borderRadius: 20, // Se mantiene fijo
-    borderWidth: 0.5, // Se mantiene fijo
+    display:'flex',
+    fontSize: RFValue(12), 
+    height: RFValue(32),
+    fontFamily: 'Effra_Regular',
+    marginHorizontal: 'auto',
+    textAlign:'center',
     borderColor: theme.sheetBorder,
     backgroundColor: theme.background,
     color: theme.secondary,
-    fontSize: RFValue(12), // 16px a RFValue
-    fontFamily: 'Effra_Regular',
-    textAlign: 'center',
+    borderWidth: 1,
+        borderRadius: RFValue(20),
+    width:'100%'
   },
   input: {
-    height: hp('4.75%'), // Equivalente a height * 0.0475
-    paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
+    height: RFValue(32), 
     borderRadius: RFValue(20),
     borderColor: theme.sheetBorder,
     color: theme.secondary,
-    fontSize: RFValue(12), // Equivalente a height * 0.016
+    fontSize: RFValue(13), 
     fontFamily: 'Effra_Regular',
-    width: '90%',
+
   },
   modalPickerContainer: {
     // No hay cambios aquí ya que no hay propiedades fijas que necesiten conversión.
@@ -1245,7 +1228,6 @@ homeWelcomeTitles:{
     fontSize: RFValue(12), // 15px a RFValue
     fontFamily: 'Effra_Regular',
     color: theme.alwaysWhite,
-    transform: [{ translateY: 1 }], // Se mantiene fijo
   },
   gradientBackground: {
     paddingVertical: hp('0.875%'), // 7px a hp
