@@ -704,19 +704,9 @@ homeWelcomeTitles:{
       marginHorizontal: wp('3.75%'), // 15px a wp
       borderRadius: 20,
     },
-    AddChartModalButton: {
-      position: 'absolute',
-      alignSelf: 'center',
-      // Esto es una estimación. Ajusta según cómo se vea con la barra de navegación/gestos.
-      bottom: hp('15%'), // (height - wHeight) + height * 0.1 a hp
-      width: hp('6%'), // 50px a hp (para mantenerlo cuadrado)
-      height: hp('6%'), // 50px a hp
-      borderRadius: 50,
-      zIndex: 2,
-    },
     AddChartModalButtonIconContainer: {
-      width: hp('6%'), // 50px a hp
-      height: hp('6%') // 50px a hp
+      width: '100%', // 50px a hp
+      height: '100%',
     },
     AddChartModalButtonIcon: {
       fill: theme.alwaysWhite,
@@ -1153,7 +1143,7 @@ homeWelcomeTitles:{
     paddingHorizontal: wp('5%'),
     borderRadius: RFValue(20),
     textAlign: 'left',
-    height: RFValue(32),
+    height: RFValue(36),
     borderWidth: 1,
     borderColor: theme.sheetBorder,
     backgroundColor: theme.background,
@@ -1164,7 +1154,7 @@ homeWelcomeTitles:{
   modalDateTimeInput: {
     display:'flex',
     fontSize: RFValue(12), 
-    height: RFValue(32),
+    height: RFValue(36),
     fontFamily: 'Effra_Regular',
     marginHorizontal: 'auto',
     textAlign:'center',

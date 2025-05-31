@@ -538,7 +538,7 @@ const styles = (theme) => StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: RFValue(28),
+    height: RFValue(30),
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
@@ -650,7 +650,7 @@ const styles = (theme) => StyleSheet.create({
     paddingHorizontal: wp('0.5%'),
     borderRadius: RFValue(20),
     textAlign: 'left',
-    height: RFValue(32),
+    height: '125%',
     color: '#808080',
     fontSize: RFValue(13),
     fontFamily: 'Effra_Regular',

@@ -562,9 +562,12 @@ useEffect(() => {
         colors={[theme.buttonGradientTop, theme.buttonGradientBottom]}
         style={{  position: 'absolute',
           alignSelf: 'center',
-          bottom: height * 0.31,
-          width: 50,
-          height: 50,
+          alignItems:'center',
+          justifyContent:'center',
+          bottom: hp('30%'),
+          width: hp('5.75%'),
+          height: hp('5.75%'),
+          backgroundColor:'red',
           borderRadius: 50,
           zIndex: 2,}}
       >
