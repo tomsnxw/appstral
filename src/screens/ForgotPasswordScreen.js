@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-     height: hp('4.5%'), // Equivalente a height * 0.045
+     height: RFValue(28), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     justifyContent: 'space-between',
-
+    alignItems:'center',
   },
   focusedBorder:{
     borderWidth: 1,
@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
     color: '#808080',
   },
   input: {
-    height: hp('4.75%'), // Equivalente a height * 0.0475
     paddingHorizontal: wp('0.5%'), // Aproximadamente 2 / 375 * 100%
     borderRadius: RFValue(20),
     textAlign: 'left',
+    height: hp('7%'),
     color: '#808080',
     fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Regular',

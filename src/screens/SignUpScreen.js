@@ -513,21 +513,21 @@ const styles = (theme) => StyleSheet.create({
     paddingHorizontal: wp('5.3%'), // Aproximadamente 20 / 375 * 100%
   },
   title: {
-    fontSize: RFValue(34), // Equivalente a height * 0.045
+    fontSize: RFValue(32), // Equivalente a height * 0.045
     fontFamily: 'Effra_Bold',
     textAlign: "center",
-    lineHeight: RFValue(36), // Equivalente a height * 0.045
+    lineHeight: RFValue(30), // Equivalente a height * 0.045
     maxWidth: wp('90%'), // 90% del ancho de la pantalla
     marginHorizontal: 'auto',
     color: '#333333'
   },
   subtitle: {
-    fontSize: RFValue(24), // Equivalente a height * 0.03
+    fontSize: RFValue(22), // Equivalente a height * 0.03
     marginHorizontal: 'auto',
     fontFamily: 'Effra_Light',
     textAlign: "center",
-    lineHeight: RFValue(32), // Equivalente a height * 0.04
-    maxWidth: wp('90%'), // 90% del ancho de la pantalla
+    lineHeight: RFValue(30), // Equivalente a height * 0.04
+    maxWidth: wp('80'), // 90% del ancho de la pantalla
     marginVertical: hp('0.6%') // Aproximadamente 5 / 812 * 100%
   },
   text: {
@@ -538,7 +538,7 @@ const styles = (theme) => StyleSheet.create({
     paddingLeft: wp('2.7%'), // Aproximadamente 10 / 375 * 100%
   },
   inputContainer: {
-    height: hp('4%'), // Equivalente a height * 0.045
+    height: RFValue(28), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
@@ -595,7 +595,7 @@ const styles = (theme) => StyleSheet.create({
   inputDateTime: {
     display:'flex',
     fontSize: RFValue(12), // Equivalente a height * 0.016
-    height: hp('6%'), // Equivalente a height * 0.046
+    height: RFValue(36), // Equivalente a height * 0.046
     fontFamily: 'Effra_Regular',
     marginHorizontal: 'auto',
     textAlign:'center',
@@ -637,7 +637,7 @@ const styles = (theme) => StyleSheet.create({
     paddingVertical: hp('0.6%') // Aproximadamente 5 / 812 * 100%
   },
   modalInput: {
-    height: hp('4.6%'), // Equivalente a height * 0.045
+    height: RFValue(36),  // Equivalente a height * 0.045
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     borderRadius: RFValue(20),
     borderWidth: 1,
