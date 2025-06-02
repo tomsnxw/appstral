@@ -869,11 +869,11 @@ const AuthStack = () => {
                paddingRight: 25,
                paddingLeft: 10,
                paddingTop: 7.5,
-               height: 75,
+               height: hp('8.5%'),
                marginHorizontal: 15,
-               borderWidth: height*.0005,
+               borderWidth: RFValue(.5),
                borderColor: theme.menuBorder,
-               bottom: height*0.025,
+               bottom: hp('3%'),
                shadowColor: theme.shadow,
                shadowOffset: { width: 0, height: 1 },
                shadowOpacity: .1,
@@ -891,11 +891,11 @@ const AuthStack = () => {
     title: 'Home',
        ...TransitionPresets.FadeTransition,
     tabBarIcon: ({ color, size, focused }) => (
-      <View style={{ flex:1, width: width*0.35, height: height*0.3, gap: 5}}>
+      <View style={{ flex:1, width: wp('22%'),  height: height*0.3, gap: 5}}>
       <HomeIcon size={size} fill={focused ? color : theme.secondary} />
       <Text 
         style={{
-          fontSize: width * 0.03,
+          fontSize: RFValue(10),
           textAlign: 'center',
           fontFamily: 'Effra_Medium',
           color: focused ? color : theme.secondary,
@@ -914,11 +914,11 @@ const AuthStack = () => {
        ...TransitionPresets.FadeTransition,
     title: 'Perfil',
     tabBarIcon: ({ color, size, focused }) => (
-      <View style={{ flex:1, width: width*0.3, height: height*0.3, gap: 5}}>
+      <View style={{ flex:1, width: wp('22%'), height: height*0.3, gap: 5}}>
         <ProfileIcon size={size} fill={focused ? color : theme.secondary} />
         <Text 
           style={{
-            fontSize: width * 0.03,
+            fontSize: RFValue(10),
             textAlign: 'center',
             fontFamily: 'Effra_Medium',
             color: focused ? color : theme.secondary,
@@ -940,11 +940,11 @@ const AuthStack = () => {
     title: 'Calcular',
        ...TransitionPresets.FadeTransition,
     tabBarIcon: ({ color, size, focused }) => (
-      <View style={{ flex:1, width: width*0.35, height: height*0.3, gap: 5}}>
+      <View style={{ flex:1, width: wp('22%'), height: height*0.3, gap: 5}}>
       <CalculateIcon size={size} fill={focused ? color : theme.secondary} />
       <Text 
         style={{
-          fontSize: width * 0.03,
+          fontSize: RFValue(10),
           textAlign: 'center',
           fontFamily: 'Effra_Medium',
           color: focused ? color : theme.secondary,
@@ -963,11 +963,11 @@ const AuthStack = () => {
                 title: 'Efemérides',
                    ...TransitionPresets.FadeTransition,
                 tabBarIcon: ({ color, size, focused }) => (
-                  <View style={{ flex:1, width: width*0.3, height: height*0.3, gap: 5}}>
+                  <View style={{ flex:1, width: wp('22%'), height: height*0.3, gap: 5}}>
                   <EphemerisIcon size={size} fill={focused ? color : theme.secondary} />
                   <Text 
                     style={{
-                      fontSize: width * 0.03,
+                      fontSize: RFValue(10),
                       textAlign: 'center',
                       fontFamily: 'Effra_Medium',
                       color: focused ? color : theme.secondary,

@@ -98,14 +98,14 @@ const SolarRevoScreen = ({ route, navigation }) => {
     setModalVisible(false);
   };
 
-  const planetasOrden = {
+ const planetasOrden = {
     es: [
-      "Sol", "Luna", "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", 
-      "Urano", "Neptuno", "Plutón", "Lilith", "Quirón", "Nodo Norte"
+      "Sol", "Luna", "Ascendente", "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", 
+      "Urano", "Neptuno", "Plutón", "Lilith", "Quirón", "Nodo Norte", "Medio Cielo" // Added Medio Cielo
     ],
     en: [
-      "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", 
-      "Uranus", "Neptune", "Pluto", "Lilith", "Chiron", "North Node"
+      "Sun", "Moon", "Ascendant", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", 
+      "Uranus", "Neptune", "Pluto", "Lilith", "Chiron", "North Node", "Midheaven" // Added Midheaven
     ]
   };
 
@@ -353,56 +353,69 @@ const SolarRevoScreen = ({ route, navigation }) => {
     }, 2000);
   };
 
-const renderItem = ({ item, index }) => {
-  let signo, grado, minutos, casa, simbolo, retrogrado;
-  const ascendente = resultado.casas['1'];
+    const renderItem = ({ item, index }) => {
+    let signo, grado, minutos, casa, simbolo, retrogrado;
+    const ascendente = resultado.casas['1'];
+    const medioCielo = resultado.casas['10']; // Get Midheaven data
 
-  if (item === t("Ascendente") && ascendente) {
-    signo = ascendente.signo;
-    grado = ascendente.grado;
-    minutos = ascendente.minutos;
-    simbolo = 'c';
-    retrogrado = false;
-  } else {
-    const cuerpoData = resultado.planetas[item];
-    if (!cuerpoData) return null;
-    ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
-    simbolo = simbolosPlanetas[item] || '';
-  }
+    if (item === t("Ascendente") && ascendente) {
+      signo = ascendente.signo;
+      grado = ascendente.grado;
+      minutos = ascendente.minutos;
+      simbolo = 'c'; // Assuming 'c' is the symbol for Ascendant
+      retrogrado = false;
+    } else if (item === t("Medio Cielo") && medioCielo) { // Handle Midheaven
+      signo = medioCielo.signo;
+      grado = medioCielo.grado;
+      minutos = medioCielo.minutos;
+      simbolo = 'd'; // You'll need to define a symbol for Midheaven, 'e' is just an example
+      retrogrado = false;
+    } else {
+      const cuerpoData = resultado.planetas[item];
+      if (!cuerpoData) return null;
+      ({ signo, grado, minutos, casa, retrógrado: retrogrado } = cuerpoData);
+      simbolo = simbolosPlanetas[item] || '';
+    }
 
-  if (!signo || grado === undefined || minutos === undefined) return null;
+    if (!signo || grado === undefined || minutos === undefined) return null;
 
-  const gradoDisplay = grado === 0 ? '0' : grado;
-  const minutosDisplay = minutos === 0 ? '0' : minutos;
-  const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
-  const isSelected = selectedPlanet === item;
-  const textColor = isSelected ? theme.focusedItem : theme.tertiary;
-  const getOrdinal = (number) => {
-    const suffixes = ['th', 'st', 'nd', 'rd'];
-    const remainder = number % 100;
-    return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
+    const gradoDisplay = grado === 0 ? '0' : grado;
+    const minutosDisplay = minutos === 0 ? '0' : minutos;
+    const retrogradoDisplay = retrogrado && item !== "Nodo Norte" ? " Rx" : "";
+    const isSelected = selectedPlanet === item;
+    const textColor = isSelected ? theme.focusedItem : theme.tertiary;
+
+    const getOrdinal = (number) => {
+      const suffixes = ['th', 'st', 'nd', 'rd'];
+      const remainder = number % 100;
+      return number + (suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]);
+    };
+
+    const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
+
+    return (
+      <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
+        <Animated.View style={{ opacity: fadeAnims[index] }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('.75%') }}>
+            <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
+              {simbolo}
+            </Text>
+            <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp(0.1), width: '100%' }}>
+              {item === t("Ascendente")
+                ? (i18n.language === 'en'
+                    ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
+                    : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
+                : item === t("Medio Cielo") // Display format for Midheaven
+                ? (i18n.language === 'en'
+                    ? `Midheaven in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
+                    : `Medio Cielo en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
+                : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
+            </Text>
+          </View>
+        </Animated.View>
+      </TouchableOpacity>
+    );
   };
-  const casaOrdinal = (i18n.language === 'en' && casa) ? getOrdinal(casa) : casa;
-
-  return (
-    <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
-      <Animated.View style={{ opacity: fadeAnims[index] }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('.75%') }}>
-          <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
-            {simbolo}
-          </Text>
-          <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp(0.1), width: '100%' }}>
-            {item === t("Ascendente")
-              ? (i18n.language === 'en'
-                  ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
-                  : `Ascendente en ${signo} a ${gradoDisplay}° ${minutosDisplay}'`)
-              : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
-          </Text>
-        </View>
-      </Animated.View>
-    </TouchableOpacity>
-  );
-};
 
 const signosSimbolos = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
@@ -431,6 +444,7 @@ const renderCirculoZodiacal = () => {
   const ANGLE_PER_SIGN = 360 / 12;
   const LINE_LENGTH = RADIO + 10;
   const DISTANCIA_PLANETAS = RADIO * 0.8;
+  const DISTANCIA_ANGULARES = RADIO * 0.675;
   const DISTANCIA_INNERCIRCLE = RADIO * 0.68;
   const DISTANCIA_ASPECTOS = RADIO * 0.675;
   const DISTANCIA_SIGNOS = RADIO + 21;
@@ -447,7 +461,13 @@ const renderCirculoZodiacal = () => {
     resultado.distancia_ascendente_casa5 || 0,
     resultado.distancia_ascendente_casa6 || 0,
   ].map(distancia => -distancia);
-  const planetas = Object.keys(resultado.planetas);
+
+  const planetasYPuntos = [
+    ...Object.keys(resultado.planetas),
+    t("Ascendente"),
+    t("Medio Cielo")
+  ];
+
   const simbolosPlanetas = i18n.language === 'es' ? {
     "Sol": "Q",
     "Luna": "R",
@@ -462,6 +482,8 @@ const renderCirculoZodiacal = () => {
     "Lilith": "z",
     "Quirón": "q",
     "Nodo Norte": "g",
+    "Ascendente": "c",
+    "Medio Cielo": "d"
   } : {
     "Sun": "Q",
     "Moon": "R",
@@ -476,7 +498,18 @@ const renderCirculoZodiacal = () => {
     "Lilith": "z",
     "Chiron": "q",
     "North Node": "g",
+    "Ascendant": "c",
+    "Midheaven": "d"
   };
+
+  const rotateInterpolate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['200deg', '0deg']
+  });
+  const rotatePlanetasInterpolate = rotatePlanetasAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['-400deg', '0deg']
+  });
 
   const calcularDiferenciaAngular = (a1, a2) => {
     let dif = Math.abs(a1 - a2);
@@ -507,58 +540,73 @@ const renderCirculoZodiacal = () => {
     ];
   });
 
-  const renderizarLineasAspectos = (planeta1Data, index) => {
-    const nombrePlaneta1 = planeta1Data.nombre;
+  const renderizarLineasAspectos = (cuerpo1Data, index) => {
+    const nombreCuerpo1 = cuerpo1Data.nombre;
     const orbesUsuario = userData.orbes;
 
-    return [...planetas.slice(index + 1), t("Ascendente")].flatMap((otroCuerpoNombre) => {
+    return planetasYPuntos.slice(index + 1).flatMap((otroCuerpoNombre) => {
       if (selectedPlanet) {
         if (selectedPlanet === t("Ascendente")) {
-          if (nombrePlaneta1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
+          if (nombreCuerpo1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
             return null;
           }
-        } else {
-          if (nombrePlaneta1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
+        } else if (selectedPlanet === t("Medio Cielo")) {
+          if (nombreCuerpo1 !== t("Medio Cielo") && otroCuerpoNombre !== t("Medio Cielo")) {
+            return null;
+          }
+        }
+        else {
+          if (nombreCuerpo1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
             return null;
           }
         }
       }
 
       let signo2, grado2, minutos2;
+      let cuerpo2Data;
+
       if (otroCuerpoNombre === t("Ascendente")) {
-        ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.casas["1"]);
+        cuerpo2Data = resultado.casas["1"];
+      } else if (otroCuerpoNombre === t("Medio Cielo")) {
+        cuerpo2Data = resultado.casas["10"];
       } else {
-        ({ signo: signo2, grado: grado2, minutos: minutos2 } = resultado.planetas[otroCuerpoNombre]);
+        cuerpo2Data = resultado.planetas[otroCuerpoNombre];
       }
 
+      if (!cuerpo2Data) return null;
+
+      ({ signo: signo2, grado: grado2, minutos: minutos2 } = cuerpo2Data);
+
       const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
-      const posicion1 = calcularPosicion(planeta1Data.angle, DISTANCIA_ASPECTOS);
+      const posicion1 = calcularPosicion(cuerpo1Data.angle, DISTANCIA_ASPECTOS);
       const posicion2 = calcularPosicion(
         (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
         DISTANCIA_ASPECTOS
       );
 
-      const diferenciaAngular = calcularDiferenciaAngular(planeta1Data.angle, posicion2.angle);
+      const diferenciaAngular = calcularDiferenciaAngular(cuerpo1Data.angle, posicion2.angle);
 
       let orbeMaximo;
-
       const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
       const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
       const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
+      const esCardinal = (p) => p === t("Ascendente") || p === t("Medio Cielo");
 
-      const categoriaPlaneta1 = esLuminaria(nombrePlaneta1) ? 'luminarias' : esInterno(nombrePlaneta1) ? 'internos' : esExterno(nombrePlaneta1) ? 'externos' : 'otros';
-      const categoriaOtroCuerpo = esLuminaria(otroCuerpoNombre) ? 'luminarias' : esInterno(otroCuerpoNombre) ? 'internos' : esExterno(otroCuerpoNombre) ? 'externos' : 'otros';
+      const getCategoria = (nombre) => {
+        if (esLuminaria(nombre)) return 'luminarias';
+        if (esInterno(nombre)) return 'internos';
+        if (esExterno(nombre)) return 'externos';
+        if (esCardinal(nombre)) return 'cardinales';
+        return 'otros';
+      };
+
+      const categoriaCuerpo1 = getCategoria(nombreCuerpo1);
+      const categoriaOtroCuerpo = getCategoria(otroCuerpoNombre);
 
       orbeMaximo = Math.max(
-        orbesUsuario[categoriaPlaneta1] || 0,
+        orbesUsuario[categoriaCuerpo1] || 0,
         orbesUsuario[categoriaOtroCuerpo] || 0
       );
-
-      if (nombrePlaneta1 === t("Ascendente")) {
-        orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0);
-      } else if (otroCuerpoNombre === t("Ascendente")) {
-        orbeMaximo = Math.max(orbeMaximo, orbesUsuario.otros || 0);
-      }
 
       const aspectos = [
         { angulo: 90, color: "#d194ff" },
@@ -571,34 +619,59 @@ const renderCirculoZodiacal = () => {
 
       return aspectos.map(({ angulo, color }) =>
         Math.abs(diferenciaAngular - angulo) < orbeMaximo ? (
-          <Line key={`Line-${nombrePlaneta1}-${otroCuerpoNombre}-${angulo}`}
+          <AnimatedLine key={`Line-${nombreCuerpo1}-${otroCuerpoNombre}-${angulo}`}
             x1={posicion1.x} y1={posicion1.y}
             x2={posicion2.x} y2={posicion2.y}
             stroke={color} strokeWidth="1.25"
+            opacity={opacityAnimLine}
           />
         ) : null
       ).filter(Boolean);
     });
   };
 
-  const calcularPosicionAjustada = (planetas, index, ASCENDENTROTATION) => {
-    const DISTANCIA_BASE = DISTANCIA_PLANETAS;
+
+  const calcularPosicionAjustada = (cuerpoNombre, index, ASCENDENTROTATION, todosLosCuerpos) => {
     const UMBRAL_ANGULO = 7;
 
-    const getAngulo = (nombrePlaneta) => {
-      const { signo, grado, minutos } = resultado.planetas[nombrePlaneta];
-      const signoIndex = signosZodiacales.indexOf(signo);
-      return (-signoIndex * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30);
+    const getAnguloDeCuerpo = (nombre) => {
+      if (nombre === t("Ascendente")) {
+        const { signo, grado, minutos } = resultado.casas["1"];
+        const signoIndex = signosZodiacales.indexOf(signo);
+        return (-signoIndex * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30);
+      } else if (nombre === t("Medio Cielo")) {
+        const { signo, grado, minutos } = resultado.casas["10"];
+        const signoIndex = signosZodiacales.indexOf(signo);
+        return (-signoIndex * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30);
+      } else {
+        const { signo, grado, minutos } = resultado.planetas[nombre];
+        const signoIndex = signosZodiacales.indexOf(signo);
+        return (-signoIndex * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30);
+      }
     };
 
-    const angulos = planetas.map(p => getAngulo(p));
-    const anguloActual = angulos[index];
+    const anguloActual = getAnguloDeCuerpo(cuerpoNombre); // Obtener el ángulo del cuerpo actual
+
+    // --- Lógica para Ascendente y Medio Cielo (distancia fija) ---
+    if (cuerpoNombre === t("Ascendente") || cuerpoNombre === t("Medio Cielo")) {
+      return calcularPosicion(anguloActual, DISTANCIA_ANGULARES);
+    }
+
+    // --- Lógica existente para planetas (distancia ajustada por agrupamiento) ---
+    const angulosDeTodosLosCuerpos = todosLosCuerpos.map(p => getAnguloDeCuerpo(p));
 
     let grupoIndices = [];
-    for (let i = 0; i < planetas.length; i++) {
-      if (calcularDiferenciaAngular(anguloActual, angulos[i]) < UMBRAL_ANGULO) {
+    for (let i = 0; i < todosLosCuerpos.length; i++) {
+      // Excluir Ascendente y Medio Cielo del agrupamiento de planetas
+      if (todosLosCuerpos[i] !== t("Ascendente") && todosLosCuerpos[i] !== t("Medio Cielo") &&
+          calcularDiferenciaAngular(anguloActual, angulosDeTodosLosCuerpos[i]) < UMBRAL_ANGULO) {
         grupoIndices.push(i);
       }
+    }
+
+    // Asegurarse de que el cuerpo actual (si es un planeta) esté en su propio grupo si no se agrupa con otros planetas
+    if (!grupoIndices.includes(index) && cuerpoNombre !== t("Ascendente") && cuerpoNombre !== t("Medio Cielo")) {
+      grupoIndices.push(index);
     }
 
     grupoIndices.sort((a, b) => a - b);
@@ -614,32 +687,37 @@ const renderCirculoZodiacal = () => {
 
     let distancia;
     if (cantidadEnGrupo === 1) {
-      distancia = DISTANCIA_BASE;
+      distancia = DISTANCIA_PLANETAS;
     } else {
       const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
       const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
-
-      distancia = DISTANCIA_BASE + offset;
+      distancia = DISTANCIA_PLANETAS + offset;
     }
 
     return calcularPosicion(anguloActual, distancia);
   };
 
+
   return (
-    <View>
-      <Svg width={SVG_SIZE} height={SVG_SIZE}>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
+
+      <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+
+
         <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.tertiary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(${-ASCENDENTROTATION + 1}, ${CENTER.x}, ${CENTER.y})`} />
 
         {signosSimbolos.map((signo, index) => {
           const angle = (-index * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION;
           const textPos = calcularPosicion(angle - ANGLE_PER_SIGN / 2, DISTANCIA_SIGNOS);
+          const linePos = calcularPosicion(angle, LINE_LENGTH);
 
           const isSelected = selectedSign === signo;
           const textColor = isSelected ? theme.primary : theme.tertiary;
 
           return (
             <G key={signo}>
-              <SvgText
+
+              <AnimatedText
                 x={textPos.x}
                 y={textPos.y}
                 fontSize={height * 0.035}
@@ -650,7 +728,7 @@ const renderCirculoZodiacal = () => {
                 transform={`rotate(${angle + 75}, ${textPos.x}, ${textPos.y})`}
               >
                 {signo}
-              </SvgText>
+              </AnimatedText>
 
               <Circle
                 cx={textPos.x}
@@ -661,114 +739,211 @@ const renderCirculoZodiacal = () => {
                 strokeWidth="1.5"
                 onPressIn={() => handlePressIn(signo, index, textPos)}
               />
+
             </G>
           );
         })}
 
-        {distanciasCasas.map((angleCasa, index) => (
-          <Line key={index}
-            x1={CENTER.x + RADIO * Math.cos(angleCasa * (Math.PI / 180))}
-            y1={CENTER.y + RADIO * Math.sin(angleCasa * (Math.PI / 180))}
-            x2={CENTER.x + RADIO * Math.cos((angleCasa + 180) * (Math.PI / 180))}
-            y2={CENTER.y + RADIO * Math.sin((angleCasa + 180) * (Math.PI / 180))}
-            stroke={theme.tertiary} strokeWidth=".75"
-          />
-        ))}
+        {distanciasCasas.map((angleCasa, index) => {
+          // Identificamos si esta es la línea del eje IC/MC (Casa 4 / Casa 10)
+          // `resultado.distancia_ascendente_casa4` se encuentra en el índice 2 de `distanciasCasas`
+          const isICMCLine = index === 2; // Índice 2 porque es el 3er elemento en un array de 0-index
 
+          const lineColor = (selectedPlanet === t("Medio Cielo") && isICMCLine)
+            ? theme.focusedItem // Color si MC está seleccionado y es la línea correcta
+            : theme.tertiary; // Color por defecto
+
+          const strokeWidth = (selectedPlanet === t("Medio Cielo") && isICMCLine)
+            ? "1.5" // Grosor si MC está seleccionado
+            : ".75"; // Grosor por defecto
+
+          return (
+            <Line
+              key={index}
+              x1={CENTER.x + RADIO * Math.cos(angleCasa * (Math.PI / 180))}
+              y1={CENTER.y + RADIO * Math.sin(angleCasa * (Math.PI / 180))}
+              x2={CENTER.x + RADIO * Math.cos((angleCasa + 180) * (Math.PI / 180))}
+              y2={CENTER.y + RADIO * Math.sin((angleCasa + 180) * (Math.PI / 180))}
+              stroke={lineColor}
+              strokeWidth={.75}
+              markerStart={isICMCLine ? "url(#arrow)" : ""} // Aplica la flecha solo a esta línea
+            />
+          );
+        })}
+
+        {/* La definición de la flecha `Defs` debe estar AQUÍ, antes de usarla */}
         <Defs>
-          <Marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="10" markerHeight="10">
+          {/* Nuevo Marcador de flecha INVERTIDO para 'markerStart' (para el MC/IC) */}
+          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="25" markerHeight="25">
+            {/* El Path ahora apunta a la izquierda */}
+            <Path d="M8,0 L0,5 L8,10 z" fill={selectedPlanet === t("Medio Cielo") ? theme.focusedItem : theme.tertiary} />
+          </Marker>
+        </Defs>
+
+    <Defs>
+          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="15" markerHeight="15">
             <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
-        <Line markerEnd="url(#arrow)" x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
+        <Line markerEnd="url(#arrowAC)" x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
 
-        <Svg width={SVG_SIZE} height={SVG_SIZE}>
-          {planetas.map((planeta, index) => {
-            const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
-            const posicion = calcularPosicionAjustada(planetas, index, ASCENDENTROTATION);
-            const isSelected = planeta === selectedPlanet;
-            const planetaColor = isSelected ? theme.focusedItem : theme.tertiary;
+    
+        <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
 
-            return (
-              <G key={planeta}>
-                {renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)}
-                <SvgText x={posicion.x} y={posicion.y} fontSize={height * .022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
-                  {simbolosPlanetas[planeta]}
-                </SvgText>
-                {planeta !== "Nodo Norte" && planeta !== "North Node" && (
-                  <>
-                    {estacionario && !retrógrado && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        st
-                      </SvgText>
-                    )}
-                    {retrógrado && !estacionario && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        Rx
-                      </SvgText>
-                    )}
-                    {retrógrado && estacionario && (
-                      <SvgText
-                        x={posicion.x + 7.5}
-                        y={posicion.y + 10}
-                        fontSize={height * 0.008}
-                        textAnchor="start"
-                        alignmentBaseline="middle"
-                        fill={planetaColor}
-                        fontFamily="Effra_SemiBold"
-                      >
-                        stRx
-                      </SvgText>
-                    )}
-                  </>
-                )}
-              </G>
-            );
-          })}
-          <G>
-            {posicionesCasas.map(({ numero, pos }, index) => (
-              <React.Fragment key={numero}>
-                <Circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r={width * 0.015}
-                  fill={theme.tertiary}
-                />
-                <G>
-                  <SvgText
-                    x={pos.x}
-                    y={pos.y}
-                    fontFamily="Effra_Regular"
-                    fontSize={height * 0.01}
-                    textAnchor="middle"
-                    alignmentBaseline="middle"
-                    fill={theme.background}
-                  >
-                    {numero}
-                  </SvgText>
+          <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+
+            {planetasYPuntos.map((cuerpo, index) => {
+              let cuerpoData;
+              let isRetrogrado = false;
+              let isEstacionario = false;
+
+              if (cuerpo === t("Ascendente")) {
+                cuerpoData = resultado.casas["1"];
+              } else if (cuerpo === t("Medio Cielo")) {
+                cuerpoData = resultado.casas["10"];
+              } else {
+                cuerpoData = resultado.planetas[cuerpo];
+                isRetrogrado = cuerpoData.retrógrado;
+                isEstacionario = cuerpoData.estacionario;
+              }
+
+              if (!cuerpoData) return null;
+
+              const posicion = calcularPosicionAjustada(cuerpo, index, ASCENDENTROTATION, planetasYPuntos);
+              const isSelected = cuerpo === selectedPlanet; // Esta variable ya te indica si está seleccionado
+              const cuerpoColor = isSelected ? theme.focusedItem : theme.tertiary;
+
+              // Determina si el cuerpo actual es Ascendente o Medio Cielo
+              const esAscendenteOMedioCielo = (cuerpo === t("Ascendente") || cuerpo === t("Medio Cielo"));
+
+              // --- MODIFICACIÓN CLAVE AQUÍ ---
+              const circleFillColor = esAscendenteOMedioCielo
+                ? (isSelected ? theme.focusedItem : theme.tertiary) // Si es Asc/MC, cambia a focusedItem si está seleccionado, sino terciario
+                : 'none'; // Para planetas, sigue siendo sin relleno
+
+              const symbolTextColor = esAscendenteOMedioCielo
+                ? theme.background // El texto blanco dentro del círculo
+                : (isSelected ? theme.focusedItem : theme.tertiary); // El color del texto del planeta
+
+              const symbolFontSize = esAscendenteOMedioCielo ? RFValue(10) : RFValue(15);
+
+              return (
+                <G key={cuerpo}>
+                  {renderizarLineasAspectos({ nombre: cuerpo, angle: posicion.angle }, index)}
+
+                  {/* Agrega el Círculo para el Ascendente y Medio Cielo */}
+                  {esAscendenteOMedioCielo && (
+                    <Circle
+                      cx={posicion.x}
+                      cy={posicion.y}
+                      r={RFValue(5.25)} // Tamaño del círculo (ajusta si es necesario)
+                      fill={circleFillColor} // Usamos el color de relleno condicional
+                      // No necesitamos stroke para el círculo si el fill ya es un color sólido
+                    />
+                  )}
+
+                  {esAscendenteOMedioCielo ? (
+                    <AnimatedText
+                      x={posicion.x + .5}
+                      y={posicion.y - .5}
+                      fontSize={symbolFontSize}
+                      textAnchor="middle"
+                      alignmentBaseline="middle"
+                      fill={symbolTextColor}
+                      fontFamily="Astronomicon"
+                    >
+                      {simbolosPlanetas[cuerpo]}
+                    </AnimatedText>) : (
+
+                    <AnimatedText
+                      x={posicion.x}
+                      y={posicion.y}
+                      fontSize={symbolFontSize}
+                      textAnchor="middle"
+                      alignmentBaseline="middle"
+                      fill={symbolTextColor}
+                      fontFamily="Astronomicon"
+                    >
+                      {simbolosPlanetas[cuerpo]}
+                    </AnimatedText>
+                  )}
+
+                  {cuerpo !== "Nodo Norte" && cuerpo !== "North Node" && (
+                    <>
+                      {isEstacionario && !isRetrogrado && (
+                        <SvgText
+                          x={posicion.x + 4}
+                          y={posicion.y + 10}
+                          fontSize={height * 0.008}
+                          textAnchor="start"
+                          alignmentBaseline="middle"
+                          fill={cuerpoColor}
+                          fontFamily="Effra_Regular"
+                        >
+                          st
+                        </SvgText>
+                      )}
+                      {isRetrogrado && !isEstacionario && (
+                        <SvgText
+                          x={posicion.x + 4}
+                          y={posicion.y + 10}
+                          fontSize={height * 0.008}
+                          textAnchor="start"
+                          alignmentBaseline="middle"
+                          fill={cuerpoColor}
+                          fontFamily="Effra_SemiBold"
+                        >
+                          Rx
+                        </SvgText>
+                      )}
+                      {isRetrogrado && isEstacionario && (
+                        <SvgText
+                          x={posicion.x + 4}
+                          y={posicion.y + 10}
+                          fontSize={height * 0.008}
+                          textAnchor="start"
+                          alignmentBaseline="middle"
+                          fill={cuerpoColor}
+                          fontFamily="Effra_SemiBold"
+                        >
+                          stRx
+                        </SvgText>
+                      )}
+                    </>
+                  )}
                 </G>
-              </React.Fragment>
-            ))}
-          </G>
-        </Svg>
-        <Circle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
-      </Svg>
+              );
+            })}
+            <G>
+              {posicionesCasas.map(({ numero, pos }, index) => (
+                <React.Fragment key={numero}>
+                  <AnimatedCircle
+                    cx={pos.x}
+                    cy={pos.y}
+                    r={RFValue(5)}
+                    fill={theme.tertiary}
+                  />
+                  <AnimatedG >
+                    <SvgText
+                      x={pos.x}
+                      y={pos.y}
+                      fontFamily="Effra_SemiBold"
+                      fontSize={RFValue(7)}
+                      textAnchor="middle"
+                      alignmentBaseline="middle"
+                      fill={theme.background}
+                    >
+                      {numero}
+                    </SvgText>
+                  </AnimatedG>
+                </React.Fragment>
+              ))}
+            </G>
+          </AnimatedSvg>
+        </Animated.View>
+        <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
+
+      </AnimatedSvg>
 
       {tooltip.visible && (
         <View style={{
@@ -785,9 +960,12 @@ const renderCirculoZodiacal = () => {
           <Text style={{ color: theme.background, fontFamily: 'Effra_Regular', fontSize: height * 0.012 }}>{tooltip.sign}</Text>
         </View>
       )}
-    </View>
+    </Animated.View>
+
+
   );
 };
+
   return resultado !== null ? (
 
     <View style={styles.myChartContainer}>
