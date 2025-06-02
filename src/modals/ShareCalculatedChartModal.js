@@ -384,93 +384,151 @@ const renderItem = ({ item, index }) => {
      ];
    });
  
-   const renderizarLineasAspectos = (cuerpo1Data, index) => {
-     const nombreCuerpo1 = cuerpo1Data.nombre;
-     const orbesUsuario = userData.orbes;
- 
-     return planetasYPuntos.slice(index + 1).flatMap((otroCuerpoNombre) => {
-       if (selectedPlanet) {
-         if (selectedPlanet === t("Ascendente")) {
-           if (nombreCuerpo1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
-             return null;
-           }
-         } else if (selectedPlanet === t("Medio Cielo")) {
-           if (nombreCuerpo1 !== t("Medio Cielo") && otroCuerpoNombre !== t("Medio Cielo")) {
-             return null;
-           }
-         }
-         else {
-           if (nombreCuerpo1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
-             return null;
-           }
-         }
-       }
- 
-       let signo2, grado2, minutos2;
-       let cuerpo2Data;
- 
-       if (otroCuerpoNombre === t("Ascendente")) {
-         cuerpo2Data = resultado.casas["1"];
-       } else if (otroCuerpoNombre === t("Medio Cielo")) {
-         cuerpo2Data = resultado.casas["10"];
-       } else {
-         cuerpo2Data = resultado.planetas[otroCuerpoNombre];
-       }
- 
-       if (!cuerpo2Data) return null;
- 
-       ({ signo: signo2, grado: grado2, minutos: minutos2 } = cuerpo2Data);
- 
-       const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
-       const posicion1 = calcularPosicion(cuerpo1Data.angle, DISTANCIA_ASPECTOS);
-       const posicion2 = calcularPosicion(
-         (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
-         DISTANCIA_ASPECTOS
-       );
- 
-       const diferenciaAngular = calcularDiferenciaAngular(cuerpo1Data.angle, posicion2.angle);
- 
-       let orbeMaximo;
-       const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
-       const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
-       const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
-       const esCardinal = (p) => p === t("Ascendente") || p === t("Medio Cielo");
- 
-       const getCategoria = (nombre) => {
-         if (esLuminaria(nombre)) return 'luminarias';
-         if (esInterno(nombre)) return 'internos';
-         if (esExterno(nombre)) return 'externos';
-         if (esCardinal(nombre)) return 'cardinales';
-         return 'otros';
-       };
- 
-       const categoriaCuerpo1 = getCategoria(nombreCuerpo1);
-       const categoriaOtroCuerpo = getCategoria(otroCuerpoNombre);
- 
-       orbeMaximo = Math.max(
-         orbesUsuario[categoriaCuerpo1] || 0,
-         orbesUsuario[categoriaOtroCuerpo] || 0
-       );
- 
-       const aspectos = [
-         { angulo: 90, color: "#d194ff" },
-         { angulo: 30, color: "#ffe278" },
-         { angulo: 60, color: "#8acfff" },
-         { angulo: 120, color: "#8acfff" },
-         { angulo: 150, color: "#ffe278" },
-         { angulo: 180, color: "#d194ff" },
-       ];
- 
-       return aspectos.map(({ angulo, color }) =>
-         Math.abs(diferenciaAngular - angulo) < orbeMaximo ? (
-           <Line key={`Line-${nombreCuerpo1}-${otroCuerpoNombre}-${angulo}`}
-             x1={posicion1.x} y1={posicion1.y}
-             x2={posicion2.x} y2={posicion2.y}
-             stroke={color} strokeWidth="1.25"/>
-         ) : null
-       ).filter(Boolean);
-     });
-   };
+const renderizarLineasAspectos = (cuerpo1Data, index) => {
+  const nombreCuerpo1 = cuerpo1Data.nombre;
+
+  return planetasYPuntos.slice(index + 1).flatMap((otroCuerpoNombre) => {
+    if (selectedPlanet) {
+      if (selectedPlanet === t("Ascendente")) {
+        if (nombreCuerpo1 !== t("Ascendente") && otroCuerpoNombre !== t("Ascendente")) {
+          return null;
+        }
+      } else if (selectedPlanet === t("Medio Cielo")) {
+        if (nombreCuerpo1 !== t("Medio Cielo") && otroCuerpoNombre !== t("Medio Cielo")) {
+          return null;
+        }
+      } else {
+        if (nombreCuerpo1 !== selectedPlanet && otroCuerpoNombre !== selectedPlanet) {
+          return null;
+        }
+      }
+    }
+
+    let signo2, grado2, minutos2;
+    let cuerpo2Data;
+
+    if (otroCuerpoNombre === t("Ascendente")) {
+      cuerpo2Data = resultado.casas["1"];
+    } else if (otroCuerpoNombre === t("Medio Cielo")) {
+      cuerpo2Data = resultado.casas["10"];
+    } else {
+      cuerpo2Data = resultado.planetas[otroCuerpoNombre];
+    }
+
+    if (!cuerpo2Data) return null;
+
+    ({
+      signo: signo2,
+      grado: grado2,
+      minutos: minutos2
+    } = cuerpo2Data);
+
+    const planetSignoIndex2 = signosZodiacales.indexOf(signo2);
+    const posicion1 = calcularPosicion(cuerpo1Data.angle, DISTANCIA_ASPECTOS);
+    const posicion2 = calcularPosicion(
+      (-planetSignoIndex2 * ANGLE_PER_SIGN - 180) - ASCENDENTROTATION - (grado2 + minutos2 / 60) * (ANGLE_PER_SIGN / 30),
+      DISTANCIA_ASPECTOS
+    );
+
+    const diferenciaAngular = calcularDiferenciaAngular(cuerpo1Data.angle, posicion2.angle);
+
+    const esLuminaria = (p) => p === "Sol" || p === "Luna" || p === "Sun" || p === "Moon";
+    const esInterno = (p) => ["Mercurio", "Venus", "Marte", "Júpiter", "Saturno", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"].includes(p);
+    const esExterno = (p) => ["Urano", "Neptuno", "Plutón", "Uranus", "Neptune", "Pluto"].includes(p);
+    const esCardinal = (p) => p === t("Ascendente") || p === t("Medio Cielo");
+
+    const getCategoria = (nombre) => {
+      if (esLuminaria(nombre)) return 'luminarias';
+      if (esInterno(nombre)) return 'internos';
+      if (esExterno(nombre)) return 'externos';
+      if (esCardinal(nombre)) return 'cardinales';
+      return 'otros';
+    };
+
+    const categoriaCuerpo1 = getCategoria(nombreCuerpo1);
+    const categoriaOtroCuerpo = getCategoria(otroCuerpoNombre);
+
+    const aspectosDefinidos = [{
+      angulo: 0,
+      tipo: 'mayor',
+      color: "#d194ff",
+      nombre: "Conjunción"
+    }, {
+      angulo: 90,
+      tipo: 'mayor',
+      color: "#d194ff",
+      nombre: "Cuadratura"
+    }, {
+      angulo: 180,
+      tipo: 'mayor',
+      color: "#d194ff",
+      nombre: "Oposición"
+    }, {
+      angulo: 60,
+      tipo: 'menor',
+      color: "#8acfff",
+      nombre: "Sextil"
+    }, {
+      angulo: 120,
+      tipo: 'mayor',
+      color: "#8acfff",
+      nombre: "Trígono"
+    }, {
+      angulo: 30,
+      tipo: 'menor',
+      color: "#ffe278",
+      nombre: "Semisextil"
+    }, {
+      angulo: 150,
+      tipo: 'menor',
+      color: "#ffe278",
+      nombre: "Quincuncio"
+    }, ];
+
+
+    return aspectosDefinidos.map(({
+      angulo,
+      color,
+      tipo
+    }) => {
+      let orbeMaximo;
+      if (tipo === 'mayor') {
+        orbeMaximo = Math.max(
+          userData.mayores[categoriaCuerpo1] || 0,
+          userData.mayores[categoriaOtroCuerpo] || 0
+        );
+      } else { // tipo === 'menor'
+        orbeMaximo = Math.max(
+          userData.menores[categoriaCuerpo1] || 0,
+          userData.menores[categoriaOtroCuerpo] || 0
+        );
+      }
+
+      return Math.abs(diferenciaAngular - angulo) < orbeMaximo ? ( 
+        <Line key = {
+          `Line-${nombreCuerpo1}-${otroCuerpoNombre}-${angulo}`
+        }
+        x1 = {
+          posicion1.x
+        }
+        y1 = {
+          posicion1.y
+        }
+        x2 = {
+          posicion2.x
+        }
+        y2 = {
+          posicion2.y
+        }
+        stroke = {
+          color
+        }
+        strokeWidth = "1.25"
+        />
+      ) : null
+    }).filter(Boolean);
+  });
+};
  
  
    const calcularPosicionAjustada = (cuerpoNombre, index, ASCENDENTROTATION, todosLosCuerpos) => {

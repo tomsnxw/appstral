@@ -74,11 +74,17 @@ const signUpUser = async (email, password, name, lastName, birthDate, birthTime,
       sistemaCasas: "T",
       membresia: "",
       extraCharts: 3,
-      orbes: {
+      mayores: {
         externos: 5,
         internos: 5,
         luminarias: 8,
         otros: 3,
+      },
+      menores: {
+        externos: 3,
+        internos: 3,
+        luminarias: 5,
+        otros: 2,
       },
     };
 
