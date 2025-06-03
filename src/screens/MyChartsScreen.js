@@ -556,7 +556,7 @@ useEffect(() => {
 
 
         
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('35%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('33.75%'), zIndex: 1}}/>
 
          <LinearGradient
         colors={[theme.buttonGradientTop, theme.buttonGradientBottom]}
@@ -564,7 +564,7 @@ useEffect(() => {
           alignSelf: 'center',
           alignItems:'center',
           justifyContent:'center',
-          bottom: hp('30%'),
+          bottom: hp(30),
           width: hp('5.75%'),
           height: hp('5.75%'),
           backgroundColor:'red',

@@ -831,7 +831,7 @@ const handleHoraChange = (text) => {
         countries={countries}
       />
 
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('25%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('27.25%'), zIndex: 1}}/>
     
 
     </View>

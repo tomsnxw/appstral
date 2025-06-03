@@ -1256,7 +1256,7 @@ const confirmarEliminacion = async () => {
            ListFooterComponent={<View style={styles.chartResultListSpace} />}
          />
         )}
-        <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
+        <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('32.5%'), zIndex: 1}}/>
 {shareModalVisible && ( <ShareChartModal
         route={{ params: { cartaId: cartaId} }}
         visible={shareModalVisible}

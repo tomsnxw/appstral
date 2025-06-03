@@ -693,13 +693,13 @@ const styles = (theme) => StyleSheet.create({
     backgroundColor: "#666666",
   },
   buttonText: {
-    fontSize: RFValue(13), // Equivalente a height * 0.016
-    color: theme?.colors?.alwaysWhite || '#FFFFFF', // Accede a colors.alwaysWhite desde el tema, con fallback
+    fontSize: RFValue(13), 
+    color: '#FFFFFF', 
     fontFamily: 'Effra_Regular',
-    transform: [{ translateY: 1 }]
+    transform: [{ translateY: RFValue(-1) }]
   },
   loginText:{
-    fontSize: RFValue(14), // Equivalente a height * 0.017
+    fontSize: RFValue(14),
     color: '#333333',
     fontFamily: 'Effra_Light',
   },

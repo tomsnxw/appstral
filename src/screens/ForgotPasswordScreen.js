@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     height: height,
   },
   formContainer: {
+    marginTop:hp(3),
     height: hp('85%'),
     justifyContent: 'center',
     alignSelf: 'center',
@@ -151,6 +152,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
     justifyContent: 'space-between',
     alignItems:'center',
+    marginHorizontal: 'auto',
+    width: wp('80%')
   },
   focusedBorder:{
     borderWidth: 1,
@@ -254,10 +257,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#666666",
   },
   buttonText: {
-    fontSize: height*0.016,
-    color: colors.alwaysWhite,
+    fontSize: RFValue(13), 
+    color: '#ffffff',
     fontFamily: 'Effra_Regular',
-    transform: [{ translateY: 1 }]
+    transform: [{ translateY: RFValue(-1) }]
   },
   loginText:{
     fontSize: RFValue(13), // Equivalente a height * 0.016

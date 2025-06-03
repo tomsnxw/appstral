@@ -171,16 +171,18 @@ const styles = StyleSheet.create({
     paddingLeft: wp('2.5%') // Aproximadamente 10 / 375 (ancho típico de un iPhone X) * 100%
   },
   inputContainer: {
-     height: RFValue(30), // Equivalente a height * 0.045
+     height: RFValue(28), // Equivalente a height * 0.045
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#808080',
     borderRadius: RFValue(50),
-    paddingHorizontal: wp('4%'), // Aproximadamente 15 / 375 * 100%
+    paddingHorizontal: wp('4%'), 
     justifyContent: 'space-between',
     alignItems:'center',
-    marginBottom: hp('2%') // Aproximadamente 10 / 812 * 100%
-
+    marginHorizontal: 'auto',
+    width: wp('85%'),
+    marginTop:'0',
+    marginBottom: hp('2%')
 
   },
   focusedBorder:{
@@ -287,10 +289,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#666666",
   },
   buttonText: {
-    fontSize: height*0.016,
-    color: colors.alwaysWhite,
+    fontSize: RFValue(13), 
+    color: '#ffffff',
     fontFamily: 'Effra_Regular',
-    transform: [{ translateY: 1 }]
+    transform: [{ translateY: RFValue(-1) }]
   },
   loginText:{
     fontSize: RFValue(14), // Equivalente a height * 0.017

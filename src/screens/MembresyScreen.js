@@ -227,30 +227,39 @@ const handlePurchase = async () => {
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles(theme).membresyClaimButton}><Text style={styles(theme).membresyClaimButtonText}>{t("membresy.reclamos")}</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => {setConfirmCancelModalVisible(true);}} style={styles(theme).membresyCancelButton}><Text style={styles(theme).membresyClaimButtonText}>{t("membresy.Cancelar")}</Text></TouchableOpacity>
             </View>     
-            { i18n.language === 'es' && ( <Text style={styles(theme).benefitContainerTitle}>{userData?.membresia === 'solar' && "BENEFICIO SOLAR"}{userData?.membresia === 'estelar' && "BENEFICIO ESTELAR"}</Text>)}            
-            { i18n.language === 'es' && (
-           <ScrollView style={styles(theme).membresyScrollContainer}>
-           <View style={styles(theme).BenefitOptionsContainer}>
-             {mainBenefit && (
-               <View style={styles(theme).firstBenefitContainer}>
-                 <Text style={styles(theme).firstBenefitTitle}>{mainBenefit.descuento}</Text>
-                 <Text style={styles(theme).firstBenefitText}>{mainBenefit.titulo}</Text>
-                 <TouchableOpacity style={styles(theme).firstBenefitButton} onPress={() => Linking.openURL('https://www.instagram.com/rastros.astrologia/')}>
-                   <Text style={styles(theme).firstBenefitButtonText}>¡Lo quiero!</Text>
-                 </TouchableOpacity>
-               </View>
-             )}
-         
-             {otherBenefits.map((benefit, index) => (
-               <TouchableOpacity key={index} style={styles(theme).otherBenefitContainer}>
-                 <Text style={styles(theme).otherBenefitTitle}>{benefit.descuento}</Text>
-                 <Text style={styles(theme).otherBenefitText}>{benefit.titulo}</Text>
-               </TouchableOpacity>
-             ))}
-         
-             <View style={styles(theme).scrollBenefitBottomSpace}></View>
-           </View>
-         </ScrollView>)}
+{
+  i18n.language === 'es' &&
+  (mainBenefit || (otherBenefits && otherBenefits.length > 0)) && (
+    <>
+      <Text style={styles(theme).benefitContainerTitle}>
+        {userData?.membresia === 'solar' && "BENEFICIO SOLAR"}
+        {userData?.membresia === 'estelar' && "BENEFICIO ESTELAR"}
+      </Text>
+      <ScrollView style={styles(theme).membresyScrollContainer}>
+        <View style={styles(theme).BenefitOptionsContainer}>
+          {mainBenefit && (
+            <View style={styles(theme).firstBenefitContainer}>
+              <Text style={styles(theme).firstBenefitTitle}>{mainBenefit.descuento}</Text>
+              <Text style={styles(theme).firstBenefitText}>{mainBenefit.titulo}</Text>
+              <TouchableOpacity style={styles(theme).firstBenefitButton} onPress={() => Linking.openURL('https://www.instagram.com/rastros.astrologia/')}>
+                <Text style={styles(theme).firstBenefitButtonText}>¡Lo quiero!</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {otherBenefits.map((benefit, index) => (
+            <TouchableOpacity key={index} style={styles(theme).otherBenefitContainer}>
+              <Text style={styles(theme).otherBenefitTitle}>{benefit.descuento}</Text>
+              <Text style={styles(theme).otherBenefitText}>{benefit.titulo}</Text>
+            </TouchableOpacity>
+          ))}
+
+          <View style={styles(theme).scrollBenefitBottomSpace}></View>
+        </View>
+      </ScrollView>
+    </>
+  )
+}
             <View style={styles(theme).scrollBottomSpace}></View>
             <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: (height - wHeight) - height*0.035, left: 0,right: 0,height: (height - wHeight) + height*0.25 , zIndex: 1}}/>
 
@@ -362,7 +371,7 @@ const styles = (theme) => StyleSheet.create({
     borderRadius: 100,
     borderColor: '#7EBCEC',
     borderWidth: 1,
-    backgroundColor: theme.membresiaBoton
+    backgroundColor: '#7EBCEC'
   },
   membresyCancelButton:{
     paddingVertical: 10,

@@ -125,22 +125,15 @@ export const createStyles = (theme) => {
       color: theme.secondary,
       fontFamily: 'Effra_Regular',
       textAlign: 'center',
-      // **CAMBIO CLAVE AQUÍ:** Elimina lineHeight si la altura del texto
-      // es manejada por el contenedor flex.
-      // lineHeight: RFValue(28),
-      // Añade alignSelf: 'center' para asegurar el centrado si el texto no ocupa todo el ancho
       alignSelf: 'center',
-      // Para casos donde el texto es la única cosa en el botón, y el botón ya centra
-      // con justifyContent y alignItems, a veces basta con esto.
     },
     titleButton: {
       fontSize: RFValue(14),
       color: theme.secondary,
       fontFamily: 'Effra_Light',
       textAlign: 'center',
-      // **CAMBIO CLAVE AQUÍ:** Elimina lineHeight.
-      // lineHeight: RFValue(28),
-      alignSelf: 'center', // Asegura que el texto se centre a sí mismo si su contenedor es más grande.
+      alignSelf: 'center', 
+      paddingTop: RFValue(1.5)
     },
     fechaText: {
       textTransform: 'uppercase',
@@ -148,15 +141,8 @@ export const createStyles = (theme) => {
       fontFamily: 'Effra_Regular',
       color: theme.primary,
       fontSize: RFValue(13),
-      // Si este texto está dentro de un botón que ya usa justifyContent/alignItems: 'center',
-      // o si es la única línea de texto, no necesitas lineHeight explícito
-      // a menos que quieras espacio extra entre líneas en un bloque multilínea.
       alignSelf: 'center',
     },
-    
-
-
-
 
     switchSelector: {
       flexDirection: "row",
@@ -679,7 +665,7 @@ homeWelcomeTitles:{
       paddingHorizontal: wp('6.25%'),
       borderRadius: 100,
       borderWidth: 1,
-      paddingTop: hp('.25%'),
+      paddingBottom: hp(.1),
       justifyContent: 'center',
       alignItems: 'center',  
     },
@@ -994,13 +980,13 @@ homeWelcomeTitles:{
     overflow: 'hidden', // Se mantiene fijo
     alignSelf: 'center',
     width: wp('30%'), // width*0.3 a wp
-    height: hp('4%'), // height*0.04 a hp
+    height: hp('4.5%'), // height*0.04 a hp
   },
   gradientBackground: {
     paddingVertical: hp('0.875%'), // 7px to hp
     paddingHorizontal: wp('11.25%'), // 45px to wp
     width: wp('30%'), // width*0.3 to wp
-    height: hp('4%'), // height*0.04 to hp
+    height: hp('4.5%'), // height*0.04 to hp
     borderRadius: 100, // Keep fixed
     alignItems: 'center',
   },
@@ -1016,7 +1002,8 @@ homeWelcomeTitles:{
     backgroundColor: 'rgba(0, 0, 0, 0.2)', // Keep fixed
   },
   calculateButtonText: {
-    fontSize: RFValue(13), // 16px to RFValue
+    fontSize: RFValue(14),
+    marginBottom: RFValue(2),
     fontFamily: 'Effra_Regular',
     color: theme.alwaysWhite,
     zIndex: 5,
@@ -1208,24 +1195,28 @@ homeWelcomeTitles:{
     margin: 0, // Se mantiene fijo
   },
   modalButtonContainer: {
-    borderRadius: 25, // Se mantiene fijo
+    borderRadius: 100, // Se mantiene fijo
     overflow: 'hidden', // Se mantiene fijo
     alignSelf: 'center',
     width: wp('30%'), // width*0.3 a wp
-    height: hp('4%'), // height*0.04 a hp
+    height: hp('4%'),
+    backgroundColor:'red'
   },
   modalButtonEditText: {
-    fontSize: RFValue(12), // 15px a RFValue
+    fontSize: RFValue(13),
     fontFamily: 'Effra_Regular',
     color: theme.alwaysWhite,
+        marginBottom: RFValue(2),
+
+    zIndex: 5,
   },
   gradientBackground: {
-    paddingVertical: hp('0.875%'), // 7px a hp
-    paddingHorizontal: wp('8.75%'), // 35px a wp
-    borderRadius: 100, // Se mantiene fijo
+    paddingVertical: hp('0.875%'), // 7px to hp
+    paddingHorizontal: wp('11.25%'), // 45px to wp
+    width: wp('30%'), // width*0.3 to wp
+    height: hp('4%'), // height*0.04 to hp
+    borderRadius: 100, // Keep fixed
     alignItems: 'center',
-    width: wp('30%'), // width*0.3 a wp
-    height: hp('4%'), // height*0.04 a hp
   },
   progressContainer: {
     ...StyleSheet.absoluteFillObject, // Se mantiene fijo

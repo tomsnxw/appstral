@@ -18,6 +18,8 @@ import { useToast } from "../contexts/ToastContext";
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import countryTranslations from '../utils/countryTranslations'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize"; 
 
 const EditInfoModal = ({ visible, handleCloseModal}) => {
   const { theme } = useContext(ThemeContext);
@@ -335,7 +337,7 @@ placeholderTextColor={theme.secondary}
   >
     <TextInput
       placeholderTextColor={theme.secondary}
-      style={styles.input}
+      style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}}
       placeholder={t('Seleccion_Ciudad')}
       value={searchTextCountry}
       onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
@@ -375,7 +377,7 @@ placeholderTextColor={theme.secondary}
         <TouchableOpacity style={styles.modalInput}>
               <TextInput
               placeholderTextColor={theme.secondary}
-                style={styles.input} 
+                style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}} 
                 placeholder={t('Seleccion_Ciudad')}
                 value={birthCity}
                 onFocus={() => {

@@ -23,6 +23,8 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import countryTranslations from '../utils/countryTranslations'
 import { useUser } from '../contexts/UserContext';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 const AddChartModal =  ({handleCloseAddModal, visible, navigation})  => {
   const { theme } = useContext(ThemeContext);
@@ -415,7 +417,7 @@ const handleCitySearch = (text) => {
   >
     <TextInput
       placeholderTextColor={theme.secondary}
-      style={styles.input}
+      style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}}
       value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
       onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
       onFocus={() => { // Abre el dropdown cuando se enfoca el input
@@ -455,7 +457,7 @@ const handleCitySearch = (text) => {
       <TouchableOpacity style={styles.modalInput}>
             <TextInput
             placeholderTextColor={theme.secondary}
-              style={styles.input} 
+      style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}}
               placeholder={t('Seleccion_Ciudad')}
               value={ciudad}
               onFocus={() => pais && toggleDropdown("city")}

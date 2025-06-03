@@ -7,6 +7,8 @@ const { height: height, width: width } = Dimensions.get('screen');
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { useTranslation } from 'react-i18next';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize"; 
 
 
 const TermsScreen = () => {
@@ -67,7 +69,7 @@ const TermsScreen = () => {
 
       <View style={styles.scrollBottomSpace}></View>
     </ScrollView>
-       <LinearGradient pointerEvents="none" colors={['transparent',  theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: height*0.025,left: 0,right: 0,height: height*0.45,zIndex: 1}}/>
+       <LinearGradient pointerEvents="none" colors={['transparent',  theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: height*0.025,left: 0,right: 0,height: hp('24.75%'),zIndex: 1}}/>
     
     </View>
   );

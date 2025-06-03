@@ -51,6 +51,7 @@ const MailModal = ({ visible, onClose, t }) => {
           placeholder={t("alert.asunto")}
           value={asunto}
           onChangeText={setAsunto}
+          placeholderTextColor={theme.tertiary}
           style={{color: theme.secondary, borderColor: theme.secondary, marginBottom: 5, width: '75%', borderWidth: 1, paddingVertical: 2, paddingHorizontal: 10, borderRadius: 10 }}
         />
         <TextInput
@@ -59,6 +60,7 @@ const MailModal = ({ visible, onClose, t }) => {
           onChangeText={setMensaje}
           multiline
           numberOfLines={12}
+          placeholderTextColor={theme.tertiary}
           style={{ color: theme.secondary, borderColor: theme.secondary, marginBottom: 10,textAlignVertical: 'top', width: '75%', paddingVertical: 10, borderWidth: 1, paddingHorizontal: 10, borderRadius: 10,  }}
         />
          <View style={{ flexDirection: 'row',

@@ -484,7 +484,7 @@ const styles = (theme) => StyleSheet.create({
     paddingBottom: hp(1.2), // Approximation of 10
   },
   eventTitle: {
-    fontSize: hp(2), // height * 0.018
+    fontSize: hp(2.2), // height * 0.018
     color: theme.primary,
     fontFamily: 'Effra_Medium',
     maxWidth: wp(90), // '90%'
@@ -497,7 +497,7 @@ const styles = (theme) => StyleSheet.create({
     margin: 'auto',
   },
   eventInfo: {
-    fontSize: hp(1.9), // height*0.019
+    fontSize: hp(2), // height*0.019
     fontFamily: 'Effra_Regular',
     color: theme.secondaryBorder
   },
@@ -543,7 +543,7 @@ const styles = (theme) => StyleSheet.create({
     width: wp(76.5), // width*.765
   },
   eventDetails: {
-    fontSize: hp(1.7), // height*0.017
+    fontSize: hp(1.9), // height*0.017
     fontFamily: 'Effra_Regular',
     color: theme.primary,
     lineHeight: hp(2.4), // height*0.024

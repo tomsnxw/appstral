@@ -13,6 +13,8 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import { useTranslation } from 'react-i18next';
 import countryTranslations from '../utils/countryTranslations'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize"; 
 
 const EditCalculatedChartModal = ({ handleCloseEditModal, visible, nombre, setNombre, apellido, setApellido,setIsEdited, fecha, setFecha,  hora, setHora, ciudad, setCiudad, pais, setPais, handleCalculate }) => {
 const { theme } = useContext(ThemeContext);
@@ -279,7 +281,7 @@ const progress = useRef(new Animated.Value(0)).current;
 
           <View style={styles.pickerPlaceContainer}>
               <TouchableOpacity style={styles.modalInput} onPress={() => toggleDropdown("country")}>
-              <TextInput style={styles.input} editable={false}>
+              <TextInput style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}} editable={false}>
   {tempPais
     ? (i18n.language === 'es' ? (countryTranslations[tempPais] || tempPais) : tempPais)
     : t('Seleccion_Pais')}
@@ -304,7 +306,7 @@ const progress = useRef(new Animated.Value(0)).current;
         <TouchableOpacity style={styles.modalInput}>
               <TextInput
               placeholderTextColor={theme.secondary}
-                style={styles.input} 
+                style={{fontSize: RFValue(13), fontFamily: 'Effra_Regular', color: theme.secondary,}} 
                 placeholder= {tempCiudad || t('Seleccion_Ciudad')}
                 value={ciudad}
                 onFocus={() => {

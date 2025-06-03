@@ -501,7 +501,7 @@ const EfemeridesTabBar = ({ state, descriptors, navigation, filtroCategoria, set
                   paddingHorizontal: wp('6.25%'),
                   borderRadius: 100,
                   borderWidth: 1,
-                  paddingTop: hp('.25%'),
+                  paddingBottom: hp(.1),
                   justifyContent: 'center',
                   alignItems: 'center',
                 }, filtroCategoria === categoria && {
