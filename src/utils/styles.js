@@ -7,25 +7,22 @@ export const createStyles = (theme) => {
   return StyleSheet.create({
     gradientBottom: {
       position: 'absolute',
-      // Aquí estamos asumiendo un valor base para 'bottom' y 'height'
-      // Ajusta estos porcentajes según cómo se vea bien en un dispositivo de referencia.
-      // Por ejemplo, hp('X%') representa X% del alto de la pantalla.
-      bottom: hp('-7%'), // Esto es un ajuste estimado. Si tu barra de estado + navegación es ~120px y quieres -55px de distancia
+      bottom: hp('-7%'),
       left: 0,
       right: 0,
-      height: hp('20%'), // Por ejemplo, 20% del alto de la pantalla
+      height: hp('20%'), 
       zIndex: 1
     },
     homeGradientContainer:{
-      height: height // 100% del alto de la pantalla
+      height: height
     },
     homeContainer:{
-      height: height, // 100% del alto de la pantalla
-      paddingTop: hp('0.5%') // 0.5% del alto de la pantalla
+      height: height, 
+      paddingTop: hp('0.5%') 
     },
     maskedView: {
       width: '100%',
-      height: hp('5%'), // Ajustado a un porcentaje del alto
+      height: hp('5%'), 
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -806,7 +803,7 @@ homeWelcomeTitles:{
     color: theme.secondary,
   },
   chartResultListSpace: {
-    height: hp('30%'), // height*0.325 a hp
+    height: hp('32.5%'), // height*0.325 a hp
   },
 
   policyScrollContainer: {

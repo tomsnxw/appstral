@@ -497,7 +497,7 @@ const handleHoraChange = (text) => {
 
 
   return (
-    <View style={{ height: hp('100%'), margin: 0 }}>
+    <View style={{ height: hp('100%'), marginBottom: 0, marginTop: 'auto' }}>
     
     <LogOutModal
       visible={showLogoutModal}
@@ -505,10 +505,10 @@ const handleHoraChange = (text) => {
       onCancel={() => setShowLogoutModal(false)}
       t={t}
     />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: hp('96%'), gap: 15, marginBottom: 0, marginTop:'auto' }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: hp('110%'), gap: 15, marginBottom: 0, marginTop:'auto' }}>
       {userData?.premium ?
       <View style={styles.ProfileInfoContainer}>
-      <View style={styles.ProfileNameContainer}>
+      <View style={[styles.ProfileNameContainer,{ paddingTop:hp('4%')}]}>
       <Text style={[styles.ProfileName,{color: '#7EBCEC'}]} numberOfLines={1} ellipsizeMode="tail">{formData.name} {formData.lastName}</Text>  
                 <TouchableOpacity onPress={handleOpenModal}>
   <EditIcon style={{ width: height*.022, height: height*.022, margin:'auto',marginBottom: 3, fill:'#808080' }} />
@@ -589,7 +589,7 @@ const handleHoraChange = (text) => {
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
     <Text style={{ fontSize: RFValue(14),
     color: theme.alwaysWhite,
-    fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>
+    fontFamily: 'Effra_Regular', }}>{t("profile.Cambiar")}</Text>
   </View>
 </TouchableOpacity>
       </View></Animated.View>
@@ -616,7 +616,7 @@ const handleHoraChange = (text) => {
                  <TouchableOpacity style={{width: 115, height: 40, marginVertical: hp('2%'), borderRadius: 100, marginHorizontal: 'auto', marginRight: 25, overflow: "hidden", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: 'white', backgroundColor: theme.alwaysBlack,}} onPress={handleEmailUpdate} disabled={loading}>
   <View style={{ ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center",}}>
     <Animated.View style={{position: "absolute", left: 0, height: "100%", backgroundColor: "#666666", animatedStyle}} />
-    <Text style={{ fontSize: RFValue(14), color: theme.alwaysWhite, fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Cambiar")}</Text>
+    <Text style={{ fontSize: RFValue(14), color: theme.alwaysWhite, fontFamily: 'Effra_Regular', }}>{t("profile.Cambiar")}</Text>
 
   </View>
 </TouchableOpacity>
@@ -805,7 +805,7 @@ const handleHoraChange = (text) => {
     backgroundColor: "#666666", animatedStyle}} />
     <Text style={{ fontSize: RFValue(14),
     color: theme.alwaysWhite,
-    fontFamily: 'Effra_Regular', transform: [{ translateY: 1 }]}}>{t("profile.Eliminar")}</Text>
+    fontFamily: 'Effra_Regular', }}>{t("profile.Eliminar")}</Text>
   </View>
 </TouchableOpacity>
       </View></Animated.View>

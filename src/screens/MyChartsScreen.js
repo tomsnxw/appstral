@@ -564,7 +564,7 @@ useEffect(() => {
           alignSelf: 'center',
           alignItems:'center',
           justifyContent:'center',
-          bottom: hp(30),
+          bottom: hp('30%'),
           width: hp('5.75%'),
           height: hp('5.75%'),
           backgroundColor:'red',
