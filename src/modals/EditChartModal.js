@@ -249,15 +249,15 @@ const handleCitySearch = (text) => {
     
       const [year, month, day] = fecha.split('-');
       if (year < 1699 || year > 2100) {
-        showToast({ message: t("toast.Fecha_Anio_Invalido"), type: "alert" });
+        showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
         return;
       }
       if (month < 1 || month > 12) {
-        showToast({ message: t("toast.Fecha_Mes_Invalido"), type: "alert" });
+        showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
         return;
       }
       if (day < 1 || day > 31) {
-        showToast({ message: t("toast.Fecha_Dia_Invalido"), type: "alert" });
+        showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
         return;
       }
     

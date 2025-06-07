@@ -186,32 +186,49 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
     cargarTodosLosEventos();
   }, []);
 
-  const filtrarEventos = () => {
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
+const filtrarEventos = () => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    const inicioSemana = new Date(hoy);
-    const finSemana = new Date(hoy);
-    finSemana.setDate(hoy.getDate() + 7);
+    const inicioSemana = new Date(hoy);
+    const finSemana = new Date(hoy);
+    finSemana.setDate(hoy.getDate() + 7);
 
-    const inicioMes = new Date(hoy);
-    const finMes = new Date(hoy);
-    finMes.setDate(hoy.getDate() + 30);
+    const inicioMes = new Date(hoy);
+    const finMes = new Date(hoy);
+    finMes.setDate(hoy.getDate() + 30);
 
-    return eventosTotales.filter(evento => {
-      // Filtrar por categoría
-      if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
+    return eventosTotales.filter(evento => {
+      // Filtrar por categoría
+      if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
 
-      // Filtrar por rango de tiempo
-      if (evento.categoria === 'retrogradaciones') {
-        return evento.inicio <= finMes && evento.fin >= hoy; // Considerar eventos que *ocurren* dentro del mes
-      }
-      if (rangoTiempo === 'hoy') return evento.fecha.toDateString() === hoy.toDateString();
-      if (rangoTiempo === 'semana') return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
-      if (rangoTiempo === 'mes') return evento.fecha >= inicioMes && evento.fecha <= finMes;
-      return false;
-    }).sort((a, b) => a.fecha - b.fecha);
-  };
+      // Filtrar por rango de tiempo
+      if (rangoTiempo === 'hoy') {
+        if (evento.categoria === 'retrogradaciones') {
+          // For retrogrades on 'hoy', check if today is within the retrograde period
+          return hoy >= evento.inicio && hoy <= evento.fin;
+        }
+        return evento.fecha.toDateString() === hoy.toDateString();
+      }
+
+      if (rangoTiempo === 'semana') {
+        if (evento.categoria === 'retrogradaciones') {
+          // For retrogrades this week, check if the retrograde period overlaps with the week
+          return evento.inicio <= finSemana && evento.fin >= inicioSemana;
+        }
+        return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
+      }
+
+      if (rangoTiempo === 'mes') {
+        if (evento.categoria === 'retrogradaciones') {
+          // For retrogrades this month, check if the retrograde period overlaps with the month
+          return evento.inicio <= finMes && evento.fin >= inicioMes;
+        }
+        return evento.fecha >= inicioMes && evento.fecha <= finMes;
+      }
+      return false; // Should not be reached if rangoTiempo is one of the above
+    }).sort((a, b) => a.fecha - b.fecha);
+  };
 
   useEffect(() => {
     if (!eventosTotales.length) return; // Evita el filtrado inicial si no hay eventos cargados

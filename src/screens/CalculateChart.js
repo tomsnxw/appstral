@@ -429,15 +429,15 @@ const handleCitySearch = (text) => {
   
     const [birthYear, birthMonth, birthDay] = fecha.split('-');
     if (birthYear < 1699 || birthYear > 2100) {
-      showToast({ message: t("toast.Fecha_Anio_Invalido"), type: "alert" });
+      showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
       return;
     }
     if (birthMonth < 1 || birthMonth > 12) {
-      showToast({ message: t("toast.Fecha_Mes_Invalido"), type: "alert" });
+      showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
       return;
     }
     if (birthDay < 1 || birthDay > 31) {
-      showToast({ message: t("toast.Fecha_Dia_Invalido"), type: "alert" });
+      showToast({ message: t("toast.Fecha_Invalida"), type: "alert" });
       return;
     }
   

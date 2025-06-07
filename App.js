@@ -91,11 +91,6 @@ export async function registerForPushNotificationsAsync() {
       console.log('📱 Token FCM:', token);
     } else {
       console.log('❌ Permiso de notificaciones denegado');
-      // Opcional: Puedes mostrar una alerta más amigable al usuario
-      // Alert.alert(
-      //   "Permiso de Notificaciones Denegado",
-      //   "Para recibir notificaciones importantes, por favor habilítalas desde la configuración de tu dispositivo."
-      // );
     }
   } else {
     finalStatus = 'denied'; // Considerar como denegado si no es un dispositivo físico
@@ -113,7 +108,6 @@ export async function registerForPushNotificationsAsync() {
     });
   }
 
-  // Devolvemos tanto el token como el estado final del permiso
   return { token, finalStatus };
 }
 const App = () => {
