@@ -884,7 +884,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                 ? theme.background // El texto blanco dentro del círculo
                 : (isSelected ? theme.focusedItem : theme.tertiary); // El color del texto del planeta
 
-              const symbolFontSize = esAscendenteOMedioCielo ? RFValue(10) : RFValue(15);
+              const symbolFontSize = esAscendenteOMedioCielo ? RFValue(10) : RFValue(17);
 
               return (
                 <G key={cuerpo}>

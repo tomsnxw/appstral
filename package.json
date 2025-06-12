@@ -59,6 +59,7 @@
     "react-native-collapsible": "^1.6.2",
     "react-native-date-picker": "^5.0.10",
     "react-native-dropdown-select-list": "^2.0.5",
+    "react-native-edge-to-edge": "^1.6.1",
     "react-native-elements": "^3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-geolocation-service": "^5.3.1",

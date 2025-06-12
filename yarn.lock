@@ -11227,6 +11227,11 @@ react-native-dropdown-select-list@^2.0.5:
   resolved "https://registry.npmjs.org/react-native-dropdown-select-list/-/react-native-dropdown-select-list-2.0.5.tgz"
   integrity sha512-TepbcagQVUMB6nLuIlVU2ghRpQHAECOeZWe8K04ymW6NqbKbxuczZSDFfdCiABiiQ2dFD+8Dz65y4K7/uUEqGg==
 
+react-native-edge-to-edge@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.npmjs.org/react-native-edge-to-edge/-/react-native-edge-to-edge-1.6.1.tgz"
+  integrity sha512-7qTDJdviUCnI0DDG0Ddt6KAjnajsmNZMpbXOxJuSeXtlFABO0/BfY7lmprh8Iu7hQ2zeUTTbRrK+lt/liWl9Pw==
+
 react-native-elements@^3.4.3:
   version "3.4.3"
   resolved "https://registry.npmjs.org/react-native-elements/-/react-native-elements-3.4.3.tgz"

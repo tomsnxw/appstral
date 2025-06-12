@@ -181,18 +181,12 @@ export async function guardarTokenFCM(token) {
     const userRef = doc(db, 'users', uid);
     const docSnap = await getDoc(userRef);
 
-    // Datos a guardar/actualizar. Siempre incluimos 'notifications: true'
-    // porque esta función solo se llama si se ha obtenido un token,
-    // lo que implica que el usuario dio permiso.
     const dataToUpdate = {
       fcm_token: token,
       notifications: true,
     };
 
-    // Verificar si el documento existe y si 'notifications' es true
     if (docSnap.exists() && docSnap.data().notifications === true) {
-      // Si el documento existe y las notificaciones están habilitadas,
-      // actualizamos el token siempre.
       if (docSnap.data().fcm_token !== token) {
         await setDoc(userRef, dataToUpdate, { merge: true });
         console.log('✅ Token FCM actualizado (usuario ya tenía notificaciones habilitadas) para UID:', uid);
@@ -200,8 +194,6 @@ export async function guardarTokenFCM(token) {
         console.log('☑️ Token FCM ya actualizado y notificaciones habilitadas para UID:', uid);
       }
     } else {
-      // Si el documento no existe, o si existe pero 'notifications' no es true,
-      // entonces lo creamos/actualizamos y nos aseguramos de que 'notifications' sea true.
       await setDoc(userRef, dataToUpdate, { merge: true });
       console.log('✅ Token FCM y estado de notificaciones guardado/actualizado en Firestore para UID:', uid);
     }
@@ -209,7 +201,6 @@ export async function guardarTokenFCM(token) {
     console.warn('⚠️ Intento de guardar token FCM sin usuario autenticado.');
   }
 }
-
 
 const updateUserLanguage = async (lang) => {
   const auth = getAuth();

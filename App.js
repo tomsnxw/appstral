@@ -110,6 +110,7 @@ export async function registerForPushNotificationsAsync() {
 
   return { token, finalStatus };
 }
+
 const App = () => {
   const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
@@ -122,15 +123,13 @@ const App = () => {
 
   useEffect(() => {
     Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
- 
+
     if (Platform.OS === 'ios') {
       Purchases.configure({ apiKey: '<TU_API_KEY_PUBLICA_DE_APPLE>' });
     } else if (Platform.OS === 'android') {
       Purchases.configure({ apiKey: 'goog_kKDJcHBrPfeMtodupJQmiOyhCff' });
     }
-  }, []); 
- 
-
+  }, []);
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
@@ -155,7 +154,6 @@ const App = () => {
         const userRef = doc(db, 'users', user.uid);
         let userDocSnap = await getDoc(userRef);
 
-        // Intenta obtener el documento del usuario con reintentos
         let retries = 3;
         while (!userDocSnap.exists() && retries > 0) {
           console.log(`⏳ Reintentando obtener el documento del usuario para ${user.uid}...`);
@@ -166,26 +164,27 @@ const App = () => {
 
         if (!userDocSnap.exists()) {
           console.warn('⚠️ No se encontró el documento del usuario después de varios intentos. Creando uno nuevo si es necesario.');
-          // Puedes optar por crear el documento aquí con datos básicos si no existe
           await setDoc(userRef, { createdAt: serverTimestamp(), notifications: false, vip: false }, { merge: true });
-          userDocSnap = await getDoc(userRef); // Obtenerlo de nuevo después de crearlo
+          userDocSnap = await getDoc(userRef);
         }
 
         const userData = userDocSnap.data();
-        const isVip = userData?.vip === true; // Verifica si el campo 'vip' existe y es true
+        const isVip = userData?.vip === true;
 
-        // Lógica para notificaciones push (sin cambios relevantes para esta modificación)
+        // --- Lógica para refrescar el token de notificaciones ---
         const { token, finalStatus } = await registerForPushNotificationsAsync();
         if (token) {
           await guardarTokenFCM(token);
         } else {
-          console.log('🔄 Actualizando estado de notificaciones a false para el usuario:', user.uid);
+          console.log('🔄 No se pudo obtener el token de notificaciones. Actualizando estado de notificaciones a false para el usuario:', user.uid);
           try {
             await setDoc(userRef, { notifications: false }, { merge: true });
           } catch (error) {
             console.error('❌ Error al actualizar notifications a false en Firestore:', error);
           }
         }
+        // --- Fin de la lógica para refrescar el token de notificaciones ---
+
 
         // Configurar RevenueCat con el UID del usuario
         Purchases.configure({
@@ -197,7 +196,6 @@ const App = () => {
 
         if (isVip) {
           console.log('✨ Usuario VIP detectado. No se verificará la suscripción de RevenueCat.');
-          // Opcional: Si quieres asegurarte de que premium y membresia estén correctos para VIPs en Firestore
           await updateDoc(userRef, { premium: true, membresia: 'estelar' });
         } else {
           console.log('💳 Verificando suscripción para usuario no VIP.');
@@ -221,7 +219,7 @@ const App = () => {
     });
 
     return unsubscribe;
-  }, []);
+  }, []); 
 
 
   
