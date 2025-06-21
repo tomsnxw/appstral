@@ -130,9 +130,10 @@ const handleCitySearch = (text) => {
     return;
   }
 
-  let filtered = citiesList.filter(city =>
-    city.label.toLowerCase().startsWith(text.toLowerCase())
-  );
+  let filtered = citiesList.filter(city => {
+    const palabras = city.label.toLowerCase().split(" ");
+    return palabras.some(palabra => palabra.startsWith(text.toLowerCase()));
+  });
 
   if (text.toLowerCase() === "caba") {
     const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };

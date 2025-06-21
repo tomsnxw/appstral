@@ -505,7 +505,7 @@ const handleHoraChange = (text) => {
       onCancel={() => setShowLogoutModal(false)}
       t={t}
     />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: hp('110%'), gap: 15, marginBottom: 0, marginTop:'auto' }}>
+      <ScrollView  showsVerticalScrollIndicator={false} contentContainerStyle={{ height: hp('110%'), gap: 15, marginTop:0,paddingBottom: 26 }}>
       {userData?.premium ?
       <View style={styles.ProfileInfoContainer}>
       <View style={[styles.ProfileNameContainer,{ paddingTop:hp('4%')}]}>

@@ -211,25 +211,28 @@ const progress = useRef(new Animated.Value(0)).current;
     };
 
     
-    const handleCitySearch = (text) => {
-      setCiudad(text);
-      if (text === "") {
-        setFilteredCities(citiesList);
-        return;
-      }
-    
-      const regex = new RegExp(text, "i"); 
-      let filtered = citiesList.filter(city => regex.test(city.label));
-    
-      if (text.toLowerCase() === "caba") {
-        const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
-        if (!filtered.some(city => city.label === cabaOption.label)) {
-          filtered = [cabaOption, ...filtered];
-        }
-      }
-    
-      setFilteredCities(filtered);
-    };
+const handleCitySearch = (text) => {
+  setCiudad(text);
+  if (text === "") {
+    setFilteredCities(citiesList);
+    return;
+  }
+
+  let filtered = citiesList.filter(city => {
+    const palabras = city.label.toLowerCase().split(" ");
+    return palabras.some(palabra => palabra.startsWith(text.toLowerCase()));
+  });
+
+  if (text.toLowerCase() === "caba") {
+    const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
+    if (!filtered.some(city => city.label === cabaOption.label)) {
+      filtered = [cabaOption, ...filtered];
+    }
+  }
+
+  setFilteredCities(filtered);
+};
+
     return (
 <Modal animationType="none" transparent={true} statusBarTranslucent={true} visible={isModalVisible} onRequestClose={handleCloseEditModal}>
                <TouchableWithoutFeedback onPress={handleCloseEditModal}>

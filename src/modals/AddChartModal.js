@@ -133,10 +133,10 @@ const handleCitySearch = (text) => {
     return;
   }
 
-  // Modificación aquí: usar startsWith para buscar solo desde el inicio
-  let filtered = citiesList.filter(city =>
-    city.label.toLowerCase().startsWith(text.toLowerCase())
-  );
+  let filtered = citiesList.filter(city => {
+    const palabras = city.label.toLowerCase().split(" ");
+    return palabras.some(palabra => palabra.startsWith(text.toLowerCase()));
+  });
 
   if (text.toLowerCase() === "caba") {
     const cabaOption = { label: "Ciudad de Buenos Aires", value: "CABA" };
@@ -147,6 +147,7 @@ const handleCitySearch = (text) => {
 
   setFilteredCities(filtered);
 };
+
   
 
   const progress = useRef(new Animated.Value(0)).current;

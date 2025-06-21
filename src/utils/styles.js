@@ -248,7 +248,7 @@ export const createStyles = (theme) => {
     ProfileInfoContainer:{
       textAlign: 'center',
       marginHorizontal: 'auto',
-
+      marginTop: hp('3%'),
       marginBottom: hp('3%'), // 25px convertido a porcentaje del alto
     },
     PremiumProfileInfoContainer:{
