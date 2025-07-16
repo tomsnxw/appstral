@@ -186,49 +186,81 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
     cargarTodosLosEventos();
   }, []);
 
-const filtrarEventos = () => {
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
+  const filtrarEventos = () => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    const inicioSemana = new Date(hoy);
-    const finSemana = new Date(hoy);
-    finSemana.setDate(hoy.getDate() + 7);
+    const inicioSemana = new Date(hoy);
+    inicioSemana.setHours(0, 0, 0, 0);
+    const finSemana = new Date(hoy);
+    finSemana.setDate(hoy.getDate() + 7);
+    finSemana.setHours(23, 59, 59, 999);
 
-    const inicioMes = new Date(hoy);
-    const finMes = new Date(hoy);
-    finMes.setDate(hoy.getDate() + 30);
+    const inicioMes = new Date(hoy);
+    inicioMes.setHours(0, 0, 0, 0);
+    const finMes = new Date(hoy);
+    finMes.setDate(hoy.getDate() + 30);
+    finMes.setHours(23, 59, 59, 999);
 
-    return eventosTotales.filter(evento => {
-      // Filtrar por categoría
-      if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
+    let eventosFiltrados = eventosTotales.filter(evento => {
+      if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
 
-      // Filtrar por rango de tiempo
-      if (rangoTiempo === 'hoy') {
-        if (evento.categoria === 'retrogradaciones') {
-          // For retrogrades on 'hoy', check if today is within the retrograde period
-          return hoy >= evento.inicio && hoy <= evento.fin;
-        }
-        return evento.fecha.toDateString() === hoy.toDateString();
-      }
+      // ... (tu lógica de filtro existente para 'hoy', 'semana', 'mes')
+      if (rangoTiempo === 'hoy') {
+        if (evento.categoria === 'retrogradaciones') {
+          return hoy >= evento.inicio && hoy <= evento.fin;
+        }
+        return evento.fecha.toDateString() === hoy.toDateString();
+      }
 
-      if (rangoTiempo === 'semana') {
-        if (evento.categoria === 'retrogradaciones') {
-          // For retrogrades this week, check if the retrograde period overlaps with the week
-          return evento.inicio <= finSemana && evento.fin >= inicioSemana;
-        }
-        return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
-      }
+      if (rangoTiempo === 'semana') {
+        if (evento.categoria === 'retrogradaciones') {
+          return evento.inicio <= finSemana && evento.fin >= inicioSemana;
+        }
+        return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
+      }
 
-      if (rangoTiempo === 'mes') {
-        if (evento.categoria === 'retrogradaciones') {
-          // For retrogrades this month, check if the retrograde period overlaps with the month
-          return evento.inicio <= finMes && evento.fin >= inicioMes;
-        }
-        return evento.fecha >= inicioMes && evento.fecha <= finMes;
-      }
-      return false; // Should not be reached if rangoTiempo is one of the above
-    }).sort((a, b) => a.fecha - b.fecha);
-  };
+      if (rangoTiempo === 'mes') {
+        if (evento.categoria === 'retrogradaciones') {
+          return evento.inicio <= finMes && evento.fin >= inicioMes;
+        }
+        return evento.fecha >= inicioMes && evento.fecha <= finMes;
+      }
+      return false;
+    }).map(evento => { // <-- ¡Nuevo: Usamos .map para añadir la propiedad!
+        let isStartingWithinRange = false;
+        if (rangoTiempo === 'hoy') {
+            isStartingWithinRange = evento.fecha.toDateString() === hoy.toDateString();
+        } else if (rangoTiempo === 'semana') {
+            // Para retrogradaciones, su 'fecha' es 'inicio', así que el chequeo es directo
+            isStartingWithinRange = evento.fecha >= inicioSemana && evento.fecha <= finSemana;
+        } else if (rangoTiempo === 'mes') {
+            // Para retrogradaciones, su 'fecha' es 'inicio', así que el chequeo es directo
+            isStartingWithinRange = evento.fecha >= inicioMes && evento.fecha <= finMes;
+        }
+        return { ...evento, isStartingWithinRange };
+    });
+
+    // --- Lógica de ordenamiento unificada ---
+    eventosFiltrados.sort((a, b) => {
+        // Priorizar eventos que comienzan dentro del rango actual
+        if (a.isStartingWithinRange && !b.isStartingWithinRange) {
+            return -1;
+        }
+        if (!a.isStartingWithinRange && b.isStartingWithinRange) {
+            return 1;
+        }
+
+        // Si ambos o ninguno comienzan dentro del rango, ordenar por fecha
+        // Para retrogradaciones, usar su 'inicio' para el orden secundario
+        if (a.categoria === 'retrogradaciones' && b.categoria === 'retrogradaciones') {
+            return a.inicio - b.inicio;
+        }
+        return a.fecha - b.fecha;
+    });
+
+    return eventosFiltrados;
+  };
 
   useEffect(() => {
     if (!eventosTotales.length) return; // Evita el filtrado inicial si no hay eventos cargados
@@ -245,20 +277,21 @@ const filtrarEventos = () => {
         ItemSeparatorComponent={() => <View style={styles(theme).efemeridesSeparator} />}
         data={loading ? Array(3).fill({}) : proximosEventos}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) =>
-          loading ? (
-            <SkeletonItem theme={theme}/>
-          ) : (
-            <AccordionItem
-              item={item}
-              index={index}
-              expandedIndex={expandedIndex}
-              i18n={i18n}
-              theme={theme}
-              t={t}
-              toggleAccordion={toggleAccordion}
-              handleOpenShareModal={() => handleOpenShareModal(item)}
-            />
+   renderItem={({ item, index }) =>
+    loading ? (
+      <SkeletonItem theme={theme}/>
+    ) : (
+      <AccordionItem
+        item={item}
+        index={index}
+        expandedIndex={expandedIndex}
+        i18n={i18n}
+        theme={theme}
+        t={t}
+        toggleAccordion={toggleAccordion}
+        handleOpenShareModal={() => handleOpenShareModal(item)}
+        rangoTiempo={rangoTiempo} // <-- ¡Pasa rangoTiempo aquí!
+      />
           )
         }
         ListEmptyComponent={
@@ -296,7 +329,7 @@ const filtrarEventos = () => {
     </View>
   );
 };
-const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, handleOpenShareModal, t, theme }) => {
+const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, handleOpenShareModal, t, theme, rangoTiempo  }) => {
   const navigation = useNavigation();
   const idioma = i18n.language;
   const fechaFormateada = (() => {
@@ -341,8 +374,13 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, hand
   const canToggle = item && item.detalles;
   const showShareButton = item && item.detalles;
 
+  const isExpanded = expandedIndex === index;
+  const shouldBeFaded = (rangoTiempo === 'semana' || rangoTiempo === 'mes') && !item.isStartingWithinRange;
+
+  const itemOpacity = isExpanded ? 1 : (shouldBeFaded ? 0.5 : 1);
+
   return (
-    <View style={styles(theme).efemeridesCard}>
+    <View style={[styles(theme).efemeridesCard, { opacity: itemOpacity }]}>
       <LinearGradient
         colors={
           item.categoria === "aspectos"
@@ -370,13 +408,13 @@ const AccordionItem = ({ item, index, expandedIndex, toggleAccordion, i18n, hand
       </LinearGradient>
 
       <TouchableOpacity
-        onPress={canToggle ? () => toggleAccordion(index) : null} 
+        onPress={canToggle ? () => toggleAccordion(index) : null}
         style={styles(theme).eventContainer}
-        activeOpacity={canToggle ? 0.8 : 1} 
+        activeOpacity={canToggle ? 0.8 : 1}
       >
         <View style={{ width: width * 0.77, flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles(theme).eventTitle}>{item.title}</Text>
-          {showShareButton && ( // Renderiza el botón de compartir solo si showShareButton es true
+          {showShareButton && (
             <TouchableOpacity style={{ zIndex: 10, width: 25, height: 25 }} onPress={handleOpenShareModal}>
               <ShareIcon style={styles(theme).eventShareIcon} />
             </TouchableOpacity>
@@ -476,7 +514,7 @@ const styles = (theme) => StyleSheet.create({
     textAlign: 'center',
     margin: 'auto',
     marginTop: hp(0.7), // height*0.007
-    marginLeft: hp(1.9), // height*0.019
+    marginLeft: hp(1.95), // height*0.019
     color: theme.alwaysWhite,
     fontSize: hp(6), // height*0.06
     fontFamily: 'Astronomicon',
@@ -491,7 +529,7 @@ const styles = (theme) => StyleSheet.create({
     textAlign: 'left',
     transform: [
       { translateY: RFValue(0.5) }, // Adjusted for font size
-      { translateX: RFValue(2) } // Adjusted for font size
+      { translateX: RFValue(1.75) } // Adjusted for font size
     ],
   },
   eventContainer: {

@@ -472,7 +472,7 @@ homeWelcomeTitles:{
     },
     chartOptions:{
       flexDirection: 'row',
-      gap: wp('3.75%'), // 15px a wp
+      gap: wp('3.5%'), // 15px a wp
       marginVertical: 'auto'
     },
     ChartInfo:{
@@ -746,9 +746,9 @@ homeWelcomeTitles:{
     alignItems: 'center',
   },
   ChartTitleText: {
-    maxWidth: wp('60%'), // width*.6 a wp
+    maxWidth: wp('60%'),
     color: theme.black,
-    fontSize: RFValue(20), // height*0.025 con la equivalencia de RFValue(20)
+    fontSize: RFValue(17),
     textAlign: 'left',
     fontFamily: 'Effra_Regular',
     alignContent: 'center',
@@ -1781,26 +1781,44 @@ homeWelcomeTitles:{
 
       // errorboundary
 
+ // errorboundary
 
-      errorContainer:{
-          flex: 1,
-          alignItems: 'center',
-          textAlign: 'center',
-        },
-        errorGradient:{
-          position: 'absolute'
-        },
-        errorIcon:{
+    errorContainer: {
+      flex: 1, 
+      position: 'relative',
+      justifyContent: 'center', 
+      alignItems: 'center',    
+    },
+
+    errorStars: {
       position: 'absolute',
-      bottom: 275,
-      fill: theme.primary
-        },
-        UpsContainer:{
-          margin: 'auto',
-          marginHorizontal: 25,
-          gap: 5,
-          paddingTop: 60
-        },
+      top: 0,
+      left: 0,
+fill: theme.primary,
+      width: width,
+      height: height * 0.2,
+      zIndex: 1, 
+    },
+
+    errorIcon: {
+      position: 'absolute',
+      top: height * 0, 
+      left: 0,
+      right: 0,
+      alignSelf: 'center',
+fill: theme.primary,   
+      height: width * 0.7, 
+      zIndex: 2,
+    },
+
+    UpsContainer: {
+      width: '80%', 
+      padding: 20,
+      borderRadius: 10,
+      alignItems: 'center', 
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      zIndex: 3, 
+    },
         UpsText:{
           color: theme.secondaryBorder,
           margin: 'auto',
@@ -1831,11 +1849,7 @@ homeWelcomeTitles:{
           color: theme.alwaysWhite,
           fontFamily: 'Effra_Regular',
           padding: 0,
-          transform: [
-            { translateY: 1.5 }
-          ],
         },
-
         // alerts
         overlay: {
           flex: 1,

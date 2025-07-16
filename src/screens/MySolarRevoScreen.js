@@ -6,7 +6,6 @@ import Svg, { Circle, Line, G, Text as SvgText, Path, Defs, Marker } from 'react
 import cities from '../data/cities.json'; 
 import { useCasa } from '../contexts/CasaContext';
 import { LinearGradient } from 'expo-linear-gradient';
-import colors from '../utils/colors';
 import { useUser } from '../contexts/UserContext';
 import ShareIcon from "../../assets/icons/ShareIcon";
 import ShareMyChartModal from '../modals/ShareMyChartModal';
@@ -238,24 +237,23 @@ const MySolarRevoScreen = ({navigation}) => {
         });
       };
 
-     
-      const formatDateAndTime = (fechaRepeticion) => {
-        const date = new Date(fechaRepeticion);
-      
-        const day = date.getDate(); 
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        const formattedDate = `${day} / ${month} / ${year}`;
-      
-        const hours = String(date.getHours()).padStart(2, '0'); 
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const formattedTime = `${hours}:${minutes}`;
-      
-        return {
-          formattedDate,
-          formattedTime,
-        };
-      };
+const formatDateAndTime = (fechaRepeticion) => {
+  const date = new Date(fechaRepeticion);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses son base 0
+  const year = date.getFullYear();
+  const formattedDate = `${day} / ${month} / ${year}`;
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const formattedTime = `${hours}:${minutes}`;
+
+  return {
+    formattedDate,
+    formattedTime,
+  };
+};
   useEffect(() => {
     if (fechaRepeticion && resultado) {
       const { formattedDate, formattedTime } = formatDateAndTime(fechaRepeticion);
@@ -362,11 +360,11 @@ const MySolarRevoScreen = ({navigation}) => {
     return (
       <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
         <Animated.View style={{ opacity: fadeAnims[index] }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('.75%') }}>
-            <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(13), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: wp('2.5%'), marginVertical: 'auto', paddingVertical: hp('1%') }}>
+            <Text style={{ color: textColor, fontFamily: 'Astronomicon', fontSize: RFValue(14), marginBottom: 'auto', transform: [{ translateY: hp('0.25%') }] }}>
               {simbolo}
             </Text>
-            <Text style={{ fontSize: RFValue(12), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), borderColor: theme.primaryBorder, borderBottomWidth: hp(0.1), width: '100%' }}>
+            <Text style={{ fontSize: RFValue(12.5), fontFamily: 'Effra_Regular', color: textColor, paddingBottom: hp('0.5%'), width: '100%' }}>
               {item === t("Ascendente")
                 ? (i18n.language === 'en'
                     ? `Ascendant in ${signo} at ${gradoDisplay}° ${minutosDisplay}'`
@@ -378,6 +376,8 @@ const MySolarRevoScreen = ({navigation}) => {
                 : t('planet_house_position', { planet: item, sign: signo, degree: grado, casa: casaOrdinal, minutes: minutos, retro: retrogrado ? ' Rx' : '' })}
             </Text>
           </View>
+          <View style={{borderColor: theme.primaryBorder, borderBottomWidth: hp(0.05), marginLeft: wp('5%')}}></View>
+
         </Animated.View>
       </TouchableOpacity>
     );
@@ -400,6 +400,7 @@ const signosZodiacales = [
   t("signos.aquarius"),
   t("signos.pisces")
 ];
+
 
 const renderCirculoZodiacal = () => {
   if (!resultado) return null;
@@ -505,7 +506,7 @@ const renderCirculoZodiacal = () => {
     ];
   });
 
-const renderizarLineasAspectos = (cuerpo1Data, index) => {
+  const renderizarLineasAspectos = (cuerpo1Data, index) => {
   const nombreCuerpo1 = cuerpo1Data.nombre;
 
   return planetasYPuntos.slice(index + 1).flatMap((otroCuerpoNombre) => {
@@ -653,8 +654,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
     }).filter(Boolean);
   });
 };
-
-
   const calcularPosicionAjustada = (cuerpoNombre, index, ASCENDENTROTATION, todosLosCuerpos) => {
     const UMBRAL_ANGULO = 7;
 
@@ -798,14 +797,14 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
         {/* La definición de la flecha `Defs` debe estar AQUÍ, antes de usarla */}
         <Defs>
           {/* Nuevo Marcador de flecha INVERTIDO para 'markerStart' (para el MC/IC) */}
-          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="25" markerHeight="25">
+          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="12" markerHeight="12">
             {/* El Path ahora apunta a la izquierda */}
             <Path d="M8,0 L0,5 L8,10 z" fill={selectedPlanet === t("Medio Cielo") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
 
     <Defs>
-          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="15" markerHeight="15">
+          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="6" markerHeight="6">
             <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
@@ -868,7 +867,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
 
                   {esAscendenteOMedioCielo ? (
                     <AnimatedText
-                      x={posicion.x + .5}
+                      x={posicion.x}
                       y={posicion.y - .5}
                       fontSize={symbolFontSize}
                       textAnchor="middle"
@@ -976,7 +975,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           left: tooltip.position.x,
           backgroundColor: theme.black,
           padding: 5,
-          paddingBottom: 3,
           paddingHorizontal: 7,
           borderRadius: 5,
           elevation: 5,
@@ -1000,11 +998,20 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
     <View style={styles.myChartContainer}>
     <View style={{ width: width*.9,
 margin: 'auto',
-paddingTop: hp('3.25%'),
+paddingTop: hp('3%'),
 marginTop: 0,
 gap: 7.5}}>
     <View style={styles.chartTitle}>
-          <Text adjustsFontSizeToFit numberOfLines={2} style={styles.ChartTitleText}>Revolución Solar</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail"  style={{maxWidth: wp('80%'),
+    color: theme.black,
+    fontSize: RFValue(18),
+    textAlign: 'left',
+    fontFamily: 'Effra_Regular',
+    alignContent: 'center',
+    alignItems: 'center',}}>
+  {i18n.language === 'es' ? 'Mi Revolución Solar' : 'My Solar Return'}
+
+    </Text>
           <View style={[styles.chartOptions, { opacity: !loading ? 1 : 0.3 }]}>
             <TouchableOpacity onPress={handleOpenModal}>
           <ShareIcon style={{ width: 16, height: 16, margin:'auto', fill:'#999999' }} />          
@@ -1064,7 +1071,7 @@ gap: 7.5}}>
            ListFooterComponent={<View style={styles.chartResultListSpace} />}
          />
         )}
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={[theme.transparentBackground, theme.background, theme.background]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('35%'), zIndex: 1}}/>
 
            {modalVisible && (<ShareMyChartModal
         visible={modalVisible}
@@ -1072,6 +1079,7 @@ gap: 7.5}}>
         formattedDate={formattedDate}
         formattedTime={formattedTime}
         handleCloseModal={handleCloseModal}
+        selectedPlanet={selectedPlanet}
       />)}
     </View>
      

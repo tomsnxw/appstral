@@ -142,7 +142,7 @@ const ShareEventModal =  ({ route, visible, handleCloseShareModal }) => {
         <LinearGradient colors={gradients[gradientIndex]} style={styles.eventStoryContent}>
           <Text adjustsFontSizeToFit numberOfLines={1} style={[styles.date, { color: textColors[gradientIndex] }]}>
  {evento.categoria === "aspectos" || evento.categoria === "retrogradaciones" ? evento.rango  : fechaFormateada}</Text>
-          <Text adjustsFontSizeToFit numberOfLines={2} style={[styles.title, { color: textColors[gradientIndex] }]}>{evento.title}</Text>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={[styles.title, { color: textColors[gradientIndex] }]}>{evento.title}</Text>
           {evento.signo && <Text adjustsFontSizeToFit numberOfLines={1} style={[styles.info, { color: textColors[gradientIndex] }]}>{evento.signo}</Text>}
           {evento.detalles && <Text djustsFontSizeToFit style={[styles.details, { color: textColors[gradientIndex] }]}>{evento.detalles}</Text>}
           <Text style={[styles.linkText, { color: textColors[gradientIndex] }]}>@RastrosAstrologia</Text>

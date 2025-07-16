@@ -8,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import colors from '../utils/colors';
 import ResetIcon from '../../assets/icons/ResetIcon'
+import BellIcon from '../../assets/icons/BellIcon'
 import SkyStars from '../../assets/icons/SkyStars'
 import { useUser } from '../contexts/UserContext';
 const { height, width } = Dimensions.get('screen');
@@ -19,7 +20,8 @@ import { createStyles } from '../utils/styles';
 import { lightTheme, darkTheme } from '../utils/theme';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { RFValue } from "react-native-responsive-fontsize";
-
+import { useNavigation } from '@react-navigation/native';
+import { useNotifications } from '../contexts/NotificationContext';
 
 
 const ShootingStar = () => {
@@ -140,6 +142,48 @@ const HomeScreen = () => {
   const AnimatedLine = Animated.createAnimatedComponent(Line);
   const AnimatedText = Animated.createAnimatedComponent(SvgText);
   const { t, i18n  } = useTranslation();
+  const navigation = useNavigation(); 
+  const { hasNewNotificationsToday, setHasNewNotificationsToday } = useNotifications(); // Usa el contexto de notificaciones
+
+  // La lógica para determinar si hay notificaciones nuevas *hoy* al inicio de la app
+  // podría vivirse aquí o en el NotificationContext. Lo más robusto es que
+  // NotificationsScreen "informe" al contexto si hay notificaciones de hoy.
+  // Sin embargo, para que el punto aparezca al cargar la app si hay notificaciones sin ver,
+  // la lógica de `setHasNewNotificationsToday(true)` debe ocurrir *antes* de que el usuario
+  // entre a `NotificationsScreen`. Podrías poner una verificación en `App.js` o en el propio `NotificationContext`
+  // al inicio para chequear `AsyncStorage` y ver si hay notificaciones de hoy no vistas.
+
+  // Una manera de hacer que el punto rojo aparezca si hay notificaciones hoy y no se han visto:
+  // En `NotificationContext`, cuando se carga la app (`loadNotificationStatus`),
+  // si `lastViewedDate` es anterior a hoy, `setHasNewNotificationsToday(true)`.
+  // Y luego, cuando `NotificationsScreen` se abre, `markNotificationsAsViewed()` se encarga de ponerlo a `false`.
+
+  // O podrías hacer una verificación ligera aquí en HomeScreen al montarse:
+  useEffect(() => {
+    const checkInitialNotifications = async () => {
+      // Esta es una verificación simplificada para el ejemplo.
+      // Idealmente, esto se manejaría de forma más robusta con las notificaciones push
+      // y su estado de "leído/no leído" en el backend o en el dispositivo.
+      // Para este ejemplo, si la última vez que se vieron notificaciones fue ayer o antes,
+      // y hay eventos programados para hoy, entonces mostramos el punto.
+      
+      // Dado que NotificationsScreen ya tiene la lógica de `fetchAndFilterEvents`,
+      // la forma más sencilla es que el NotificationsScreen actualice el contexto
+      // cuando encuentra notificaciones de 'today' que no han sido vistas.
+
+      // Sin embargo, para que el *punto rojo aparezca al inicio*,
+      // necesitamos que NotificationContext sepa si hay notificaciones nuevas hoy.
+      // El `loadNotificationStatus` en `NotificationContext.js` ya lo maneja parcialmente.
+      // La clave es que `NotificationsScreen` debe tener la responsabilidad de marcar como visto.
+
+      // Si el punto no aparece al inicio, revisa la lógica en NotificationContext.js:
+      // en `loadNotificationStatus`, si `lastViewedDate` es diferente a `todayDate`,
+      // podrías asumir que hay notificaciones nuevas hasta que el usuario visite la pantalla.
+      // Esto es una suposición, en un sistema real, una API te diría si hay notificaciones no leídas.
+    };
+    checkInitialNotifications();
+  }, []);
+
   const formattedDate = fecha.toLocaleDateString(i18n.language, {
     weekday: 'long',
     year: 'numeric',
@@ -345,7 +389,6 @@ const simbolosPlanetas = i18n.language === 'es' ? {
     const [selectedSign, setSelectedSign] = useState(null); 
     const timeoutRef = useRef(null);
     const [selectedPlanet, setSelectedPlanet] = useState(null);
-
     const renderItem = ({ item, index }) => {
       const { signo, grado, minutos, retrógrado: retrogrado, estacionario } = resultado.planetas[item] || {};
       if (!signo || grado === undefined || minutos === undefined) {
@@ -397,58 +440,58 @@ const simbolosPlanetas = i18n.language === 'es' ? {
         setTooltip({ visible: false, position: { x: 0, y: 0 }, sign: "" });
         setSelectedSign(null);
         timeoutRef.current = null;
-      }, 2000); 
+      }, 2000);
     };
     
-const renderCirculoZodiacal = () => {
-    // Ahora userData está disponible aquí porque se llamó en HomeScreen
-    if (!resultado || !userData) return null; // Asegúrate de que userData también esté cargado
+    const renderCirculoZodiacal = () => {
+        // Ahora userData está disponible aquí porque se llamó en HomeScreen
+        if (!resultado || !userData) return null; // Asegúrate de que userData también esté cargado
 
-    const SVG_SIZE = width * 0.95;
-    const RADIO = SVG_SIZE / 2.5;
-    const CENTER = { x: SVG_SIZE / 2, y: SVG_SIZE / 2 };
-    const ANGLE_PER_SIGN = 360 / 12;
-    const LINE_LENGTH = RADIO + 10;
-    const DISTANCIA_PLANETAS = RADIO * 0.8;
-    const DISTANCIA_INNERCIRCLE = RADIO * 0.67;
-    const DISTANCIA_ASPECTOS = RADIO * 0.665;
-    const DISTANCIA_SIGNOS = RADIO + 19;
-    const PERIMETRO = 2 * Math.PI * RADIO;
-    const CANTIDAD_LINEAS = 12;
-    const LONGITUD_LINEA = PERIMETRO * 0.0775;
-    const LONGITUD_ESPACIO = (PERIMETRO / CANTIDAD_LINEAS) - LONGITUD_LINEA;
+        const SVG_SIZE = width * 0.95;
+        const RADIO = SVG_SIZE / 2.5;
+        const CENTER = { x: SVG_SIZE / 2, y: SVG_SIZE / 2 };
+        const ANGLE_PER_SIGN = 360 / 12;
+        const LINE_LENGTH = RADIO + 10;
+        const DISTANCIA_PLANETAS = RADIO * 0.8;
+        const DISTANCIA_INNERCIRCLE = RADIO * 0.67;
+        const DISTANCIA_ASPECTOS = RADIO * 0.665;
+        const DISTANCIA_SIGNOS = RADIO + 19;
+        const PERIMETRO = 2 * Math.PI * RADIO;
+        const CANTIDAD_LINEAS = 12;
+        const LONGITUD_LINEA = PERIMETRO * 0.0775;
+        const LONGITUD_ESPACIO = (PERIMETRO / CANTIDAD_LINEAS) - LONGITUD_LINEA;
 
-    const planetas = Object.keys(resultado.planetas);
-    const simbolosPlanetas = i18n.language === 'es' ? {
-        "Sol": "Q", "Luna": "R", "Mercurio": "S", "Venus": "T", "Marte": "U",
-        "Júpiter": "V", "Saturno": "W", "Urano": "X", "Neptuno": "Y", "Plutón": "Z",
-        "Lilith": "z", "Quirón": "q", "Nodo Norte": "g",
-    } : {
-        "Sun": "Q", "Moon": "R", "Mercury": "S", "Venus": "T", "Mars": "U",
-        "Jupiter": "V", "Saturn": "W", "Uranus": "X", "Neptune": "Y", "Pluto": "Z",
-        "Lilith": "z", "Chiron": "q", "North Node": "g",
-    };
+        const planetas = Object.keys(resultado.planetas);
+        const simbolosPlanetas = i18n.language === 'es' ? {
+            "Sol": "Q", "Luna": "R", "Mercurio": "S", "Venus": "T", "Marte": "U",
+            "Júpiter": "V", "Saturno": "W", "Urano": "X", "Neptuno": "Y", "Plutón": "Z",
+            "Lilith": "z", "Quirón": "q", "Nodo Norte": "g",
+        } : {
+            "Sun": "Q", "Moon": "R", "Mercury": "S", "Venus": "T", "Mars": "U",
+            "Jupiter": "V", "Saturn": "W", "Uranus": "X", "Neptune": "Y", "Pluto": "Z",
+            "Lilith": "z", "Chiron": "q", "North Node": "g",
+        };
 
-    const calcularDiferenciaAngular = (a1, a2) => {
-        let dif = Math.abs(a1 - a2);
-        return dif > 180 ? 360 - dif : dif;
-    };
+        const calcularDiferenciaAngular = (a1, a2) => {
+            let dif = Math.abs(a1 - a2);
+            return dif > 180 ? 360 - dif : dif;
+        };
 
-    const rotateInterpolate = rotateAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['200deg', '0deg']
-    });
+        const rotateInterpolate = rotateAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['200deg', '0deg']
+        });
 
-    const rotatePlanetasInterpolate = rotatePlanetasAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['-400deg', '0deg']
-    });
+        const rotatePlanetasInterpolate = rotatePlanetasAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['-400deg', '0deg']
+        });
 
-    const calcularPosicion = (angulo, distancia) => ({
-        x: CENTER.x + distancia * Math.cos((angulo * Math.PI) / 180),
-        y: CENTER.y + distancia * Math.sin((angulo * Math.PI) / 180),
-        angle: angulo,
-    });
+        const calcularPosicion = (angulo, distancia) => ({
+            x: CENTER.x + distancia * Math.cos((angulo * Math.PI) / 180),
+            y: CENTER.y + distancia * Math.sin((angulo * Math.PI) / 180),
+            angle: angulo,
+        });
 
     const renderizarLineasAspectos = (planeta1Data, index) => {
         const nombrePlaneta1 = planeta1Data.nombre;
@@ -525,179 +568,177 @@ const renderCirculoZodiacal = () => {
             }).filter(Boolean); // Filtrar los elementos nulos
         });
     };
+        const calcularPosicionAjustada = (planetas, index) => {
+            const DISTANCIA_BASE = DISTANCIA_PLANETAS;
+            const UMBRAL_ANGULO = 7;
 
-    const calcularPosicionAjustada = (planetas, index) => {
-        const DISTANCIA_BASE = DISTANCIA_PLANETAS;
-        const UMBRAL_ANGULO = 7;
+            const getAngulo = (nombrePlaneta) => {
+                const { signo, grado, minutos } = resultado.planetas[nombrePlaneta];
+                const signoIndex = signosZodiacales.indexOf(signo);
+                return (-signoIndex * ANGLE_PER_SIGN - 180) - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30) + 15;
+            };
 
-        const getAngulo = (nombrePlaneta) => {
-            const { signo, grado, minutos } = resultado.planetas[nombrePlaneta];
-            const signoIndex = signosZodiacales.indexOf(signo);
-            return (-signoIndex * ANGLE_PER_SIGN - 180) - (grado + minutos / 60) * (ANGLE_PER_SIGN / 30) + 15;
+            const angulos = planetas.map(p => getAngulo(p));
+            const anguloActual = angulos[index];
+
+            let grupoIndices = [];
+            for (let i = 0; i < planetas.length; i++) {
+                if (calcularDiferenciaAngular(anguloActual, angulos[i]) < UMBRAL_ANGULO) {
+                    grupoIndices.push(i);
+                }
+            }
+
+            grupoIndices.sort((a, b) => a - b);
+            const posicionEnGrupo = grupoIndices.indexOf(index);
+            const cantidadEnGrupo = grupoIndices.length;
+
+            let DISTANCIA_EXTRA_TOTAL;
+            if (cantidadEnGrupo <= 3) {
+                DISTANCIA_EXTRA_TOTAL = 15;
+            } else {
+                DISTANCIA_EXTRA_TOTAL = 30;
+            }
+
+            let distancia;
+            if (cantidadEnGrupo === 1) {
+                distancia = DISTANCIA_BASE;
+            } else {
+                const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
+                const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
+
+                distancia = DISTANCIA_BASE + offset;
+            }
+
+            return calcularPosicion(anguloActual, distancia);
         };
 
-        const angulos = planetas.map(p => getAngulo(p));
-        const anguloActual = angulos[index];
+        return (
+            <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
 
-        let grupoIndices = [];
-        for (let i = 0; i < planetas.length; i++) {
-            if (calcularDiferenciaAngular(anguloActual, angulos[i]) < UMBRAL_ANGULO) {
-                grupoIndices.push(i);
-            }
-        }
+                <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+                    <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.tertiary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(16, ${CENTER.x}, ${CENTER.y})`} />
 
-        grupoIndices.sort((a, b) => a - b);
-        const posicionEnGrupo = grupoIndices.indexOf(index);
-        const cantidadEnGrupo = grupoIndices.length;
+                    {signosSimbolos.map((signo, index) => {
+                        const angle = -index * ANGLE_PER_SIGN - 180 + 15;
+                        const textPos = calcularPosicion(angle - ANGLE_PER_SIGN / 2, DISTANCIA_SIGNOS);
 
-        let DISTANCIA_EXTRA_TOTAL;
-        if (cantidadEnGrupo <= 3) {
-            DISTANCIA_EXTRA_TOTAL = 10;
-        } else {
-            DISTANCIA_EXTRA_TOTAL = 30;
-        }
+                        const isSelected = selectedSign === signo;
+                        const textColor = isSelected ? theme.primary : theme.tertiary;
 
-        let distancia;
-        if (cantidadEnGrupo === 1) {
-            distancia = DISTANCIA_BASE;
-        } else {
-            const paso = DISTANCIA_EXTRA_TOTAL / (cantidadEnGrupo - 1);
-            const offset = -DISTANCIA_EXTRA_TOTAL * (1 / 4) + paso * posicionEnGrupo;
+                        return (
+                            <G key={signo}>
+                                <AnimatedText
+                                    x={textPos.x}
+                                    y={textPos.y}
+                                    fontSize={height * 0.032}
+                                    textAnchor="start"
+                                    alignmentBaseline="middle"
+                                    fontFamily="Astronomicon"
+                                    fill={textColor}
+                                    transform={`rotate(${angle + 75}, ${textPos.x}, ${textPos.y})`}
+                                >
+                                    {signo}
+                                </AnimatedText>
 
-            distancia = DISTANCIA_BASE + offset;
-        }
+                                <Circle
+                                    cx={textPos.x}
+                                    cy={textPos.y}
+                                    r={height * 0.035}
+                                    fill='none'
+                                    stroke='none'
+                                    strokeWidth="1.5"
+                                    onPressIn={() => handlePressIn(signo, index, textPos)}
+                                />
 
-        return calcularPosicion(anguloActual, distancia);
+                            </G>
+                        );
+                    })}
+                    <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill='none' strokeWidth="1.5" />
+
+                    <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
+
+                        <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+                            {planetas.map((planeta, index) => {
+                                const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
+                                const planetSignoIndex = signosZodiacales.indexOf(signo);
+                                const posicion = calcularPosicionAjustada(planetas, index);
+                                const isSelected = planeta === selectedPlanet;
+                                const planetaColor = isSelected ? theme.focusedItem : theme.tertiary;
+
+                                return (
+                                    <G key={planeta}>
+                                        {/* Pasamos un objeto con el nombre y el ángulo para que renderizarLineasAspectos lo use */}
+                                        {renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)}
+                                        <AnimatedText x={posicion.x} y={posicion.y} fontSize={height * .022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
+                                            {simbolosPlanetas[planeta]}
+                                        </AnimatedText>
+                                        {planeta !== "Nodo Norte" && planeta !== "North Node" && (
+                                            <>
+                                                {estacionario && !retrógrado && (
+                                                    <SvgText
+                                                        x={posicion.x + 7.5}
+                                                        y={posicion.y + 10}
+                                                        fontSize={height * 0.008}
+                                                        textAnchor="start"
+                                                        alignmentBaseline="middle"
+                                                        fill={planetaColor}
+                                                        fontFamily="Effra_SemiBold"
+                                                    >
+                                                        st
+                                                    </SvgText>
+                                                )}
+                                                {retrógrado && !estacionario && (
+                                                    <SvgText
+                                                        x={posicion.x + 7.5}
+                                                        y={posicion.y + 10}
+                                                        fontSize={height * 0.008}
+                                                        textAnchor="start"
+                                                        alignmentBaseline="middle"
+                                                        fill={planetaColor}
+                                                        fontFamily="Effra_SemiBold"
+                                                    >
+                                                        Rx
+                                                    </SvgText>
+                                                )}
+                                                {retrógrado && estacionario && (
+                                                    <SvgText
+                                                        x={posicion.x + 7.5}
+                                                        y={posicion.y + 10}
+                                                        fontSize={height * 0.008}
+                                                        textAnchor="start"
+                                                        alignmentBaseline="middle"
+                                                        fill={planetaColor}
+                                                        fontFamily="Effra_SemiBold"
+                                                    >
+                                                        stRx
+                                                    </SvgText>
+                                                )}
+                                            </>
+                                        )}
+                                    </G>
+                                );
+                            })}
+                        </AnimatedSvg></Animated.View>
+
+
+                </AnimatedSvg>
+                {tooltip.visible && (
+                    <View style={{
+                        position: 'absolute',
+                        top: tooltip.position.y,
+                        left: tooltip.position.x,
+                        backgroundColor: theme.black,
+                        padding: 5,
+                        paddingHorizontal: 7,
+                        borderRadius: 5,
+                        elevation: 10,
+                    }}>
+                        <Text style={{ color: theme.background, fontFamily: 'Effra_Regular', textAlign: 'center', fontSize: height * 0.012 }}>{tooltip.sign}</Text>
+                    </View>
+                )}
+            </Animated.View>
+        );
     };
-
-    return (
-        <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
-
-            <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
-                <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.tertiary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(16, ${CENTER.x}, ${CENTER.y})`} />
-
-                {signosSimbolos.map((signo, index) => {
-                    const angle = -index * ANGLE_PER_SIGN - 180 + 15;
-                    const textPos = calcularPosicion(angle - ANGLE_PER_SIGN / 2, DISTANCIA_SIGNOS);
-
-                    const isSelected = selectedSign === signo;
-                    const textColor = isSelected ? theme.primary : theme.tertiary;
-
-                    return (
-                        <G key={signo}>
-                            <AnimatedText
-                                x={textPos.x}
-                                y={textPos.y}
-                                fontSize={height * 0.032}
-                                textAnchor="start"
-                                alignmentBaseline="middle"
-                                fontFamily="Astronomicon"
-                                fill={textColor}
-                                transform={`rotate(${angle + 75}, ${textPos.x}, ${textPos.y})`}
-                            >
-                                {signo}
-                            </AnimatedText>
-
-                            <Circle
-                                cx={textPos.x}
-                                cy={textPos.y}
-                                r={height * 0.035}
-                                fill='none'
-                                stroke='none'
-                                strokeWidth="1.5"
-                                onPressIn={() => handlePressIn(signo, index, textPos)}
-                            />
-
-                        </G>
-                    );
-                })}
-                <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill='none' strokeWidth="1.5" />
-
-                <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
-
-                    <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
-                        {planetas.map((planeta, index) => {
-                            const { signo, grado, minutos, retrógrado, estacionario } = resultado.planetas[planeta];
-                            const planetSignoIndex = signosZodiacales.indexOf(signo);
-                            const posicion = calcularPosicionAjustada(planetas, index);
-                            const isSelected = planeta === selectedPlanet;
-                            const planetaColor = isSelected ? theme.focusedItem : theme.tertiary;
-
-                            return (
-                                <G key={planeta}>
-                                    {/* Pasamos un objeto con el nombre y el ángulo para que renderizarLineasAspectos lo use */}
-                                    {renderizarLineasAspectos({ nombre: planeta, angle: posicion.angle }, index)}
-                                    <AnimatedText x={posicion.x} y={posicion.y} fontSize={height * .022} textAnchor="start" alignmentBaseline="middle" fill={planetaColor} fontFamily="Astronomicon">
-                                        {simbolosPlanetas[planeta]}
-                                    </AnimatedText>
-                                    {planeta !== "Nodo Norte" && planeta !== "North Node" && (
-                                        <>
-                                            {estacionario && !retrógrado && (
-                                                <SvgText
-                                                    x={posicion.x + 7.5}
-                                                    y={posicion.y + 10}
-                                                    fontSize={height * 0.008}
-                                                    textAnchor="start"
-                                                    alignmentBaseline="middle"
-                                                    fill={planetaColor}
-                                                    fontFamily="Effra_SemiBold"
-                                                >
-                                                    st
-                                                </SvgText>
-                                            )}
-                                            {retrógrado && !estacionario && (
-                                                <SvgText
-                                                    x={posicion.x + 7.5}
-                                                    y={posicion.y + 10}
-                                                    fontSize={height * 0.008}
-                                                    textAnchor="start"
-                                                    alignmentBaseline="middle"
-                                                    fill={planetaColor}
-                                                    fontFamily="Effra_SemiBold"
-                                                >
-                                                    Rx
-                                                </SvgText>
-                                            )}
-                                            {retrógrado && estacionario && (
-                                                <SvgText
-                                                    x={posicion.x + 7.5}
-                                                    y={posicion.y + 10}
-                                                    fontSize={height * 0.008}
-                                                    textAnchor="start"
-                                                    alignmentBaseline="middle"
-                                                    fill={planetaColor}
-                                                    fontFamily="Effra_SemiBold"
-                                                >
-                                                    stRx
-                                                </SvgText>
-                                            )}
-                                        </>
-                                    )}
-                                </G>
-                            );
-                        })}
-                    </AnimatedSvg></Animated.View>
-
-
-            </AnimatedSvg>
-            {tooltip.visible && (
-                <View style={{
-                    position: 'absolute',
-                    top: tooltip.position.y,
-                    left: tooltip.position.x,
-                    backgroundColor: theme.black,
-                    padding: 5,
-                    paddingBottom: 3,
-                    paddingHorizontal: 7,
-                    borderRadius: 5,
-                    elevation: 10,
-                }}>
-                    <Text style={{ color: theme.background, fontFamily: 'Effra_Regular', textAlign: 'center', fontSize: height * 0.012 }}>{tooltip.sign}</Text>
-                </View>
-            )}
-        </Animated.View>
-    );
-};
     
     if (!userData?.name) {
       return (
@@ -710,7 +751,6 @@ const renderCirculoZodiacal = () => {
       );
     }
   
-
     return (
       <LinearGradient style={styles.homeGradientContainer}
       colors={[theme.homeBackground1,theme.homeBackground4,theme.homeBackground4, theme.background]}>
@@ -718,6 +758,35 @@ const renderCirculoZodiacal = () => {
       <SkyStars style={styles.skyStarsTop}></SkyStars>
       <SkyStars style={styles.skyStarsBottom}></SkyStars>
       <SafeAreaView style={styles.homeContainer}>
+                <TouchableOpacity
+            style={{
+                position: 'absolute',
+                top: hp('3.5%') ,
+                right: 20,
+                zIndex: 1,
+                padding: 5,
+            }}
+            onPress={() => navigation.navigate('Notifications')}
+            activeOpacity={0.7}
+        >
+            <BellIcon width={width * 0.075} height={width * 0.075} fill={theme.primary} />
+            {hasNewNotificationsToday && (
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: width * 0.03,
+                        right: width * 0.025,
+                        backgroundColor: 'red',
+                        borderRadius: 6,
+                        width: width * 0.02,
+                        height: width * 0.02,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                </View>
+            )}
+        </TouchableOpacity>
       <View style={styles.homeWelcomeTitles}>
         <MaskedView
           style={styles.maskedView}

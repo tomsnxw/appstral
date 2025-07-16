@@ -5,6 +5,7 @@ export const lightTheme = {
     secondary:'#808080',
     tertiary: '#999999',
     primaryBorder: '#dddddd',
+        shareLine: '#4d4d4d',
     secondaryBorder: '#b3b3b3',
     grey: '#f2f2f2',
     red: '#ff3b3b',
@@ -23,6 +24,7 @@ export const lightTheme = {
      homeBackground2: 'white',
      homeBackground3: 'white',
      homeBackground4: 'white',
+     transparentBackground: 'rgba(255,255,255,0)',
      buttonGradientTop: 'black',
      buttonGradientBottom: 'black',
      sheetGradientTop: '#0A0A32',
@@ -31,6 +33,7 @@ export const lightTheme = {
      glosarioCircles: ['#84cbe9', '#ae84e9', '#8ae6c6'],
      eventYellow: "#f7f18d",
      eventPink: "#e9b5e5",
+     transitPlanetColor: '#5653ff',
      eventGreen:"#8ef7c4",
      eventPurple: "#ab89e9",
      eventBlue: "#7ebcec",
@@ -40,6 +43,10 @@ export const lightTheme = {
      membresiaBeneficio: '#EDF7FF',
      membresiaBoton: '#7EBCEC',
      membresiaCancel: '#b3b3b3',
+     buttonBg: '#f8f9fa',
+     buttonText: '#000000',
+     activeButtonBg: '#7ebcec',
+     activeButtonText: 'white'
   };
   
   export const darkTheme = {
@@ -49,6 +56,7 @@ export const lightTheme = {
     secondary:'#d3d3d3',
     tertiary: '#999999',
     primaryBorder: '#999999',
+    shareLine: '#4d4d4d',
     secondaryBorder: '#cccccc',
     grey: '#1a1a1a',
     sheetBorder: '#cccccc',
@@ -68,6 +76,8 @@ export const lightTheme = {
     homeBackground2: "#040a16",
     homeBackground3: "#0b1a3a",
     homeBackground4: "#000000",
+    transitPlanetColor: '#7573ff',
+     transparentBackground: 'rgba(26,26,26,0)',
     buttonGradientTop: '#29abe2',
     buttonGradientBottom: '#7f47dd',
     sheetGradientTop: '#333333',
@@ -85,4 +95,8 @@ export const lightTheme = {
      membresiaBeneficio: '#1a1a1a',
      membresiaBoton: '#1a1a1a',
      membresiaCancel: '#1a1a1a',
+      buttonBg: '#333333',
+     buttonText: '#ffffff',
+     activeButtonBg: '#7ebcec',
+     activeButtonText: 'white'
   };

@@ -14,6 +14,7 @@ import LunaMIcon from "../../assets/icons/LunaMIcon";
 import LunaCIcon from "../../assets/icons/LunaCIcon";
 import LunaNIcon from "../../assets/icons/LunaNIcon";
 import SunIcon from "../../assets/icons/SunIcon";
+import TransitIcon from "../../assets/icons/TransitIcon";
 import ShareMyChartModal from '../modals/ShareMyChartModal';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,6 +22,7 @@ const { height: height, width: width } = Dimensions.get('screen');
 const { height: wHeight, width: wWidth } = Dimensions.get('window');
 import { useToast } from "../contexts/ToastContext";
 import SolarPremiumModal from '../modals/SolarPremiumModal';
+import TransitPremiumModal from '../modals/TransitPremiumModal';
 import { auth, db, getDoc, doc} from '../config/firebaseConfig';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
@@ -51,6 +53,13 @@ const handleSolarRevo = () => {
     setSolarPremiumModalVisible(true);
   }
 };
+const handleTransit = () => {
+  if (userData.premium) {
+    navigation.navigate("MyTransits");
+  } else {
+    setTransitPremiumModalVisible(true);
+  }
+};
   const [resultado, setResultado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [faseLunar, setFaseLunar] = useState(null);
@@ -70,6 +79,7 @@ const handleSolarRevo = () => {
   const { t, i18n  } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
   const { showToast } = useToast();
+    const [transitPremiumModalVisible, setTransitPremiumModalVisible] = useState(false);
   const [solarPremiumModalVisible, setSolarPremiumModalVisible] = useState(false);
   const [showLunarTooltip, setShowLunarTooltip] = useState(false);
   useEffect(() => {
@@ -118,7 +128,7 @@ const handleSolarRevo = () => {
     const showMenguanteIcon = isNorthernHemisphere ? isCreciente : isMenguante;
   
     return (
-      <View style={{ alignItems: 'center', width: height * 0.04, transform: [{ translateY: 5 }] }}>
+      <View style={{ alignItems: 'center', width: height * 0.04, transform: [{ translateY: 7 }] }}>
         <TouchableOpacity
           disabled={!isPressable}
           onPress={() => setShowLunarTooltip(!showLunarTooltip)}
@@ -170,14 +180,19 @@ const handleSolarRevo = () => {
     setSolarPremiumModalVisible(false);
   };
 
+    const handleCloseTransitPremiumModal = () => {
+    setTransitPremiumModalVisible(false);
+  };
+
+
  const planetasOrden = {
     es: [
       "Sol", "Luna", "Ascendente", "Mercurio", "Venus", "Marte", "Júpiter", "Saturno", 
-      "Urano", "Neptuno", "Plutón", "Lilith", "Quirón", "Nodo Norte", "Medio Cielo" // Added Medio Cielo
+      "Urano", "Neptuno", "Plutón", "Lilith", "Quirón", "Nodo Norte", "Medio Cielo" 
     ],
     en: [
       "Sun", "Moon", "Ascendant", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", 
-      "Uranus", "Neptune", "Pluto", "Lilith", "Chiron", "North Node", "Midheaven" // Added Midheaven
+      "Uranus", "Neptune", "Pluto", "Lilith", "Chiron", "North Node", "Midheaven" 
     ]
   };
 
@@ -337,7 +352,9 @@ const handleSolarRevo = () => {
         "Plutón": "Z",  
         "Lilith": "z",  
         "Quirón": "q",  
-        "Nodo Norte": "g",  
+        "Nodo Norte": "g",
+        "Ascendente": "c",
+        "Medio Cielo": 'd'  
       } : {
         "Sun": "Q",
         "Moon": "R", 
@@ -351,7 +368,9 @@ const handleSolarRevo = () => {
         "Pluto": "Z",  
         "Lilith": "z",  
         "Chiron": "q",  
-        "North Node": "g",  
+        "North Node": "g",
+        "Ascendant": "c",
+        "MidHeaven": 'd'  
       };
 
       
@@ -715,7 +734,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
   });
 };
 
-
   const calcularPosicionAjustada = (cuerpoNombre, index, ASCENDENTROTATION, todosLosCuerpos) => {
     const UMBRAL_ANGULO = 7;
 
@@ -859,14 +877,14 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
         {/* La definición de la flecha `Defs` debe estar AQUÍ, antes de usarla */}
         <Defs>
           {/* Nuevo Marcador de flecha INVERTIDO para 'markerStart' (para el MC/IC) */}
-          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="25" markerHeight="25">
+          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="12" markerHeight="12">
             {/* El Path ahora apunta a la izquierda */}
             <Path d="M8,0 L0,5 L8,10 z" fill={selectedPlanet === t("Medio Cielo") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
 
     <Defs>
-          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="15" markerHeight="15">
+          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="6" markerHeight="6">
             <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
@@ -929,7 +947,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
 
                   {esAscendenteOMedioCielo ? (
                     <AnimatedText
-                      x={posicion.x + .5}
+                      x={posicion.x}
                       y={posicion.y - .5}
                       fontSize={symbolFontSize}
                       textAnchor="middle"
@@ -1037,7 +1055,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           left: tooltip.position.x,
           backgroundColor: theme.black,
           padding: 5,
-          paddingBottom: 3,
           paddingHorizontal: 7,
           borderRadius: 5,
           elevation: 5,
@@ -1054,13 +1071,12 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
   const birthDateTime = new Date(`${userData.birthDate}T${userData.birthTime}:00`);
 
 
-        if (loading) {
-          return (
-           <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
-            <ActivityIndicator size="large" color="#ab89e9"/></View>
-          );
-        }
-
+        // if (loading) {
+        //   return (
+        //    <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
+        //     <ActivityIndicator size="large" color="#ab89e9"/></View>
+        //   );
+        // }
 
   return (
 
@@ -1068,10 +1084,16 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
     <View style={styles.ChartHeader}>
     <View style={styles.chartTitleContainer}>
     <View style={{flexDirection: 'row'}}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.ChartTitleText}>{userData?.name} {userData?.lastName}</Text> 
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{maxWidth: wp('57%'),  color: theme.black, fontSize: RFValue(17), textAlign: 'left',fontFamily: 'Effra_Regular',alignContent: 'center',alignItems: 'center'}}>{userData?.name} {userData?.lastName}</Text>
         {faseLunar && renderLunarIcon()}
         </View>
         <View style={[styles.chartOptions, { opacity: isPressable ? 1 : 0.3 }]}>
+          <TouchableOpacity disabled={!isPressable} onPress={handleTransit}>
+    <TransitIcon
+      style={{ width: 18, height: 18, margin: 'auto' }}
+      fill={userData.premium ? '#6cbcf0' : '#999999'}
+    />
+  </TouchableOpacity>
   <TouchableOpacity disabled={!isPressable} onPress={handleSolarRevo}>
     <SunIcon
       style={{ width: 21, height: 21, margin: 'auto' }}
@@ -1124,6 +1146,11 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
               visible={solarPremiumModalVisible}
               handleCloseSolarPremiumModal={handleCloseSolarPremiumModal}
               setSolarPremiumModalVisible={setSolarPremiumModalVisible}
+            />
+             <TransitPremiumModal
+              visible={transitPremiumModalVisible}
+              handleCloseSolarPremiumModal={handleCloseTransitPremiumModal}
+              setSolarPremiumModalVisible={setTransitPremiumModalVisible}
             />
     </View>
      

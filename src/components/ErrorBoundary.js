@@ -51,7 +51,7 @@ class ErrorBoundary extends Component {
           ]}
           style={styles.errorContainer}
         >
-          <SkyStars style={styles.skyStars} />
+          <SkyStars style={styles.errorStars} />
           <Error style={styles.errorIcon} />
           <View style={styles.UpsContainer}>
             <Text style={styles.UpsText}>{i18n.t("error.Ups")}</Text>

@@ -14,6 +14,8 @@ import SpecialChartIcon from "../../assets/icons/SpecialChartIcon";
 import SpecialDetailsIcon from "../../assets/icons/SpecialDetailsIcon";
 import colors from '../utils/colors';
 import EditChartModal from '../modals/EditChartModal';
+import TransitIcon from "../../assets/icons/TransitIcon";
+import TransitPremiumModal from '../modals/TransitPremiumModal';
 import DeleteChartModal from '../modals/DeleteChartModal';
 import { useToast } from "../contexts/ToastContext";
 import ShareChartModal from '../modals/ShareChartModal';
@@ -37,9 +39,18 @@ const { height: height, width: width } = Dimensions.get('screen');
 const ChartDetails = ({ route, navigation }) => {
   
   const [solarPremiumModalVisible, setSolarPremiumModalVisible] = useState(false);
+  const [transitPremiumModalVisible, setTransitPremiumModalVisible] = useState(false);
+
   const handleCloseSolarPremiumModal = () => {
     setSolarPremiumModalVisible(false);
   };
+
+  
+    const handleCloseTransitPremiumModal = () => {
+    setTransitPremiumModalVisible(false);
+  };
+
+
  const {userData} = useUser();
 
 const handleSolarRevo = () => {
@@ -47,6 +58,13 @@ const handleSolarRevo = () => {
     navigation.navigate("SolarRevo", { cartaId });
   } else {
     setSolarPremiumModalVisible(true);
+  }
+};
+const handleTransit = () => {
+  if (userData.premium) {
+    navigation.navigate("Transits", { cartaId });
+  } else {
+    setTransitPremiumModalVisible(true);
   }
 };
   const { theme } = useContext(ThemeContext);
@@ -169,7 +187,7 @@ const handleSolarRevo = () => {
     const showMenguanteIcon = isNorthernHemisphere ? isCreciente : isMenguante;
   
     return (
-      <View style={{ alignItems: 'center', width: height * 0.04, transform: [{ translateY: 5 }] }}>
+      <View style={{ alignItems: 'center', width: height * 0.025, transform: [{ translateY: 5 }] }}>
         <TouchableOpacity
           disabled={!isPressable}
           onPress={() => setShowLunarTooltip(!showLunarTooltip)}
@@ -186,8 +204,8 @@ const handleSolarRevo = () => {
               position: 'absolute',
               top: height * 0.02,
               backgroundColor: theme.black,
-              paddingVertical: 4,
-              paddingTop: 5,
+              paddingVertical:5,
+              paddingTop: 4,
               width: tooltipWidth,
               paddingHorizontal: 7,
               borderRadius: 5,
@@ -220,11 +238,8 @@ const handleSolarRevo = () => {
     };
 
     const handleOpenEditModal = () => {
-      if (!userData?.premium && cartaData?.editado) {
-        return;
-      }
-    
-      if (!userData?.premium && !cartaData?.editado) {
+
+      if (!cartaData?.editado) {
         setConfirmEditModalVisible(true);
         return;
       }
@@ -234,6 +249,7 @@ const handleSolarRevo = () => {
   
     const handleCloseEditModal = () => {
       setEditModalVisible(false);
+      setConfirmEditModalVisible(false)
     };
 
     const handleOpenSpecialChartModal = () => {
@@ -515,7 +531,6 @@ const handleSolarRevo = () => {
       </TouchableOpacity>
     );
   };
-  
 const signosSimbolos = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
 ];
@@ -534,6 +549,7 @@ const signosZodiacales = [
   t("signos.aquarius"),
   t("signos.pisces")
 ];
+
 
 const renderCirculoZodiacal = () => {
   if (!resultado) return null;
@@ -788,7 +804,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
   });
 };
 
-
   const calcularPosicionAjustada = (cuerpoNombre, index, ASCENDENTROTATION, todosLosCuerpos) => {
     const UMBRAL_ANGULO = 7;
 
@@ -932,14 +947,14 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
         {/* La definición de la flecha `Defs` debe estar AQUÍ, antes de usarla */}
         <Defs>
           {/* Nuevo Marcador de flecha INVERTIDO para 'markerStart' (para el MC/IC) */}
-          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="25" markerHeight="25">
+          <Marker id="arrow" viewBox="0 0 10 10" refX="0" refY="5" orient="auto" markerWidth="12" markerHeight="12">
             {/* El Path ahora apunta a la izquierda */}
             <Path d="M8,0 L0,5 L8,10 z" fill={selectedPlanet === t("Medio Cielo") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
 
     <Defs>
-          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="15" markerHeight="15">
+          <Marker id="arrowAC" viewBox="0 0 10 10" refX="7" refY="5" orient="auto" markerWidth="6" markerHeight="6">
             <Path d="M0,0 L8,5 L0,10 z" fill={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} />
           </Marker>
         </Defs>
@@ -1002,7 +1017,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
 
                   {esAscendenteOMedioCielo ? (
                     <AnimatedText
-                      x={posicion.x + .5}
+                      x={posicion.x}
                       y={posicion.y - .5}
                       fontSize={symbolFontSize}
                       textAnchor="middle"
@@ -1110,7 +1125,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           left: tooltip.position.x,
           backgroundColor: theme.black,
           padding: 5,
-          paddingBottom: 3,
           paddingHorizontal: 7,
           borderRadius: 5,
           elevation: 5,
@@ -1153,9 +1167,6 @@ const confirmarEliminacion = async () => {
 
         const fechaTime = new Date(`${fecha}T${hora}:00`);
 
-
-
-        
   return (
      <View style={{margin: 'auto',
       marginTop: hp('12.25%'),
@@ -1197,23 +1208,38 @@ const confirmarEliminacion = async () => {
         </View> ):(
         <View style={styles.ChartDetailsHeader}>
         <View style={styles.chartTitleContainer}>
-              <View style={{flexDirection: 'row'}}>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.ChartTitleText}>{nombre} {apellido}</Text>
+              <View style={{flexDirection: 'row',gap: 0}}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={{ maxWidth: wp('47%'),
+    color: theme.black,
+    fontSize: RFValue(17),
+    textAlign: 'left',
+    fontFamily: 'Effra_Regular',
+    alignContent: 'center',
+    alignItems: 'center',}}>{nombre} {apellido}</Text>
 {faseLunar && renderLunarIcon()}
         </View>
 
          <View style={[styles.chartOptions, { opacity: isPressable ? 1 : 0.3 }]}>
+                            <TouchableOpacity disabled={!isPressable} onPress={handleTransit}>
+            <TransitIcon
+              style={{ width: 18, height: 18, margin: 'auto' }}
+              fill={userData.premium ? '#6cbcf0' : '#999999'}
+            />
+          </TouchableOpacity>
          <TouchableOpacity disabled={!isPressable} onPress={handleSolarRevo}>
   <SunIcon style={{ width: 21, height: 21, margin: 'auto' }} fill={userData.premium ? '#6cbcf0' : "#999999"} />          
 </TouchableOpacity>
           <TouchableOpacity disabled={!isPressable} onPress={handleOpenShareModal}>
           <ShareIcon style={{ width: 16, height: 16, margin:'auto', fill:theme.tertiary }} />
           </TouchableOpacity>
-          {!cartaData?.editado && (
-  <TouchableOpacity disabled={!isPressable} onPress={handleOpenEditModal}>
-    <EditIcon style={{ width: 16, height: 16, margin: 'auto', fill: theme.tertiary }} />
-  </TouchableOpacity>
-)}
+<TouchableOpacity
+  // El botón se muestra si la carta NO ha sido editada O si el usuario tiene membresía estelar
+  style={!(!cartaData?.editado || userData.membresia === 'estelar') && { display: 'none' }}
+  disabled={!isPressable}
+  onPress={handleOpenEditModal}
+>
+  <EditIcon style={{ width: 16, height: 16, margin: 'auto', fill: theme.tertiary }} />
+</TouchableOpacity>
 
 
   {userData.premium && (

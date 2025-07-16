@@ -39,7 +39,7 @@ const { height: height, width: width } = Dimensions.get('screen');
 const { height: wHeight, width: wWidth } = Dimensions.get('window');
 import AnimatedSwitch from '../components/AnimatedSwitch';
 import { LanguageContext } from '../contexts/LanguageContext';
-
+import { registerForPushNotificationsAsync } from '../../App.js'
 
 const ProfileScreen = ({navigation}) => {
   const { showToast } = useToast();
@@ -120,17 +120,36 @@ const ProfileScreen = ({navigation}) => {
     setIsEnabled(userData.notifications); 
   }, [userData]);
 
-  const toggleSwitch = async () => {
+   const toggleSwitch = async () => {
     const newNotificationStatus = !isEnabled;
-    setIsEnabled(newNotificationStatus); 
+    setIsEnabled(newNotificationStatus);
 
     try {
-      await updateUserNotifications(newNotificationStatus); 
+      await updateUserNotifications(newNotificationStatus);
+
+      if (newNotificationStatus) {
+        console.log('Usuario activó las notificaciones. Intentando obtener/actualizar token...');
+        const { token, finalStatus } = await registerForPushNotificationsAsync();
+
+        if (token) {
+          await guardarTokenFCM(token);
+          console.log('Token de notificación guardado/actualizado correctamente.');
+        } else {
+          console.warn('No se pudo obtener el token de notificación. Actualizando Firestore a notifications: false.');
+          await updateUserNotifications(false);
+          setIsEnabled(false);
+        }
+      } else {
+        console.log('Usuario desactivó las notificaciones.');
+      }
+
     } catch (error) {
       console.error('Error al actualizar notificaciones:', error);
-      setIsEnabled(isEnabled); 
+      setIsEnabled(isEnabled); // Revertir el estado del switch en caso de error
+      alert('Hubo un error al actualizar tus preferencias de notificación. Intenta de nuevo.');
     }
   };
+
 
   const countries = useMemo(() => {
     return Object.keys(cities); 

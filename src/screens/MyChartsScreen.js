@@ -33,6 +33,7 @@ import { useUser } from '../contexts/UserContext';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { createStyles } from '../utils/styles';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { RFValue } from "react-native-responsive-fontsize";
 
 
 const { height: height, width: width } = Dimensions.get('screen');
@@ -139,22 +140,24 @@ useEffect(() => {
     const handleOpenOptions = () => {
       setModalVisible(true);
     };
-    const handleCloseOptions = () => {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(slideAnim, {
-          toValue: height,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
-        setModalVisible(false); 
-      });
-    };
+
+const handleCloseOptions = () => {
+  Animated.parallel([
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }),
+    Animated.timing(slideAnim, {
+      toValue: height,
+      duration: 500,
+      useNativeDriver: true,
+    }),
+  ]).start(() => {
+    setModalVisible(false);
+    setSelectedCarta(null); // This line resets selectedCarta
+  });
+};
     const handleOpenShareModal = () => {
       setShareModalVisible(true);
       handleCloseOptions();
@@ -163,14 +166,17 @@ useEffect(() => {
     const handleCloseShareModal = () => {
       setShareModalVisible(false);
     };
-
-    const handleOpenEditModal = () => {
-      setEditModalVisible(true);
-      handleCloseOptions();
-    };
+const handleOpenEditModal = () => {
+  if (userData.membresia === 'estelar') {
+    setEditModalVisible(true);
+  } else if (!selectedCarta?.editado) {
+    setConfirmEditModalVisible(true);
+  } 
+};
   
     const handleCloseEditModal = () => {
       setEditModalVisible(false);
+      setConfirmEditModalVisible(false)
     };
  const {userData} = useUser();
 
@@ -458,7 +464,9 @@ useEffect(() => {
           {item.hora ? <Text style={styles.chartText}>{item.hora}</Text> : null}
           {item.ciudad ? <Text style={styles.chartText}>{item.ciudad}</Text> : null}
         </View>
-        <TouchableOpacity style={styles.chartOptionsIconContainer} onPress={() => handleOptionsPress(item)}>
+        <TouchableOpacity style={{backgroundColor:theme.background, marginRight: wp('4%'), 
+      width: wp('8%'), 
+      height: wp('8%'), }} onPress={() => handleOptionsPress(item)}>
           <View>
             <OptionsIcon style={styles.chartOptionsIcon} />
           </View>
@@ -564,7 +572,7 @@ useEffect(() => {
           alignSelf: 'center',
           alignItems:'center',
           justifyContent:'center',
-          bottom: hp('30%'),
+          bottom: height*.325,
           width: hp('5.75%'),
           height: hp('5.75%'),
           backgroundColor:'red',
@@ -660,7 +668,7 @@ useEffect(() => {
     {selectedCarta && (
     <EditChartModal
         visible={editModalVisible}
-        route={{ params: { cartaId: selectedCarta?.id, cartaData: selectedCarta } }}
+        route={{ params: { cartaId: selectedCarta.id, cartaData: selectedCarta } }}
         handleCloseEditModal={handleCloseEditModal}
         setIsEdited={setIsEdited}
     />)}
@@ -685,12 +693,12 @@ navigation={navigation}
         route={{ params: { cartaId: selectedCarta?.id, cartaData: selectedCarta } }}
         handleCloseShareModal={handleCloseShareModal}
       />)}
-      <ConfirmEditModal
-      visible={confirmEditModalVisible}
-      onConfirm={() => {
-    setConfirmEditModalVisible(false); handleOpenEditModal();}}
-    onCancel={() => setConfirmEditModalVisible(false)}
-    t={t}/>
+<ConfirmEditModal
+                visible={confirmEditModalVisible}
+                setVisible={setConfirmEditModalVisible}
+                onConfirm={() => {setEditModalVisible(true)}}
+                onCancel={() => setConfirmEditModalVisible(false)}
+                t={t}/>
           {selectedCarta && (<DeleteChartModal
             visible={showAlert}
             t={t}

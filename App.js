@@ -16,6 +16,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MySolarRevoScreen from './src/screens/MySolarRevoScreen';
 import SolarRevoScreen from './src/screens/SolarRevoScreen';
+import MyTransitsScreen from './src/screens/MyTransitsScreen';
+import TransitsScreen from './src/screens/TransitsScreen'
 import MyChartScreen from './src/screens/MyChartScreen'; 
 import PolicyScreen from './src/screens/PolicyScreen';
 import TermsScreen from './src/screens/TermsScreen';
@@ -57,6 +59,8 @@ import * as Device from 'expo-device';
 import Purchases from 'react-native-purchases';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { RFValue } from "react-native-responsive-fontsize";
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import { NotificationProvider } from './src/contexts/NotificationContext';
 
 
 const Stack = createStackNavigator();
@@ -75,7 +79,7 @@ Notifications.setNotificationHandler({
 
 export async function registerForPushNotificationsAsync() {
   let token;
-  let finalStatus; // Para almacenar el estado final del permiso
+  let finalStatus;
 
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -625,6 +629,7 @@ return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='MyCharts'>
       <Stack.Screen name="MyCharts" component={MyChartsScreen} />
       <Stack.Screen name="ChartDetails" component={ChartDetails} />
+      <Stack.Screen name="Transits" component={TransitsScreen} />
       <Stack.Screen name="SolarRevo" component={SolarRevoScreen} />
     </Stack.Navigator>
   )
@@ -633,6 +638,7 @@ return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='MyChart'>
       <Stack.Screen name="MyChart" component={MyChartScreen} />
       <Stack.Screen name="MySolarRevo" component={MySolarRevoScreen} />
+      <Stack.Screen name="MyTransits" component={MyTransitsScreen} />
     </Stack.Navigator>
   )
 
@@ -796,6 +802,21 @@ const AuthStack = () => {
   );
 };
 
+const HomeStack = () => {
+  const { theme } = useContext(ThemeContext);
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false, 
+        ...TransitionPresets.SlideFromRightIOS, 
+      }}
+    >
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
+    </Stack.Navigator>
+  );
+};
+
   const MainApp = () => {
     const { theme } = useContext(ThemeContext);
     const MyTheme = {
@@ -878,7 +899,7 @@ const AuthStack = () => {
          >
 <Tab.Screen 
   name="Home" 
-  component={HomeScreen} 
+  component={HomeStack} 
   options={{
     title: 'Home',
        ...TransitionPresets.FadeTransition,
@@ -1001,10 +1022,11 @@ const AuthStack = () => {
     <CasaProvider>
         <ErrorBoundary>
           <ToastProvider>
-            <MainContent  /> 
+            <NotificationProvider>
+              <MainContent/>
+            </NotificationProvider>
           </ToastProvider>
         </ErrorBoundary>
-     
     </CasaProvider>
   </UserProvider>
   </LanguageProvider>
