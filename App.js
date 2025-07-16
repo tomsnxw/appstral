@@ -124,6 +124,7 @@ const App = () => {
   const [authChecked, setAuthChecked] = useState(false);
   const [isConnected, setIsConnected] = useState(null);
   const navigationRef = useNavigationContainerRef();
+  const [initialNotificationData, setInitialNotificationData] = useState(null);
 
   useEffect(() => {
     Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
@@ -133,6 +134,14 @@ const App = () => {
     } else if (Platform.OS === 'android') {
       Purchases.configure({ apiKey: 'goog_kKDJcHBrPfeMtodupJQmiOyhCff' });
     }
+
+    // Check for initial notification when the app launches (cold start)
+    Notifications.getLastNotificationResponseAsync().then(response => {
+      if (response && response.notification.request.content.data?.screen) {
+        setInitialNotificationData(response.notification.request.content.data);
+        console.log('Initial notification data:', response.notification.request.content.data);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -141,13 +150,18 @@ const App = () => {
 
       const data = response.notification.request.content.data;
 
-      if (data?.screen) {
+      // Navigate if navigationRef is ready
+      if (navigationRef.isReady() && data?.screen) {
         navigationRef.navigate(data.screen, data.params || {});
+      } else {
+        // If navigationRef is not ready, store the data to navigate later
+        setInitialNotificationData(data);
+        console.log('Navigation not ready, storing initial notification data for later:', data);
       }
     });
 
     return () => subscription.remove();
-  }, []);
+  }, [navigationRef]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -826,39 +840,50 @@ const HomeStack = () => {
         background: theme.background,
       },
     };
-    const {reloadKey} = useCasa();
+    const { reloadKey } = useCasa();
     const [initialRoute, setInitialRoute] = useState(null);
-  const [startInMyChart, setStartInMyChart] = useState(false);
-  const { t } = useTranslation();
+    const [startInMyChart, setStartInMyChart] = useState(false);
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    const checkFirstTime = async (user) => {
-      if (!user) {
-        setInitialRoute("Home");
-        return;
+    useEffect(() => {
+      const checkFirstTime = async (user) => {
+        if (!user) {
+          setInitialRoute("Home");
+          return;
+        }
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists() && userSnap.data().firstTime) {
+          setInitialRoute("Profile");
+          setStartInMyChart(true);
+
+          await updateDoc(userRef, { firstTime: false });
+        } else {
+          setInitialRoute("Home");
+        }
+      };
+
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        checkFirstTime(user);
+      });
+
+      return () => unsubscribe();
+    }, []);
+
+    // Effect to handle navigation from initialNotificationData once the navigationRef is ready
+    useEffect(() => {
+      if (navigationRef.isReady() && initialNotificationData) {
+        console.log('Navigating from initialNotificationData:', initialNotificationData.screen);
+        navigationRef.navigate(initialNotificationData.screen, initialNotificationData.params || {});
+        // Clear the initial notification data after navigating
+        setInitialNotificationData(null);
       }
+    }, [initialNotificationData, navigationRef]);
 
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists() && userSnap.data().firstTime) {
-        setInitialRoute("Profile");
-        setStartInMyChart(true); 
-        
-        await updateDoc(userRef, { firstTime: false });
-      } else {
-        setInitialRoute("Home");
-      }
-    };
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      checkFirstTime(user);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (initialRoute === null) return null;
+    if (initialRoute === null) return null;
+    
 
     return (
       <NavigationContainer ref={navigationRef} key={reloadKey} theme={MyTheme}>

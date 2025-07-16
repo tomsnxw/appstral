@@ -187,10 +187,10 @@ const NotificationsScreen = () => {
       const isInRange = (eventDate, startRange, endRange) => {
         return eventDate.getTime() >= startRange.getTime() && eventDate.getTime() <= endRange.getTime();
       };
+      let hasEventsToday = false;
 
       events.forEach(event => {
         const eventEffectiveDate = event.category === 'retrogradaciones' ? event.start : event.date;
-        // const eventEndDate = event.category === 'retrogradaciones' ? event.end : event.date; // No se usa en esta lógica de filtrado directo
 
         if (eventEffectiveDate.toDateString() === today.toDateString()) {
           notifications.push({ ...event, timeCategory: t('today') });
@@ -224,22 +224,18 @@ const NotificationsScreen = () => {
 
       setFilteredNotifications(finalNotifications);
       setLoading(false);
+      setHasNewNotificationsToday(hasEventsToday);
     };
 
     fetchAndFilterEvents();
-  }, [loadAllEvents, t]);
+  }, [loadAllEvents, t, setHasNewNotificationsToday]); 
 
-useFocusEffect(
-  useCallback(() => {
-    const todayNotificationsExist = filteredNotifications.some(group => group.title === t('today') && group.data.length > 0);
-    if (todayNotificationsExist) {
+  useFocusEffect(
+    useCallback(() => {
       markNotificationsAsViewed();
-    }
-
-    return () => {
-    };
-  }, [markNotificationsAsViewed, filteredNotifications, t]) 
-);
+    }, [markNotificationsAsViewed])
+  );
+  
   const NotificationItem = ({ item, theme, t }) => {
     const isRetrogradation = item.category === 'retrogradaciones';
     const displayDate = isRetrogradation ? item.range : formatDate(item.date);

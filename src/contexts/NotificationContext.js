@@ -1,4 +1,3 @@
-// src/context/NotificationContext.js
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,25 +11,21 @@ export const NotificationProvider = ({ children }) => {
     return today.toISOString().split('T')[0]; // "YYYY-MM-DD"
   };
 
+  // Modificación clave: Ya no establecemos hasNewNotificationsToday en el useEffect inicial
+  // Solo se encargará de cargar la última fecha vista si es necesario para alguna otra lógica
   useEffect(() => {
-    const loadNotificationStatus = async () => {
+    // Podrías cargar la lastViewedDate aquí si la necesitas para algo más,
+    // pero no para determinar directamente hasNewNotificationsToday
+    const loadLastViewedDate = async () => {
       try {
         const lastViewedDate = await AsyncStorage.getItem('lastViewedNotificationsDate');
-        const todayDate = getTodayDateString();
-
-        // Si la última fecha vista es anterior a hoy, o no hay registro,
-        // asumimos que PUEDE haber notificaciones nuevas de hoy.
-        // NotificationsScreen será el encargado de 'marcar como vistas' si las hay.
-        if (!lastViewedDate || lastViewedDate < todayDate) {
-          setHasNewNotificationsToday(true); // <-- ¡Cambiado a true!
-        } else {
-          setHasNewNotificationsToday(false); // Ya se vieron hoy
-        }
+        // Aquí no cambiamos hasNewNotificationsToday, ya que dependerá de los eventos reales
+        // Pero podrías usar esta fecha para un fetch condicional en HomeScreen o similar
       } catch (error) {
-        console.error('Error loading notification status:', error);
+        console.error('Error loading last viewed date:', error);
       }
     };
-    loadNotificationStatus();
+    loadLastViewedDate();
   }, []);
 
   const markNotificationsAsViewed = useCallback(async () => {
