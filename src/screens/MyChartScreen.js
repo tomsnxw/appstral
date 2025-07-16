@@ -54,7 +54,7 @@ const handleSolarRevo = () => {
   }
 };
 const handleTransit = () => {
-  if (userData.premium) {
+    if (userData.membresia === 'estelar') {
     navigation.navigate("MyTransits");
   } else {
     setTransitPremiumModalVisible(true);

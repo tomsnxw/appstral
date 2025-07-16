@@ -61,7 +61,7 @@ const handleSolarRevo = () => {
   }
 };
 const handleTransit = () => {
-  if (userData.premium) {
+    if (userData.membresia === 'estelar') {
     navigation.navigate("Transits", { cartaId });
   } else {
     setTransitPremiumModalVisible(true);
@@ -1306,6 +1306,11 @@ const confirmarEliminacion = async () => {
               handleCloseSolarPremiumModal={handleCloseSolarPremiumModal}
               setSolarPremiumModalVisible={setSolarPremiumModalVisible}
             />
+                        <TransitPremiumModal
+                          visible={transitPremiumModalVisible}
+                          handleCloseSolarPremiumModal={handleCloseTransitPremiumModal}
+                          setSolarPremiumModalVisible={setTransitPremiumModalVisible}
+                        />
             <ConfirmEditModal
                 visible={confirmEditModalVisible}
                 onConfirm={() => {
