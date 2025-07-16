@@ -237,13 +237,19 @@ const MySolarRevoScreen = ({navigation}) => {
         });
       };
 
-const formatDateAndTime = (fechaRepeticion) => {
+const formatDateAndTime = (fechaRepeticion, i18nLanguage) => {
   const date = new Date(fechaRepeticion);
 
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses son base 0
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
-  const formattedDate = `${day} / ${month} / ${year}`;
+
+  let formattedDate;
+  if (i18n.language === 'en') {
+    formattedDate = `${year}/${month}/${day}`; // YYYY/MM/DD for English
+  } else {
+    formattedDate = `${day}/${month}/${year}`; // DD/MM/YYYY for other languages (default)
+  }
 
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');

@@ -271,13 +271,19 @@ const SolarRevoScreen = ({ route, navigation }) => {
         });
       };
 
-const formatDateAndTime = (fechaRepeticion) => {
+const formatDateAndTime = (fechaRepeticion, i18nLanguage) => {
   const date = new Date(fechaRepeticion);
 
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses son base 0
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
-  const formattedDate = `${day} / ${month} / ${year}`;
+
+  let formattedDate;
+  if (i18n.language === 'en') {
+    formattedDate = `${year}/${month}/${day}`; // YYYY/MM/DD for English
+  } else {
+    formattedDate = `${day}/${month}/${year}`; // DD/MM/YYYY for other languages (default)
+  }
 
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -288,7 +294,6 @@ const formatDateAndTime = (fechaRepeticion) => {
     formattedTime,
   };
 };
-
   useEffect(() => {
     if (fechaRepeticion && resultado) {
       const { formattedDate, formattedTime } = formatDateAndTime(fechaRepeticion);
@@ -436,8 +441,6 @@ const signosZodiacales = [
   t("signos.aquarius"),
   t("signos.pisces")
 ];
-
-
 const renderCirculoZodiacal = () => {
   if (!resultado) return null;
   const SVG_SIZE = width * 0.96;
@@ -542,7 +545,7 @@ const renderCirculoZodiacal = () => {
     ];
   });
 
-const renderizarLineasAspectos = (cuerpo1Data, index) => {
+  const renderizarLineasAspectos = (cuerpo1Data, index) => {
   const nombreCuerpo1 = cuerpo1Data.nombre;
 
   return planetasYPuntos.slice(index + 1).flatMap((otroCuerpoNombre) => {
@@ -663,7 +666,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
       }
 
       return Math.abs(diferenciaAngular - angulo) < orbeMaximo ? ( <
-        AnimatedLine key = {
+        Line key = {
           `Line-${nombreCuerpo1}-${otroCuerpoNombre}-${angulo}`
         }
         x1 = {
@@ -682,9 +685,6 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           color
         }
         strokeWidth = "1.25"
-        opacity = {
-          opacityAnimLine
-        }
         />
       ) : null
     }).filter(Boolean);
@@ -758,9 +758,9 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
 
 
   return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }, { rotate: rotateInterpolate }], opacity: opacityAnim }}>
+    <View >
 
-      <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+      <Svg width={SVG_SIZE} height={SVG_SIZE}>
 
 
         <Circle cx={CENTER.x} cy={CENTER.y} r={RADIO} stroke={theme.tertiary} strokeWidth="2" fill="none" strokeDasharray={`${LONGITUD_LINEA},${LONGITUD_ESPACIO}`} transform={`rotate(${-ASCENDENTROTATION + 1}, ${CENTER.x}, ${CENTER.y})`} />
@@ -776,7 +776,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           return (
             <G key={signo}>
 
-              <AnimatedText
+              <SvgText
                 x={textPos.x}
                 y={textPos.y}
                 fontSize={height * 0.035}
@@ -787,7 +787,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                 transform={`rotate(${angle + 75}, ${textPos.x}, ${textPos.y})`}
               >
                 {signo}
-              </AnimatedText>
+              </SvgText>
 
               <Circle
                 cx={textPos.x}
@@ -847,9 +847,9 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
         <Line markerEnd="url(#arrowAC)" x1={CENTER.x + RADIO} y1={CENTER.y} x2={CENTER.x - RADIO} y2={CENTER.y} stroke={selectedPlanet === t("Ascendente") ? theme.focusedItem : theme.tertiary} strokeWidth="1.5" />
 
     
-        <Animated.View style={{ transform: [{ rotate: rotatePlanetasInterpolate }] }}>
+        <View>
 
-          <AnimatedSvg width={SVG_SIZE} height={SVG_SIZE}>
+          <Svg width={SVG_SIZE} height={SVG_SIZE}>
 
             {planetasYPuntos.map((cuerpo, index) => {
               let cuerpoData;
@@ -902,7 +902,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                   )}
 
                   {esAscendenteOMedioCielo ? (
-                    <AnimatedText
+                    <SvgText
                       x={posicion.x}
                       y={posicion.y - .5}
                       fontSize={symbolFontSize}
@@ -912,9 +912,9 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                       fontFamily="Astronomicon"
                     >
                       {simbolosPlanetas[cuerpo]}
-                    </AnimatedText>) : (
+                    </SvgText>) : (
 
-                    <AnimatedText
+                    <SvgText
                       x={posicion.x}
                       y={posicion.y}
                       fontSize={symbolFontSize}
@@ -924,7 +924,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                       fontFamily="Astronomicon"
                     >
                       {simbolosPlanetas[cuerpo]}
-                    </AnimatedText>
+                    </SvgText>
                   )}
 
                   {cuerpo !== "Nodo Norte" && cuerpo !== "North Node" && (
@@ -976,13 +976,13 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
             <G>
               {posicionesCasas.map(({ numero, pos }, index) => (
                 <React.Fragment key={numero}>
-                  <AnimatedCircle
+                  <Circle
                     cx={pos.x}
                     cy={pos.y}
                     r={RFValue(5)}
                     fill={theme.tertiary}
                   />
-                  <AnimatedG >
+                  <G >
                     <SvgText
                       x={pos.x}
                       y={pos.y}
@@ -994,15 +994,15 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
                     >
                       {numero}
                     </SvgText>
-                  </AnimatedG>
+                  </G>
                 </React.Fragment>
               ))}
             </G>
-          </AnimatedSvg>
-        </Animated.View>
-        <AnimatedCircle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
+          </Svg>
+        </View>
+        <Circle cx={CENTER.x} cy={CENTER.y} r={DISTANCIA_INNERCIRCLE} stroke={theme.tertiary} fill="none" strokeWidth="1.5" />
 
-      </AnimatedSvg>
+      </Svg>
 
       {tooltip.visible && (
         <View style={{
@@ -1018,7 +1018,7 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
           <Text style={{ color: theme.background, fontFamily: 'Effra_Regular', fontSize: height * 0.012 }}>{tooltip.sign}</Text>
         </View>
       )}
-    </Animated.View>
+    </View>
 
 
   );
