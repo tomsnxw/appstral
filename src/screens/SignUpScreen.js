@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { View, Text,TouchableOpacity, TextInput, ScrollView,StatusBar, FlatList, KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard, Dimensions, Image, StyleSheet, Animated } from "react-native";
+import { View, Text,TouchableOpacity, TextInput, ScrollView,StatusBar,Modal, FlatList, KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard, Dimensions, Image, StyleSheet, Animated } from "react-native";
 import { signUpUser } from "../config/firebaseConfig"; 
 import {LinearGradient} from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
@@ -20,6 +20,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import countryTranslations from '../utils/countryTranslations'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { RFValue } from "react-native-responsive-fontsize";
+import { LanguageContext } from "../contexts/LanguageContext";
 
 const SignUpScreen = ({ goToLogin }) => {  
     const { theme } = useContext(ThemeContext);
@@ -50,7 +51,7 @@ const [searchTextCountry, setSearchTextCountry] = useState("");
     const [countries, setCountries] = useState([]);
     const [citiesList, setCitiesList] = useState([]);
     const [searchText, setSearchText] = useState("");
-
+const [showLanguageModal, setShowLanguageModal] = useState(true);
 
 
     const dropdownAnim = {
@@ -269,12 +270,38 @@ const handleCitySearch = (text) => {
     inputRange: [0, 1],
     outputRange: ["0%", "100%"], 
   });
-  
+  const { changeLanguage } = useContext(LanguageContext);
 
+  const handleChangeLanguage = async (lang) => {
+    await changeLanguage(lang); // Use the context's changeLanguage function
+    setShowLanguageModal(false); // Then close the modal
+  };
   return (
 
 <LinearGradient colors={["#ccfbe7", "#e1eff5", "#f3c3f5"]} style={styles(theme).gradient}>
-
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showLanguageModal}
+        onRequestClose={() => setShowLanguageModal(false)}
+      >
+        <View style={styles(theme).languageModalContainer}>
+          <View style={styles(theme).languageModalContent}>
+            <TouchableOpacity
+              style={styles(theme).languageButton}
+              onPress={() => handleChangeLanguage('en')}
+            >
+              <Text style={styles(theme).languageButtonText}>English</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles(theme).languageButton}
+              onPress={() => handleChangeLanguage('es')}
+            >
+              <Text style={styles(theme).languageButtonText}>Español</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 <View style={styles(theme).footer}>
       <Image source={require('../../assets/images/signupStars.png')} style={styles(theme).Image}  />
       <Text style={[ styles(theme).footerText,{ color: dropdownVisible.country || dropdownVisible.city ? "transparent" : "#333333" }]}>{t("Footer")}</Text>
@@ -727,6 +754,41 @@ const styles = (theme) => StyleSheet.create({
     width: "100%",
     height: "100%",
     opacity: 0.5
-  }
+  },
+    // Estilos del modal de idioma
+  languageModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+  },
+  languageModalContent: {
+    backgroundColor: theme?.colors?.background || '#FFFFFF',
+    borderRadius: RFValue(10),
+    padding: RFValue(20),
+    alignItems: 'center',
+    width: wp('70%'),
+  },
+  languageModalTitle: {
+    fontSize: RFValue(18),
+    fontFamily: 'Effra_Bold',
+    marginBottom: RFValue(20),
+    color: theme?.colors?.text || '#333333',
+    textAlign: 'center',
+  },
+  languageButton: {
+    backgroundColor: '#7EBCEC',
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('8%'),
+    borderRadius: RFValue(50),
+    marginVertical: RFValue(10),
+    width: '80%',
+    alignItems: 'center',
+  },
+  languageButtonText: {
+    color: '#FFFFFF',
+    fontSize: RFValue(16),
+    fontFamily: 'Effra_Medium',
+  },
 });
 export default SignUpScreen;

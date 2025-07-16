@@ -1071,12 +1071,12 @@ const renderizarLineasAspectos = (cuerpo1Data, index) => {
   const birthDateTime = new Date(`${userData.birthDate}T${userData.birthTime}:00`);
 
 
-        // if (loading) {
-        //   return (
-        //    <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
-        //     <ActivityIndicator size="large" color="#ab89e9"/></View>
-        //   );
-        // }
+        if (loading) {
+          return (
+           <View style={{height:height, backgroundColor: theme.background,justifyContent: 'center', alignItems: 'center', }}>
+            <ActivityIndicator size="large" color="#ab89e9"/></View>
+          );
+        }
 
   return (
 

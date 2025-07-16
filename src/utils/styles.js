@@ -1816,7 +1816,6 @@ fill: theme.primary,
       padding: 20,
       borderRadius: 10,
       alignItems: 'center', 
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
       zIndex: 3, 
     },
         UpsText:{
