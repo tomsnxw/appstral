@@ -483,7 +483,7 @@ const signosZodiacales = [
         const DISTANCIA_ASC = RADIO * 0.65;
         const DISTANCIA_MC = RADIO * 0.61;
         const DISTANCIA_PLANETAS = RADIO * 0.75; 
-        const DISTANCIA_PLANETAS_ACTUALES = RADIO * 0.85; 
+        const DISTANCIA_PLANETAS_ACTUALES = RADIO * 0.83; 
         const DISTANCIA_ANGULARES = RADIO * 0.675;
         const DISTANCIA_INNERCIRCLE = RADIO * 0.65;
         const DISTANCIA_ASPECTOS_NATAL = RADIO * 0.65; 
@@ -1193,7 +1193,7 @@ gap: 7.5}}>
                     )}
                 </View>
             </ScrollView>
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('30%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('20%'), zIndex: 1}}/>
 {modalVisible && (<ShareMyChartModal
         visible={modalVisible}
         fechaTransito={fechaTransito}

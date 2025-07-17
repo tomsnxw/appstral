@@ -761,7 +761,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
                 <TouchableOpacity
             style={{
                 position: 'absolute',
-                top: hp('3.5%') ,
+                top: hp('3.75%') ,
                 right: 20,
                 zIndex: 1,
                 padding: 5,
@@ -774,7 +774,7 @@ const simbolosPlanetas = i18n.language === 'es' ? {
                 <View
                     style={{
                         position: 'absolute',
-                        top: width * 0.03,
+                        top: width * 0.032,
                         right: width * 0.025,
                         backgroundColor: 'red',
                         borderRadius: 6,
