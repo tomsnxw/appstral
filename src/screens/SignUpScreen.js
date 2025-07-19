@@ -102,7 +102,7 @@ const [showLanguageModal, setShowLanguageModal] = useState(true);
   };
   
 const handleCitySearch = (text) => {
-  setCiudad(text);
+  setBirthCity(text);
   if (text === "") {
     setFilteredCities(citiesList);
     return;
