@@ -103,7 +103,7 @@ useEffect(() => {
     };
 
 const handleCitySearch = (text) => {
-  setCiudad(text);
+  setBirthCity(text);
   if (text === "") {
     setFilteredCities(citiesList);
     return;
