@@ -449,12 +449,13 @@ const styles = (theme) => StyleSheet.create({
     paddingTop: 10,
   },
   categoryHeader: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(12),
     fontFamily: 'Effra_Regular',
-    color: theme.secondaryBorder,
+    color: theme.tertiary,
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 5,
+    textTransform: 'uppercase'
   },
   categoryLine: {
     height: hp(0.1),
