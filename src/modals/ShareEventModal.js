@@ -18,19 +18,13 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { RFValue } from "react-native-responsive-fontsize";
 
-// Elimina estas constantes si ya no las necesitas, o úsalas con wp/hp si aplica
 const { height: height, width: width } = Dimensions.get('screen');
-// const viewShotWidth = width;
-// const viewShotHeight = (viewShotWidth * 16) / 9;
 
-// Ahora puedes definir tus tamaños base usando wp y hp directamente
-const eventWidth = wp('80%'); // 100% / 1.25
-const eventHeight = hp('65%'); // Un aproximado para (viewShotWidth * 16) / 9 / 1.25
-const contentWidth = wp('55%'); // 100% / 2
-const contentHeight = hp('45%'); // 87.5% / 2.4
-const textWidth = wp('44%'); // 100% / 2.5
-
-// Usa RFValue para los tamaños de fuente
+const eventWidth = wp('85%');
+const eventHeight = hp('67%');
+const contentWidth = wp('45%'); 
+const contentHeight = hp('32%'); 
+const textWidth = wp('30%'); 
 const baseFontSize = RFValue(12); // Puedes ajustar este valor base
 
 import CustomToast from "../components/CustomToast";
@@ -225,47 +219,48 @@ const styles = StyleSheet.create({
     gap: hp('0.25%'), // 2 de 800 (height) es 0.25%
   },
   title: {
-    width: textWidth,
+    width: contentWidth*.8,
     marginHorizontal: 'auto',
-    fontSize: RFValue(1.35 * 12), // Puedes ajustar la base de RFValue o multiplicar por la que ya tienes
-    lineHeight: RFValue(1.66 * 12),
+    fontSize: textWidth*.1,
+    lineHeight:  textWidth*.125,
     color: 'white',
     fontFamily: 'Effra_Bold',
   },
   date: {
-    width: textWidth,
+    width: contentWidth*.8,
     marginHorizontal: 'auto',
     textTransform: 'uppercase',
-    fontSize: RFValue(0.8 * 12),
+    lineHeight:  textWidth*.1,
+fontSize: textWidth*.07,
     color: 'white',
     fontFamily: 'Effra_Medium',
   },
   info: {
-    width: textWidth,
+   width: contentWidth*.8,
     marginHorizontal: 'auto',
-    fontSize: RFValue(0.85 * 12),
+fontSize: textWidth*.07,
     color: 'white',
     textTransform: 'uppercase',
-    lineHeight: RFValue(29), // Ajusta si 29 es un valor fijo o depende del tamaño de fuente
+    lineHeight:  textWidth*.1,
     fontFamily: 'Effra_Regular',
   },
   linkText: {
-    width: textWidth,
+    width: contentWidth*.8,
     margin: 'auto',
-    fontSize: RFValue(0.66 * 12),
+fontSize: textWidth*.05,
     color: 'white',
     marginBottom: 0,
-    lineHeight: RFValue(29),
+    lineHeight:textWidth*.2,
     fontFamily: 'Effra_Regular',
   },
   details: {
-    width: textWidth,
+    width: contentWidth*.8,
     marginHorizontal: 'auto',
-    fontSize: RFValue(0.8 * 12),
+    fontSize: textWidth*.08,
     color: 'white',
-    lineHeight: RFValue(1.12 * 12),
+    lineHeight: textWidth*.115,
     fontFamily: 'Effra_Regular',
-    marginTop: hp('1.25%'), // 10 de 800 (height) es 1.25%
+    marginTop: hp('1%'), // 10 de 800 (height) es 1.25%
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -303,9 +298,9 @@ const styles = StyleSheet.create({
   },
   shareText: {
     margin: 'auto',
-    fontSize: RFValue(16),
+    fontSize: RFValue(15),
+    lineHeight: RFValue(16),
     color: 'black',
-    transform: [{ translateY: 1 }],
     textAlign: 'center',
     fontFamily: 'Effra_Regular',
   },

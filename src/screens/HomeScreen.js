@@ -143,43 +143,9 @@ const HomeScreen = () => {
   const AnimatedText = Animated.createAnimatedComponent(SvgText);
   const { t, i18n  } = useTranslation();
   const navigation = useNavigation(); 
-  const { hasNewNotificationsToday, setHasNewNotificationsToday } = useNotifications(); // Usa el contexto de notificaciones
-
-  // La lógica para determinar si hay notificaciones nuevas *hoy* al inicio de la app
-  // podría vivirse aquí o en el NotificationContext. Lo más robusto es que
-  // NotificationsScreen "informe" al contexto si hay notificaciones de hoy.
-  // Sin embargo, para que el punto aparezca al cargar la app si hay notificaciones sin ver,
-  // la lógica de `setHasNewNotificationsToday(true)` debe ocurrir *antes* de que el usuario
-  // entre a `NotificationsScreen`. Podrías poner una verificación en `App.js` o en el propio `NotificationContext`
-  // al inicio para chequear `AsyncStorage` y ver si hay notificaciones de hoy no vistas.
-
-  // Una manera de hacer que el punto rojo aparezca si hay notificaciones hoy y no se han visto:
-  // En `NotificationContext`, cuando se carga la app (`loadNotificationStatus`),
-  // si `lastViewedDate` es anterior a hoy, `setHasNewNotificationsToday(true)`.
-  // Y luego, cuando `NotificationsScreen` se abre, `markNotificationsAsViewed()` se encarga de ponerlo a `false`.
-
-  // O podrías hacer una verificación ligera aquí en HomeScreen al montarse:
+  const { shouldShowRedDot } = useNotifications(); 
   useEffect(() => {
     const checkInitialNotifications = async () => {
-      // Esta es una verificación simplificada para el ejemplo.
-      // Idealmente, esto se manejaría de forma más robusta con las notificaciones push
-      // y su estado de "leído/no leído" en el backend o en el dispositivo.
-      // Para este ejemplo, si la última vez que se vieron notificaciones fue ayer o antes,
-      // y hay eventos programados para hoy, entonces mostramos el punto.
-      
-      // Dado que NotificationsScreen ya tiene la lógica de `fetchAndFilterEvents`,
-      // la forma más sencilla es que el NotificationsScreen actualice el contexto
-      // cuando encuentra notificaciones de 'today' que no han sido vistas.
-
-      // Sin embargo, para que el *punto rojo aparezca al inicio*,
-      // necesitamos que NotificationContext sepa si hay notificaciones nuevas hoy.
-      // El `loadNotificationStatus` en `NotificationContext.js` ya lo maneja parcialmente.
-      // La clave es que `NotificationsScreen` debe tener la responsabilidad de marcar como visto.
-
-      // Si el punto no aparece al inicio, revisa la lógica en NotificationContext.js:
-      // en `loadNotificationStatus`, si `lastViewedDate` es diferente a `todayDate`,
-      // podrías asumir que hay notificaciones nuevas hasta que el usuario visite la pantalla.
-      // Esto es una suposición, en un sistema real, una API te diría si hay notificaciones no leídas.
     };
     checkInitialNotifications();
   }, []);
@@ -217,46 +183,46 @@ const HomeScreen = () => {
    const opacityAnimLine = useRef(new Animated.Value(0)).current;
    const fadeAnims = useRef(currentPlanetsOrder.map(() => new Animated.Value(0))).current;
  
-  useEffect(() => {
-    if (!loading && resultado) {
-      const randomDelay = Math.random() * (2000 - 200) + 1250;
+useEffect(() => {
+  if (!loading && resultado) {
+    const randomDelay = Math.random() * (1350 - 130) + 250; 
 
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }).start();
-  
-      Animated.timing(opacityAnim, {
-        toValue: 1,
-        duration: 5000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }).start();
-  
-      Animated.timing(rotateAnim, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }).start();
-  
-      Animated.timing(rotatePlanetasAnim, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: false,
-      }).start();
-  Animated.timing(opacityAnimLine, {
-    toValue: 1,
-    duration: 750,
-    delay: randomDelay,
-    useNativeDriver: false,
-  }).start();
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 1350, 
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
 
-    }
-  }, [loading, resultado]);
+    Animated.timing(opacityAnim, {
+      toValue: 1,
+      duration: 3350,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+
+    Animated.timing(rotateAnim, {
+      toValue: 1,
+      duration: 1350, 
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+
+    Animated.timing(rotatePlanetasAnim, {
+      toValue: 1,
+      duration: 1350, 
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+
+    Animated.timing(opacityAnimLine, {
+      toValue: 1,
+      duration: 500,
+      delay: randomDelay,
+      useNativeDriver: false,
+    }).start();
+  }
+}, [loading, resultado]);
 
   useEffect(() => {
     const fetchPosiciones = async () => {
@@ -401,12 +367,12 @@ const simbolosPlanetas = i18n.language === 'es' ? {
       const isSelected = selectedPlanet === item; 
       const textColor = isSelected ? theme.focusedItem : theme.tertiary;
     
-      Animated.timing(fadeAnims[index], {
-        toValue: 1,
-        duration: 1000,
-        delay: (index * 200) + 2500,
-        useNativeDriver: false,
-      }).start();
+Animated.timing(fadeAnims[index], {
+  toValue: 1,
+  duration: 650,
+  delay: (index * 150) + 1000,
+  useNativeDriver: false,
+}).start();
     
   return (
     <TouchableOpacity onPress={() => setSelectedPlanet(isSelected ? null : item)}>
@@ -769,23 +735,23 @@ const simbolosPlanetas = i18n.language === 'es' ? {
             onPress={() => navigation.navigate('Notifications')}
             activeOpacity={0.7}
         >
-            <BellIcon width={width * 0.075} height={width * 0.075} fill={theme.primary} />
-            {hasNewNotificationsToday && (
-                <View
-                    style={{
-                        position: 'absolute',
-                        top: width * 0.032,
-                        right: width * 0.025,
-                        backgroundColor: 'red',
-                        borderRadius: 6,
-                        width: width * 0.02,
-                        height: width * 0.02,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                </View>
-            )}
+             <BellIcon width={width * 0.075} height={width * 0.075} fill={theme.primary} />
+        {shouldShowRedDot && ( // Usa el nuevo estado aquí
+          <View
+            style={{
+              position: 'absolute',
+              top: width * 0.03,
+              right: width * 0.025,
+              backgroundColor: 'red',
+              borderRadius: 6,
+              width: width * 0.02,
+              height: width * 0.02,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+          </View>
+        )}
         </TouchableOpacity>
       <View style={styles.homeWelcomeTitles}>
         <MaskedView

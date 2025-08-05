@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, Image, TextInput, TouchableOpacity,KeyboardAvoidingView, Animated, Dimensions, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, TextInput, ImageBackground, TouchableOpacity,KeyboardAvoidingView, Animated, Dimensions, StyleSheet, Alert } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { logInUser } from "../config/firebaseConfig";
 import {LinearGradient} from 'expo-linear-gradient';
@@ -71,10 +71,11 @@ const LogInScreen = ({ gotoForgot }) => {
       
 
   return (
-    <View style={styles.container}>
-    <LinearGradient
+          <LinearGradient
       colors={["#f5cffb", "#e1eff5", "#f8f5c5"]} 
-      style={styles.gradient}
+      style={styles.linearGradient} // <-- Aplica el nuevo estilo
+      start={{ x: 0, y: 0 }} // <-- Punto de inicio del degradado (superior izquierda)
+      end={{ x: 1, y: 1 }}   // <-- Punto final del degradado (inferior derecha)
     >
       <View style={styles.formContainer}>
         <View style={styles.titleContainer}>
@@ -126,20 +127,20 @@ const LogInScreen = ({ gotoForgot }) => {
         </View>
         </View>
   
-      
-        <View style={styles.footer}>
-          <Image source={require('../../assets/images/loginStars.png')} style={styles.Image} resizeMode="cover" />
-          <Text style={styles.footerText}>{t("Footer")}</Text>
-        </View>
-    </LinearGradient></View> 
+          <ImageBackground
+            source={require('../../assets/images/loginStars.png')}
+            style={styles.footerImageBackground}
+            resizeMode="cover">
+            <Text style={styles.footerText}>&copy; {new Date().getFullYear()}{t("Footer")}</Text>
+          </ImageBackground>
+    </LinearGradient>
   );
   
 };
-
 const styles = StyleSheet.create({
-  gradient: {
-    height: height,
-  },
+    linearGradient: { 
+      flex: 1,
+    },
   container: {
     height: height,
   },
@@ -304,23 +305,22 @@ const styles = StyleSheet.create({
     fontSize: RFValue(14), // Equivalente a height * 0.017
     fontFamily: 'Effra_Medium',
   },
-  footerText:{
-    fontSize: wp('3%'), // 3% del ancho de la pantalla
-    color: '#333333',
-    fontFamily: 'Effra_Light',
-    bottom: hp('7%'), // 6% de la altura de la pantalla
-  },
-  footer:{
-    position: "absolute",
-    bottom: hp('2%'), // 2% de la altura de la pantalla
-    width: wp('100%'), // 100% del ancho de la pantalla
-    height: hp('25%'), // 25% de la altura de la pantalla
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  Image:{
-    width: "100%",
-    height: "100%",
-  }
+      footerImageBackground: {
+      position: 'absolute',
+      width: width,
+      margin:'auto',
+      height: 215, 
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      bottom: -height*0.01,
+      zIndex: 0
+    },
+    footerText: {
+      fontSize: 12,
+       height: height*.06,
+      color: '#333333',
+      textAlign: 'center',
+      paddingHorizontal: 20, 
+    },
 });
 export default LogInScreen;

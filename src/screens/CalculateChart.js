@@ -312,36 +312,36 @@ const handleCitySearch = (text) => {
 
  useEffect(() => {
   if (!loading && resultado) {
-    const randomDelay = Math.random() * (2000 - 200) + 1250;
+    const randomDelay = Math.random() * (1350 - 130) + 250;
 
     Animated.parallel([
       Animated.timing(scaleAnim, {
         toValue: 1,
-        duration: 2000,
+        duration: 1350,
         easing: Easing.out(Easing.ease),
         useNativeDriver: false,
       }),
       Animated.timing(opacityAnim, {
         toValue: 1,
-        duration: 5000,
+        duration: 3350,
         easing: Easing.out(Easing.ease),
         useNativeDriver: false,
       }),
       Animated.timing(rotateAnim, {
         toValue: 1,
-        duration: 2000,
+        duration: 1350,
         easing: Easing.out(Easing.ease),
         useNativeDriver: false,
       }),
       Animated.timing(rotatePlanetasAnim, {
         toValue: 1,
-        duration: 2000,
+        duration: 1350,
         easing: Easing.out(Easing.ease),
         useNativeDriver: false,
       }),
       Animated.timing(opacityAnimLine, {
         toValue: 1,
-        duration: 750,
+        duration: 500,
         delay: randomDelay,
         useNativeDriver: false,
       }),
@@ -353,13 +353,14 @@ const handleCitySearch = (text) => {
     fadeAnims.forEach((fadeAnim, index) => {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
-        delay: (index * 300) + 2500,
+        duration: 650,
+        delay: (index * 200) + 1000,
         useNativeDriver: false,
       }).start();
     });
   }
 }, [loading, resultado]);
+
 
 
      useEffect(() => {
@@ -1316,21 +1317,14 @@ setIsCartaGuardada(true);
   }
 };
 
+
   return (
     <View style={styles.calculateContainer}>
 
       {!formEnviado ? ( 
-    <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={{ flex: 1 }}
-  >
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingHorizontal: 20, backgroundColor: theme.background }} scrollEnabled={!dropdownVisible.country} keyboardShouldPersistTaps="handled">
-  
-        <View style={{justifyContent: 'space-between',
-        gap: 15,marginHorizontal: 'auto',
-         paddingBottom: height*0.15}}>
-            
+    <SafeAreaView style={{flex:1}}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }} >
+              <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center', paddingHorizontal: 20,paddingBottom: 100, gap: 15}}>
           <Text style={styles.calculateFormTitle}>{t('Calcular_Titulo')}</Text>
         <View style={[styles.inputContainer, focusedField === 'nombre' ? styles.focusedBorder : styles.defaultBorder]}>
         <TextInput
@@ -1482,10 +1476,8 @@ setIsCartaGuardada(true);
                            </View>
            </LinearGradient>
          </TouchableOpacity>
-        </View>
-        </ScrollView>
-        </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+
+        </ScrollView></KeyboardAvoidingView></SafeAreaView>
        ) : (
         <SafeAreaView style={styles.calculateContainer}>
 
@@ -1580,7 +1572,7 @@ setIsCartaGuardada(true);
 
         handleCloseShareModal={handleCloseShareModal}
       />)}
-           <LinearGradient pointerEvents="none" colors={['transparent', theme.shadowBackground, theme.shadowBackground, theme.shadowBackground]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('12%'), zIndex: 1}}/>
+           <LinearGradient pointerEvents="none" colors={[theme.transparentBackground, theme.background, theme.background]} style={{  position: 'absolute',bottom: 0, left: 0,right: 0, height: hp('22%'), zIndex: 1}}/>
 
         </SafeAreaView>
       )}

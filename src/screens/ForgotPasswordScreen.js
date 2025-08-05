@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TextInput, Image, Alert, StyleSheet, Dimensions, TouchableOpacity, Animated } from "react-native";
+import { View, Text, TextInput, Image, Alert, StyleSheet, Dimensions,ImageBackground, TouchableOpacity, Animated } from "react-native";
 import { resetPassword } from "../config/firebaseConfig"; 
 import {LinearGradient} from 'expo-linear-gradient';
 import colors from '../utils/colors'
@@ -61,10 +61,11 @@ const handleResetPassword = async () => {
   
 
   return (
-    <View style={styles.container}>
-    <LinearGradient
-      colors={["#f5cffb", "#e1eff5", "#f8f5c5"]} 
-      style={styles.gradient}
+          <LinearGradient
+     colors={["#ccfbe7", "#e1eff5", "#f3c3f5"]}
+      style={styles.linearGradient} // <-- Aplica el nuevo estilo
+      start={{ x: 0, y: 0 }} // <-- Punto de inicio del degradado (superior izquierda)
+      end={{ x: 1, y: 1 }}   // <-- Punto final del degradado (inferior derecha)
     >
       <View style={styles.formContainer}>
       <View style={styles.titleContainer}>
@@ -90,20 +91,32 @@ const handleResetPassword = async () => {
                  </TouchableOpacity>
     
     </View>
-     <View style={styles.footer}>
-              <Image source={require('../../assets/images/loginStars.png')} style={styles.Image} resizeMode="cover" />
-              <Text style={styles.footerText}>{t("Footer")}</Text>
-            </View>
-            </LinearGradient></View>
+ <ImageBackground source={require('../../assets/images/loginStars.png')}
+            style={styles.footerImageBackground}
+            resizeMode="cover">
+            <Text style={styles.footerText}>&copy; {new Date().getFullYear()}{t("Footer")}</Text>
+          </ImageBackground>
+            </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  gradient: {
-    height: height,
+    linearGradient: { 
+      flex: 1,
+    },
+    container: {
+      flex: 1,
+      zIndex: 1
+    },
+  formContainer: {
+    height: hp('85%'),
+    justifyContent: 'center',
+    alignSelf: 'center',
+    gap: hp('1.8%') // Aproximadamente 15 / 812 * 100%
   },
-  container: {
-    height: height,
+  scrollContainer: {
+    justifyContent: 'space-between',
+    marginTop: hp('4%') // 4% de la altura de la pantalla
   },
   formContainer: {
     marginTop:hp(3),
@@ -272,26 +285,25 @@ const styles = StyleSheet.create({
     fontSize: RFValue(13), // Equivalente a height * 0.016
     fontFamily: 'Effra_Medium',
   },
-  footerText:{
-    fontSize: wp('3%'), // 3% del ancho de la pantalla
-    color: '#333333',
-    fontFamily: 'Effra_Light',
-    bottom: hp('7%'), // 6% de la altura de la pantalla
-},
-  footer:{
-    position: "absolute",
-    bottom: hp('2%'), // Equivalente a height * 0.02
-    width: wp('100%'), // 100% del ancho de la pantalla
-    height: hp('25%'), // 25% de la altura de la pantalla
-    alignItems: "center",
-    justifyContent: "center",
-},
-  Image:{
-    width: "100%",
-    height: "100%",
-    opacity: 0.5,
-    transform: [{scaleX: -1}]
-  }
+    footerImageBackground: {
+      position: 'absolute',
+      width: width,
+      margin:'auto',
+      height: 215, 
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      bottom: -height*0.01,
+      zIndex: 0,
+      transform: [{scaleX: -1}]
+    },
+    footerText: {
+      fontSize: 12,
+       height: height*.06,
+      color: '#333333',
+      textAlign: 'center',
+      paddingHorizontal: 20, 
+      transform: [{scaleX: -1}]
+    },
 });
 
 export default ForgotPasswordScreen;

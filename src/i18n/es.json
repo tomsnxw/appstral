@@ -53,7 +53,7 @@
     "Ingresar_Subtitulo": "Hay todo un cielo esperándote",
     "Contraseña_Titulo": "Ingresa tu correo para restablecer la contraseña",
     "Contraseña_Boton": "Enviar correo",
-    "Footer": "©2025 Appstral Astrología. Todos los derechos reservados.",
+    "Footer": " Appstral. Todos los derechos reservados.",
     "Correo": "Correo electrónico",
     "Fecha_Nacimiento":"Fecha de nacimiento",
     "Hora_Nacimiento":"Hora de nacimiento",
@@ -325,6 +325,13 @@
   "subtitle16": "16. LEGISLACIÓN APLICABLE Y JURISDICCIÓN",
   "description16": "Los presentes Términos y Condiciones se rigen por la legislación vigente de la República Argentina. Para cualquier controversia que se derive del uso de la aplicación, las partes se someten a la jurisdicción de los tribunales ordinarios con competencia en la Ciudad Autónoma de Buenos Aires, renunciando a cualquier otro fuero que pudiera corresponder."
 },
-"todayChart": "LA CARTA DE HOY"
+"todayChart": "LA CARTA DE HOY",
+  "birthday_notification": "Feliz Cumpleaños, {{name}}",
+  "birthday_message": "¡Hoy es el cumpleaños de {{name}}! Celebra este nuevo ciclo.",
+  "your_card": "tu carta",
+  "card_birthday_notification": "Feliz Cumpleaños, {{name}}", 
+  "card_birthday_message": "¡Hoy es el cumpleaños de {{name}}! Celebra este nuevo ciclo.",
+  "user_birthday_notification": "¡Feliz Cumpleaños {{name}}!",
+  "user_birthday_message": "¡Esperamos que tengas un día maravilloso lleno de alegría y nuevas oportunidades!"
 }
   

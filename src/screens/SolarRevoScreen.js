@@ -121,53 +121,53 @@ const SolarRevoScreen = ({ route, navigation }) => {
   const opacityAnimLine = useRef(new Animated.Value(0)).current;
   const fadeAnims = useRef(currentPlanetsOrder.map(() => new Animated.Value(0))).current;
 
-  useEffect(() => {
-    if (!loading && resultado) {
-      const randomDelay = Math.random() * (2000 - 200) + 1250;
+ useEffect(() => {
+  if (!loading && resultado) {
+    const randomDelay = Math.random() * (1350 - 130) + 250;
 
-      Animated.parallel([
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(opacityAnim, {
-          toValue: 1,
-          duration: 5000,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(rotateAnim, {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(rotatePlanetasAnim, {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(opacityAnimLine, {
-          toValue: 1,
-          duration: 750,
-          delay: randomDelay,
-          useNativeDriver: false,
-        }),
-      ]).start();
+    Animated.parallel([
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 1350,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 3350,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }),
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 1350,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }),
+      Animated.timing(rotatePlanetasAnim, {
+        toValue: 1,
+        duration: 1350,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacityAnimLine, {
+        toValue: 1,
+        duration: 500,
+        delay: randomDelay,
+        useNativeDriver: false,
+      }),
+    ]).start();
 
-      fadeAnims.forEach((fadeAnim, index) => {
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          delay: (index * 300) + 2500,
-          useNativeDriver: false,
-        }).start();
-      });
-    }
-  }, [loading, resultado]);
+    fadeAnims.forEach((fadeAnim, index) => {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 650,
+        delay: (index * 200) + 1000,
+        useNativeDriver: false,
+      }).start();
+    });
+  }
+}, [loading, resultado]);
 
       const [fontsLoaded] = useFonts({
         'Astronomicon': require('../../assets/fonts/Astronomicon.ttf'),

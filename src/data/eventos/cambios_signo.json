@@ -419,12 +419,7 @@
     "fecha": "2026-06-13T10:47:56Z",
     "movimiento": "directo"
   },
-  {
-    "planeta": "Quirón",
-    "signo": "Tauro",
-    "fecha": "2026-06-19T21:21:31Z",
-    "movimiento": "directo"
-  },
+
   {
     "planeta": "Sol",
     "signo": "Cáncer",
@@ -496,12 +491,6 @@
     "signo": "Libra",
     "fecha": "2026-09-10T16:21:47Z",
     "movimiento": "directo"
-  },
-  {
-    "planeta": "Quirón",
-    "signo": "Aries",
-    "fecha": "2026-09-18T01:51:50Z",
-    "movimiento": "retrógrado"
   },
   {
     "planeta": "Sol",
@@ -645,12 +634,6 @@
     "planeta": "Mercurio",
     "signo": "Aries",
     "fecha": "2027-04-08T23:21:18Z",
-    "movimiento": "directo"
-  },
-  {
-    "planeta": "Quirón",
-    "signo": "Tauro",
-    "fecha": "2027-04-14T14:59:15Z",
     "movimiento": "directo"
   },
   {

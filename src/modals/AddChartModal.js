@@ -368,7 +368,7 @@ const handleCitySearch = (text) => {
                 <Animated.View style={{...styles.modalContent, transform: [{ translateY }], }}  {...panResponder.panHandlers}>
             <LinearGradient style={styles.modalContent} colors={[theme.sheetGradientTop, theme.sheetGradientBottom]} >
                 <View style={styles.modalSlider}/>
-                <TouchableWithoutFeedback onPress={() => {}}>
+           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
        
         <View style={styles.modalForm}>
         <Text style={styles.modalTitle}>{t('Agregar_Carta')}</Text>

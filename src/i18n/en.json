@@ -49,7 +49,7 @@
     "Ingresar_Subtitulo": "There's a whole sky waiting for you",
     "Contraseña_Titulo": "Enter your email to reset your password",
     "Contraseña_Boton": "Send email",
-    "Footer": "©2025 Appstral Astrology. All rights reserved.",
+    "Footer": " Appstral. All rights reserved.",
     "Fecha_Nacimiento":"Date of birth",
     "Hora_Nacimiento":"Time of birth",
     "Fecha_Formato":"Year - Month - Day",
@@ -321,6 +321,13 @@
   "subtitle16": "16. APPLICABLE LAW AND JURISDICTION",
   "description16": "These Terms and Conditions are governed by the current legislation of the Argentine Republic. For any dispute arising from the use of the application, the parties submit to the jurisdiction of the ordinary courts of the Autonomous City of Buenos Aires, waiving any other jurisdiction that may apply."
 },
+  "birthday_notification": "Happy Birthday, {{name}}",
+  "birthday_message": "Today is {{name}}'s birthday! Celebrate this new cycle.",
+  "your_card": "your card",
+  "card_birthday_notification": "Happy Birthday, {{name}}",
+  "card_birthday_message": "Today is {{name}}'s birthday! Celebrate this new cycle.",
+  "user_birthday_notification": "Happy Birthday {{name}}!",
+  "user_birthday_message": "We hope you have a wonderful day filled with joy and new opportunities!",
 "todayChart": "TODAY'S CHART"
 
         }

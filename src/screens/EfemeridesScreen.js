@@ -186,62 +186,68 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
     cargarTodosLosEventos();
   }, []);
 
-  const filtrarEventos = () => {
+const filtrarEventos = () => {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
+    // --- Lógica para la semana (lunes a domingo) ---
+    const diaDeLaSemana = hoy.getDay();
+    // getDay() devuelve 0 para domingo, 1 para lunes, etc.
+    // Ajustamos para que el lunes sea el inicio de la semana (día 1)
+    const diferenciaDias = diaDeLaSemana === 0 ? 6 : diaDeLaSemana - 1;
+
     const inicioSemana = new Date(hoy);
+    inicioSemana.setDate(hoy.getDate() - diferenciaDias);
     inicioSemana.setHours(0, 0, 0, 0);
-    const finSemana = new Date(hoy);
-    finSemana.setDate(hoy.getDate() + 7);
+
+    const finSemana = new Date(inicioSemana);
+    finSemana.setDate(inicioSemana.getDate() + 6);
     finSemana.setHours(23, 59, 59, 999);
 
-    const inicioMes = new Date(hoy);
+    // --- Lógica para el mes (del día 1 al último) ---
+    const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
     inicioMes.setHours(0, 0, 0, 0);
-    const finMes = new Date(hoy);
-    finMes.setDate(hoy.getDate() + 30);
+
+    const finMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
     finMes.setHours(23, 59, 59, 999);
 
     let eventosFiltrados = eventosTotales.filter(evento => {
-      if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
+        if (filtroCategoria !== "todo" && evento.categoria !== filtroCategoria) return false;
 
-      // ... (tu lógica de filtro existente para 'hoy', 'semana', 'mes')
-      if (rangoTiempo === 'hoy') {
-        if (evento.categoria === 'retrogradaciones') {
-          return hoy >= evento.inicio && hoy <= evento.fin;
+        if (rangoTiempo === 'hoy') {
+            if (evento.categoria === 'retrogradaciones') {
+                return hoy >= evento.inicio && hoy <= evento.fin;
+            }
+            return evento.fecha.toDateString() === hoy.toDateString();
         }
-        return evento.fecha.toDateString() === hoy.toDateString();
-      }
 
-      if (rangoTiempo === 'semana') {
-        if (evento.categoria === 'retrogradaciones') {
-          return evento.inicio <= finSemana && evento.fin >= inicioSemana;
+        if (rangoTiempo === 'semana') {
+            if (evento.categoria === 'retrogradaciones') {
+                return evento.inicio <= finSemana && evento.fin >= inicioSemana;
+            }
+            return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
         }
-        return evento.fecha >= inicioSemana && evento.fecha <= finSemana;
-      }
 
-      if (rangoTiempo === 'mes') {
-        if (evento.categoria === 'retrogradaciones') {
-          return evento.inicio <= finMes && evento.fin >= inicioMes;
+        if (rangoTiempo === 'mes') {
+            if (evento.categoria === 'retrogradaciones') {
+                return evento.inicio <= finMes && evento.fin >= inicioMes;
+            }
+            return evento.fecha >= inicioMes && evento.fecha <= finMes;
         }
-        return evento.fecha >= inicioMes && evento.fecha <= finMes;
-      }
-      return false;
-    }).map(evento => { // <-- ¡Nuevo: Usamos .map para añadir la propiedad!
+        return false;
+    }).map(evento => {
         let isStartingWithinRange = false;
         if (rangoTiempo === 'hoy') {
             isStartingWithinRange = evento.fecha.toDateString() === hoy.toDateString();
         } else if (rangoTiempo === 'semana') {
-            // Para retrogradaciones, su 'fecha' es 'inicio', así que el chequeo es directo
             isStartingWithinRange = evento.fecha >= inicioSemana && evento.fecha <= finSemana;
         } else if (rangoTiempo === 'mes') {
-            // Para retrogradaciones, su 'fecha' es 'inicio', así que el chequeo es directo
             isStartingWithinRange = evento.fecha >= inicioMes && evento.fecha <= finMes;
         }
         return { ...evento, isStartingWithinRange };
     });
 
-    // --- Lógica de ordenamiento unificada ---
+    // --- Lógica de ordenamiento unificada (esta parte no cambia) ---
     eventosFiltrados.sort((a, b) => {
         // Priorizar eventos que comienzan dentro del rango actual
         if (a.isStartingWithinRange && !b.isStartingWithinRange) {
@@ -252,7 +258,6 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
         }
 
         // Si ambos o ninguno comienzan dentro del rango, ordenar por fecha
-        // Para retrogradaciones, usar su 'inicio' para el orden secundario
         if (a.categoria === 'retrogradaciones' && b.categoria === 'retrogradaciones') {
             return a.inicio - b.inicio;
         }
@@ -260,7 +265,7 @@ const EfemeridesScreen = ({ rangoTiempo, filtroCategoria }) => {
     });
 
     return eventosFiltrados;
-  };
+};
 
   useEffect(() => {
     if (!eventosTotales.length) return; // Evita el filtrado inicial si no hay eventos cargados

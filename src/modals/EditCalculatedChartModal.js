@@ -241,9 +241,7 @@ const handleCitySearch = (text) => {
                <Animated.View style={{...styles.modalContent, transform: [{ translateY }], }}>
                <LinearGradient style={styles.modalContent} colors={[theme.sheetGradientTop, theme.sheetGradientBottom]} >
                    <View style={styles.modalSlider}/>
-                   <TouchableWithoutFeedback onPress={() => {}}>
-          
-           <View style={styles.modalForm}>
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>           <View style={styles.modalForm}>
            <Text style={styles.modalTitle}>{t('Editar_Carta')}</Text>
           <TextInput
             style={[styles.modalInput, focusedField === 'nombre' ? styles.focusedText : styles.defaultText]}

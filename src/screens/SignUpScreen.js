@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { View, Text,TouchableOpacity, TextInput, ScrollView,StatusBar,Modal, FlatList, KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard, Dimensions, Image, StyleSheet, Animated } from "react-native";
+import { View, Text,TouchableOpacity, TextInput, ScrollView,StatusBar,SafeAreaView,Modal, FlatList, KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard, Dimensions, Image, StyleSheet, Animated, ImageBackground } from "react-native";
 import { signUpUser } from "../config/firebaseConfig"; 
 import {LinearGradient} from 'expo-linear-gradient';
 import { Button } from 'react-native-elements';
@@ -21,11 +21,13 @@ import countryTranslations from '../utils/countryTranslations'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { RFValue } from "react-native-responsive-fontsize";
 import { LanguageContext } from "../contexts/LanguageContext";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SignUpScreen = ({ goToLogin }) => {  
     const { theme } = useContext(ThemeContext);
   const { t, i18n  } = useTranslation();
   const { showToast } = useToast();
+    const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");  
@@ -276,12 +278,20 @@ const handleCitySearch = (text) => {
     await changeLanguage(lang); // Use the context's changeLanguage function
     setShowLanguageModal(false); // Then close the modal
   };
-  return (
 
-<LinearGradient colors={["#ccfbe7", "#e1eff5", "#f3c3f5"]} style={styles(theme).gradient}>
-      <Modal
+    return (
+          <LinearGradient
+     colors={["#ccfbe7", "#e1eff5", "#f3c3f5"]}
+      style={styles(theme).linearGradient} // <-- Aplica el nuevo estilo
+      start={{ x: 0, y: 0 }} // <-- Punto de inicio del degradado (superior izquierda)
+      end={{ x: 1, y: 1 }}   // <-- Punto final del degradado (inferior derecha)
+    >
+
+    <SafeAreaView style={styles(theme).container}>
+            <Modal
         animationType="fade"
         transparent={true}
+        statusBarTranslucent={true}
         visible={showLanguageModal}
         onRequestClose={() => setShowLanguageModal(false)}
       >
@@ -302,235 +312,254 @@ const handleCitySearch = (text) => {
           </View>
         </View>
       </Modal>
-<View style={styles(theme).footer}>
-      <Image source={require('../../assets/images/signupStars.png')} style={styles(theme).Image}  />
-      <Text style={[ styles(theme).footerText,{ color: dropdownVisible.country || dropdownVisible.city ? "transparent" : "#333333" }]}>{t("Footer")}</Text>
-
-    </View>
-    <View style={styles(theme).headerContainer}>
-      <Text style={styles(theme).title}>{t("Registrar_Titulo")}</Text>
-      <Text style={styles(theme).subtitle}>{t("Registrar_Subtitulo")}</Text>
-    </View>
-    <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={{ height: height }}
-  >
-   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-   <ScrollView 
-      contentContainerStyle={styles(theme).scrollContainer} 
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-      scrollEnabled={!dropdownVisible.country && !dropdownVisible.city}
-    >  
-          
-          <View style={styles(theme).form}>
-            <View style={[styles(theme).inputContainer, focusedField === 'name' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-            <TextInput placeholderTextColor={'#808080'}
-        style={[styles(theme).input, focusedField === 'name' ? styles(theme).focusedText : styles(theme).defaultText]}
-              placeholder={t("Nombre")}
-              value={name}
-              onChangeText={setName}
-              onFocus={() => setFocusedField('name')}
-              onBlur={() => setFocusedField(null)}
-            />
-            </View>
-            <View style={[styles(theme).inputContainer, focusedField === 'lastName' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-            <TextInput  placeholderTextColor={'#808080'}
-          style={[styles(theme).input, focusedField === 'lastName' ? styles(theme).focusedText : styles(theme).defaultText]}
-              placeholder={t("Apellido")}
-              value={lastName}
-              onChangeText={setLastName}
-              onFocus={() => setFocusedField('lastName')}
-              onBlur={() => setFocusedField(null)}
-            />
-</View>
-          <Text style={styles(theme).text}>{t('Fecha_Nacimiento')}</Text>
-          <View style={[styles(theme).inputContainer, focusedField === 'fecha' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-          
-                <TextInput
-                  style={[styles(theme).inputDateTime, focusedField === 'fecha' ? styles(theme).focusedText : styles(theme).defaultText]}
-                  value={fechaMostrada}
-                  placeholderTextColor='#808080'
-                   keyboardType="numeric"
-                  placeholder={i18n.language === "en" ? "YYYY/MM/DD" : "DD/MM/YYYY"}
-                  onChangeText={handleFechaChange}
-                  onFocus={() => setFocusedField('fecha')}
-                    onBlur={() => setFocusedField(null)}
-                />
-                </View>
-                <Text style={styles(theme).text}>{t('Hora_Nacimiento')}</Text>
-                <View style={[styles(theme).inputContainer, focusedField === 'hora' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-          
-                <TextInput
-                  style={[styles(theme).inputDateTime, focusedField === 'hora' ? styles(theme).focusedText : styles(theme).defaultText]}
-                  value={birthTime}
-                  placeholderTextColor='#808080'
-                  keyboardType="numeric"
-                  placeholder="HH:MM"
-                  onChangeText={handleHoraChange}
-                  onFocus={() => setFocusedField('hora')}
-                    onBlur={() => setFocusedField(null)}
-                />
-          </View>
-
-<View style={[styles(theme).inputContainer, focusedField === 'email' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-<TextInput  placeholderTextColor={'#808080'}
-        style={[styles(theme).input, focusedField === 'email' ? styles(theme).focusedText : styles(theme).defaultText]}
-              placeholder={t("Correo")}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              onFocus={() => setFocusedField('email')}
-              onBlur={() => setFocusedField(null)}
-            />
-            </View>
-            <View style={[styles(theme).inputContainer, focusedField === 'password' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
-  <TextInput  placeholderTextColor={'#808080'}
-    style={[styles(theme).input, focusedField === 'password' ? styles(theme).focusedText : styles(theme).defaultText]}
-    placeholder={t("Contraseña")}
-    value={password}
-    onChangeText={setPassword}
-    secureTextEntry={!passwordVisible}
-    onFocus={() => setFocusedField('password')}
-    onBlur={() => setFocusedField(null)}
-  />
-  <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-    {passwordVisible ? (
-      <NoSeeIcon style={[styles(theme).passwordIcon, focusedField === 'password' ? styles(theme).focusedPassword : styles(theme).defaultPassword]} />
-    ) : (
-      <SeeIcon style={[styles(theme).passwordIcon, focusedField === 'password' ? styles(theme).focusedPassword : styles(theme).defaultPassword]} />
-    )}
-  </TouchableOpacity>
-</View>
-  <View style={styles(theme).pickerPlaceContainer}>
-    <TouchableOpacity
-      style={[
-        styles(theme).inputContainer,
-        dropdownVisible.country ? styles(theme).focusedBorder : styles(theme).defaultBorder
-      ]}
-      onPress={() => toggleDropdown("country")}
-    >
-      <TextInput
-        style={[
-          styles(theme).input,
-          dropdownVisible.country ? styles(theme).focusedText : styles(theme).defaultText
-        ]}
-        placeholder={t('Seleccion_Pais')} 
-        placeholderTextColor={'#808080'}
-        value={searchTextCountry} // Usa el nuevo estado para el valor del TextInput
-        onChangeText={handleCountrySearch} // Llama a la nueva función de búsqueda
-        onFocus={() => { // Abre el dropdown cuando se enfoca el input
-          if (!dropdownVisible.country) {
-            toggleDropdown("country");
-          }
-        }}
-      />
-    </TouchableOpacity>
-    {dropdownVisible.country && (
-  <View
-    style={[
-      styles(theme).dropdownBox,
-      { maxHeight: 100, overflow: 'hidden' }
-    ]}
-  ><ScrollView nestedScrollEnabled={true}>
-          {filteredCountries.length > 0 ? ( // Muestra la lista de países filtrados
-            filteredCountries.map((item) => (
-              <TouchableOpacity
-                key={item}
-                onPress={() => handleCountrySelect(item)}
-              >
-                <Text style={styles(theme).dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
-          )}
-        </ScrollView>
+      <StatusBar style="auto" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView contentContainerStyle={styles(theme).scrollViewContent}>
+      <View style={styles(theme).headerContainer}>
+        <Text style={styles(theme).title}>{t("Registrar_Titulo")}</Text>
+        <Text style={styles(theme).subtitle}>{t("Registrar_Subtitulo")}</Text>
       </View>
-    )}
-  </View>
-<View style={styles(theme).pickerPlaceContainer}>
-<TouchableOpacity disabled={!birthCountry} style={[styles(theme).inputContainer, dropdownVisible.city ? styles(theme).focusedBorder : styles(theme).defaultBorder]} onPress={() => toggleDropdown("city")}>
-<TextInput 
-      style={[
-        styles(theme).input,
-        dropdownVisible.city ? styles(theme).focusedText : styles(theme).defaultText,
-      ]}
-      placeholder={t('Seleccion_Ciudad')}
-      placeholderTextColor={'#808080'}
-      value={birthCity}
-      onFocus={() => {
-        if (birthCountry && !dropdownVisible.city) {
-          toggleDropdown("city");
-        }
-      }}
-      onChangeText={handleCitySearch}
-      editable={!!birthCountry}
-    />
-  </TouchableOpacity>
+          <View style={styles(theme).form}>
+            {/* Nombre */}
+            <View style={[styles(theme).inputContainer, focusedField === 'name' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                placeholderTextColor={'#808080'}
+                style={[styles(theme).input, focusedField === 'name' ? styles(theme).focusedText : styles(theme).defaultText]}
+                placeholder={t("Nombre")}
+                value={name}
+                onChangeText={setName}
+                onFocus={() => setFocusedField('name')}
+                onBlur={() => setFocusedField(null)}
+              />
+            </View>
 
-  {dropdownVisible.city && birthCountry && (
-  <View
-    style={[
-      styles(theme).dropdownBox,
-      { maxHeight: 100, overflow: 'hidden' }
-    ]}
-  >
-    <ScrollView nestedScrollEnabled={true}>
-      {filteredCities.length > 0 ? (
-        filteredCities.map((item) => (
-          <TouchableOpacity
-            key={item.value}
-            onPress={() => {
-              setBirthCity(item.label);
-              toggleDropdown("city");
-            }}
-          >
-            <Text style={styles(theme).dropdownTextStyles}>{item.label}</Text>
-          </TouchableOpacity>
-        ))
-      ) : (
-        <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
-      )}
-    </ScrollView>
-  </View>
-)}
+            {/* Apellido */}
+            <View style={[styles(theme).inputContainer, focusedField === 'lastName' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                placeholderTextColor={'#808080'}
+                style={[styles(theme).input, focusedField === 'lastName' ? styles(theme).focusedText : styles(theme).defaultText]}
+                placeholder={t("Apellido")}
+                value={lastName}
+                onChangeText={setLastName}
+                onFocus={() => setFocusedField('lastName')}
+                onBlur={() => setFocusedField(null)}
+              />
+            </View>
 
-</View>
+            {/* Fecha de Nacimiento */}
+            <Text style={styles(theme).text}>{t('Fecha_Nacimiento')}</Text>
+            <View style={[styles(theme).inputContainer, focusedField === 'fecha' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                style={[styles(theme).inputDateTime, focusedField === 'fecha' ? styles(theme).focusedText : styles(theme).defaultText]}
+                value={fechaMostrada}
+                placeholderTextColor='#808080'
+                keyboardType="numeric"
+                placeholder={i18n.language === "en" ? "YYYY/MM/DD" : "DD/MM/YYYY"}
+                onChangeText={handleFechaChange}
+                onFocus={() => setFocusedField('fecha')}
+                onBlur={() => setFocusedField(null)}
+              />
+            </View>
 
- <TouchableOpacity style={styles(theme).button} onPress={handleSignUp} disabled={isLoading}>
+            {/* Hora de Nacimiento */}
+            <Text style={styles(theme).text}>{t('Hora_Nacimiento')}</Text>
+            <View style={[styles(theme).inputContainer, focusedField === 'hora' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                style={[styles(theme).inputDateTime, focusedField === 'hora' ? styles(theme).focusedText : styles(theme).defaultText]}
+                value={birthTime}
+                placeholderTextColor='#808080'
+                keyboardType="numeric"
+                placeholder="HH:MM"
+                onChangeText={handleHoraChange}
+                onFocus={() => setFocusedField('hora')}
+                onBlur={() => setFocusedField(null)}
+              />
+            </View>
+
+            {/* Correo */}
+            <View style={[styles(theme).inputContainer, focusedField === 'email' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                placeholderTextColor={'#808080'}
+                style={[styles(theme).input, focusedField === 'email' ? styles(theme).focusedText : styles(theme).defaultText]}
+                placeholder={t("Correo")}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onFocus={() => setFocusedField('email')}
+                onBlur={() => setFocusedField(null)}
+              />
+            </View>
+
+            {/* Contraseña */}
+            <View style={[styles(theme).inputContainer, focusedField === 'password' ? styles(theme).focusedBorder : styles(theme).defaultBorder]}>
+              <TextInput
+                placeholderTextColor={'#808080'}
+                style={[styles(theme).input, focusedField === 'password' ? styles(theme).focusedText : styles(theme).defaultText]}
+                placeholder={t("Contraseña")}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!passwordVisible}
+                onFocus={() => setFocusedField('password')}
+                onBlur={() => setFocusedField(null)}
+              />
+              <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                {passwordVisible ? (
+                  <NoSeeIcon style={[styles(theme).passwordIcon, focusedField === 'password' ? styles(theme).focusedPassword : styles(theme).defaultPassword]} />
+                ) : (
+                  <SeeIcon style={[styles(theme).passwordIcon, focusedField === 'password' ? styles(theme).focusedPassword : styles(theme).defaultPassword]} />
+                )}
+              </TouchableOpacity>
+            </View>
+
+            {/* País de Nacimiento */}
+            <View style={styles(theme).pickerPlaceContainer}>
+              <TouchableOpacity
+                style={[
+                  styles(theme).inputContainer,
+                  dropdownVisible.country ? styles(theme).focusedBorder : styles(theme).defaultBorder
+                ]}
+                onPress={() => toggleDropdown("country")}
+              >
+                <TextInput
+                  style={[
+                    styles(theme).input,
+                    dropdownVisible.country ? styles(theme).focusedText : styles(theme).defaultText
+                  ]}
+                  placeholder={t('Seleccion_Pais')}
+                  placeholderTextColor={'#808080'}
+                  value={searchTextCountry}
+                  onChangeText={handleCountrySearch}
+                  onFocus={() => {
+                    if (!dropdownVisible.country) {
+                      toggleDropdown("country");
+                    }
+                  }}
+                />
+              </TouchableOpacity>
+              {dropdownVisible.country && (
+                <View style={[styles(theme).dropdownBox, { maxHeight: 100, overflow: 'hidden' }]}>
+                  <ScrollView nestedScrollEnabled={true}>
+                    {filteredCountries.length > 0 ? (
+                      filteredCountries.map((item) => (
+                        <TouchableOpacity
+                          key={item}
+                          onPress={() => handleCountrySelect(item)}
+                        >
+                          <Text style={styles(theme).dropdownTextStyles}>{i18n.language === 'es' ? countryTranslations[item] || item : item}</Text>
+                        </TouchableOpacity>
+                      ))
+                    ) : (
+                      <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
+                    )}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+
+            {/* Ciudad de Nacimiento */}
+            <View style={styles(theme).pickerPlaceContainer}>
+              <TouchableOpacity
+                disabled={!birthCountry}
+                style={[styles(theme).inputContainer, dropdownVisible.city ? styles(theme).focusedBorder : styles(theme).defaultBorder]}
+                onPress={() => toggleDropdown("city")}>
+                <TextInput
+                  style={[
+                    styles(theme).input,
+                    dropdownVisible.city ? styles(theme).focusedText : styles(theme).defaultText,
+                  ]}
+                  placeholder={t('Seleccion_Ciudad')}
+                  placeholderTextColor={'#808080'}
+                  value={birthCity}
+                  onFocus={() => {
+                    if (birthCountry && !dropdownVisible.city) {
+                      toggleDropdown("city");
+                    }
+                  }}
+                  onChangeText={handleCitySearch}
+                  editable={!!birthCountry} // Solo editable si hay un país seleccionado
+                />
+              </TouchableOpacity>
+
+              {dropdownVisible.city && birthCountry && (
+                <View style={[styles(theme).dropdownBox, { maxHeight: 100, overflow: 'hidden' }]}>
+                  <ScrollView nestedScrollEnabled={true}>
+                    {filteredCities.length > 0 ? (
+                      filteredCities.map((item) => (
+                        <TouchableOpacity
+                          key={item.value}
+                          onPress={() => {
+                            setBirthCity(item.label);
+                            toggleDropdown("city");
+                          }}
+                        >
+                          <Text style={styles(theme).dropdownTextStyles}>{item.label}</Text>
+                        </TouchableOpacity>
+                      ))
+                    ) : (
+                      <Text style={styles(theme).dropdownTextStyles}>{t('No_Resultados')}</Text>
+                    )}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+
+            {/* Botón de Registro */}
+            <TouchableOpacity style={styles(theme).button} onPress={handleSignUp} disabled={isLoading}>
               <View style={styles(theme).progressContainer}>
                 <Animated.View style={[styles(theme).progressFill, { width: widthInterpolation }]} />
                 <Text style={styles(theme).buttonText}>{t("Registrar_Boton")}</Text>
               </View>
             </TouchableOpacity>
-
             <View style={styles(theme).navigate}>
-              <Text style={styles(theme).loginText}>{t("Ingresar_Pregunta")}</Text>
-              <TouchableOpacity onPress={goToLogin} >
-                <Text style={styles(theme).loginButton}>{t("Ingresar_Link")}</Text>
-              </TouchableOpacity>
-            </View>
-            </View>
-            </ScrollView>
-            
-            </TouchableWithoutFeedback>
-
-            </KeyboardAvoidingView>
-
-            </LinearGradient>
-
+                <Text style={styles(theme).loginText}>{t("Ingresar_Pregunta")}</Text>
+                <TouchableOpacity onPress={goToLogin} >
+                  <Text style={styles(theme).loginButton}>{t("Ingresar_Link")}</Text>
+                </TouchableOpacity>
+              </View>
+          </View>
+        
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+      {/* Copyright Footer con imagen de fondo */}
+          <ImageBackground
+            source={require('../../assets/images/signupStars.png')} // Asegúrate que esta ruta sea correcta
+            style={styles(theme).footerImageBackground}
+            resizeMode="cover" // Puedes probar con 'contain', 'stretch' si 'cover' no se ve bien
+          >
+            <Text style={styles(theme).footerText}>&copy; {new Date().getFullYear()}{t("Footer")}</Text>
+          </ImageBackground>
+    </LinearGradient>
   );
   
 };
+
 const styles = (theme) => StyleSheet.create({
-  gradient:{
-    height: height // 100% de la altura de la pantalla
-  },
+    container: {
+      flex: 1,
+      zIndex: 1
+    },
+    linearGradient: {
+      flex: 1,
+    },
+    scrollViewContent: {
+      position:'relative',
+      flexGrow: 1,
+      justifyContent: 'flex-start',
+      paddingHorizontal: 20,
+    },
+        safeAreaContent: { // Nuevo estilo para el SafeAreaView interno
+      flex: 1,
+      position:'relative',
+      zIndex:1
+        },
   headerContainer: {
     alignItems: "center",
-    marginTop: hp('5.5%') // Aproximadamente 45 / 812 * 100%
+    marginTop: hp('7%') // Aproximadamente 45 / 812 * 100%
   },
   form: {
     gap: hp('1.2%'), // Aproximadamente 10 / 812 * 100%
@@ -735,21 +764,6 @@ const styles = (theme) => StyleSheet.create({
     fontSize: RFValue(14), // Equivalente a height * 0.017
     fontFamily: 'Effra_Medium',
   },
-  footerText:{
-    fontSize: wp('3%'), // 3% del ancho de la pantalla
-    fontFamily: 'Effra_Light',
-    bottom: hp('12%'), // 6% de la altura de la pantalla
-    marginHorizontal: 'auto',
-    position:'absolute'
-  },
-  footer:{
-    position: "absolute",
-    bottom: hp('-4%'), // Equivalente a height * -0.04
-    width: wp('100%'), // 100% del ancho de la pantalla
-    height: hp('25%'), // 25% de la altura de la pantalla
-    alignItems: "center",
-    justifyContent: "center",
-  },
   Image:{
     width: "100%",
     height: "100%",
@@ -790,5 +804,21 @@ const styles = (theme) => StyleSheet.create({
     fontSize: RFValue(16),
     fontFamily: 'Effra_Medium',
   },
+    footerImageBackground: {
+        position: 'absolute', // Esto lo saca del flujo normal y lo superpone
+        width: '100%',
+        height: 200,
+        bottom: 0, // Lo ancla a la parte inferior del contenedor padre (LinearGradient)
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        zIndex: 0, // Z-index bajo para que esté detrás del SafeAreaView
+    },
+    footerText: {
+        fontSize: 12,
+        color: '#333333',
+        textAlign: 'center',
+        paddingHorizontal: 20,
+        paddingBottom: 20, // Agregado para que no esté pegado al borde
+    },
 });
 export default SignUpScreen;

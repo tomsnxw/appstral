@@ -21,8 +21,8 @@
             "en": "It's time to connect with our creativity, to identify what's rising from the chest, and to feed with courage the most authentic part of the Self. The environment invites us to express our essence, to kindle our own light to light the way and be a beacon for others. From the Cancerian shell, Leo's authenticity roars and emerges with confidence."
         },
         "Virgo": {
-            "es": "Llegó el momento de pulir lo bruto, de poner nuestras herramientas en la mesa y ajustar cada parte de nuestra vida que requiere detalle para seguir funcionando. Urge hacer orden, interno y externo, afinando nuestros instrumentos para aportar nuestra música al mundo. ¿Cómo prepararnos para lo que queda del año? Virgo, con rigor, recompone lo que el fuego arrasó.",
-            "en": "The time has come to polish the rough, to put our tools on the table and adjust every part of our life that needs detail to keep functioning. There's a need to make order, both internal and external, fine-tuning our instruments to bring our music to the world. How do we prepare for what's left of the year? Virgo, with rigor, rebuilds what fire has ravaged."
+            "es": "Llegó el momento de pulir lo bruto, de poner nuestras herramientas en la mesa y ajustar aquello que requiere detalle para seguir funcionando. Urge hacer orden, interno y externo, afinando nuestros instrumentos para aportar nuestra música al mundo.\n¿Cómo prepararnos para lo que queda del año?\nVirgo, con rigor, recompone lo que el fuego arrasó.",
+            "en": "The time has come to smooth out the rough edges, to lay our tools on the table, and fine-tune what needs adjusting. It's urgent to put things in order, both internally and externally, fine-tuning our instruments to bring our music to the world.\nHow can we prepare for the rest of the year?\nVirgo, with rigor, rebuilds what the fire destroyed."
         },
         "Libra": {
             "es": "El Sol irradia energía libriana, alumbrando el encuentro y mostrándonos que, cooperando, creamos más de lo que haríamos soles. Hay un goce que escapa de los sentidos, el placer de nuestra parte vincular, que nace del disfrute de compartir. Tras el trabajo ermitaño en Virgo, Libra nos abre la puerta al mundo a través de los otros. ¿Cuán bella sería mi danza si la bailara al son de la sinfonía de los encuentros?",
@@ -109,11 +109,11 @@
             "en": "In the signs it rules, Venus gains strength. During its passage through Taurus, Venus reminds us of the value of having a body with wonderful sensory capacities that connect us to the world. This body isn't merely a vehicle for the rest of our subtle bodies, but rather enables us to enjoy earthly things, a way of incarnating that also brings us closer to enjoyment."
         },
         "Géminis": {
-            "es": "Venus en este signo se deja maravillar por las opciones, no por el compromiso de tomar alguna y aferrarse a ella. Es un período para explorar gustos nuevos y hacernos preguntas importantes sobre nuestros recursos y la multiplicidad de cosas a las que los dirigimos. La afinidad con el otro parece encontrarse más en lo intelectual que en otro lado, el diálogo embellece las relaciones y las vuelve más valiosas.",
+            "es": "Venus en este signo se deja maravillar por las opciones, no por el compromiso de tomar alguna y aferrarse a ella. Es un período para explorar gustos nuevos y hacernos preguntas importantes sobre nuestros recursos y la multiplicidad de cosas a las que los dirigimos. La afinidad con le otre parece encontrarse más en lo intelectual que en otro lado, el diálogo embellece las relaciones y las vuelve más valiosas.",
             "en": "Venus in this sign is amazed by options, not by the commitment to make one and stick with it. It's a time to explore new tastes and ask ourselves important questions about our resources and the multiplicity of things we direct them toward. Affinity with others seems to be found more intellectually than elsewhere; dialogue embellishes relationships and makes them more valuable."
         },
         "Cáncer": {
-            "es": "El valor de lo conocido y cálido toma relevancia. Un abrazo sentido puede ser un hogar, y un refugio en el que cuidarnos de las amenazas del mundo La vulnerabilidad personal se entrelaza con la de otro, si nos vinculamos desde el cuidado y la protección de esas vulnerabilidades podemos fortalecer nuestro autoestima y la de los demás, hasta lo más frágil de une puede ser amado por otros.",
+            "es": "El valor de lo conocido y cálido toma relevancia. Un abrazo sentido puede ser un hogar, y un refugio en el que cuidarnos de las amenazas del mundo La vulnerabilidad personal se entrelaza con la de otre, si nos vinculamos desde el cuidado y la protección de esas vulnerabilidades podemos fortalecer nuestro autoestima y la de los demás, hasta lo más frágil de une puede ser amado por otros.",
             "en": "The value of what is familiar and warm takes on relevance. A heartfelt embrace can be a home, and a refuge in which to protect ourselves from the threats of the world. Personal vulnerability is intertwined with that of others. If we connect through caring for and protecting those vulnerabilities, we can strengthen our self-esteem and that of others. Even the most fragile part of us can be loved by others."
         },
         "Leo": {
@@ -225,7 +225,13 @@
         "Tauro": {
             "es": "Es momento de trabajar la paciencia, la sensación de que todo cuesta en cada paso nos obliga a desarrollar resistencia. Cuando cuesta sustentar lo básico, aprendemos a manejarnos con la menor cantidad de recursos.\nSi buscamos la satisfacción inmediata, podemos perder mejores resultados.",
             "en": "It's time to work on patience. The feeling that everything costs at every step forces us to develop resistance. When it's hard to sustain the basics, we learn to manage with the least resources.\nIf we seek immediate satisfaction, we might lose better results."
-        }
+        },
+        
+  "Piscis": {
+    "es": "Es tiempo de dar forma a la etérea danza de nuestras fantasías. La realidad y la intuición se entrelazan, invitándonos a discernir qué anhelos son el cimiento de un futuro tangible y cuáles, meras quimeras sin dirección.",
+    "en": "It's time to give shape to the ethereal dance of our fantasies. Reality and intuition intertwine, inviting us to discern which desires are the foundation of a tangible future and which are mere, directionless chimeras."
+  }
+
     },
     "Urano": {
         "Aries": {
@@ -233,8 +239,8 @@
             "en": ""
         },
         "Tauro": {
-            "es": "",
-            "en": ""
+            "es": "Es un tiempo donde lo que creíamos inamovible, nuestros pilares de sustento y pertenencia, puede transformarse abruptamente. Urano nos impulsa a innovar en cómo nutrimos nuestra existencia y cultivamos nuestros recursos, buscando nuevas maneras de habitar el mundo. Una llamada a desprenderse de viejas armaduras y formas de acumulación que ya no resuenan, para reconectar con la esencia de la Tierra y sus ciclos de abundancia.",
+            "en": "It's a time when what we believed to be immutable, our pillars of sustenance and belonging, can abruptly transform. Uranus compels us to innovate in how we nourish our existence and cultivate our resources, seeking new ways of inhabiting the world. A call to shed old armor and forms of accumulation that no longer resonate, in order to reconnect with the essence of the Earth and its cycles of abundance."
         },
         "Géminis": {
             "es": "Urano canaliza la energía geminiana, y nos indica el momento de actualizar los lenguajes, de dejarnos atravesar el pensamiento por las ideas del colectivo, y generar nuevos puentes que nos conecten con nuestro entorno cercano. ¿A dónde llegaríamos si usaramos las nuevas inteligencias que creamos para mejorar el mundo en vez de dominarlo?",
@@ -323,8 +329,8 @@
             "en": ""
         },
         "Piscis": {
-            "es": "",
-            "en": ""
+            "es": "Neptuno nos arrastra a las aguas profundas del inconsciente, donde el 'yo' se disuelve en el 'todo'. Sueños e intuiciones se agudizan, llamándonos a la compasión y la espiritualidad. Es tiempo de sanar, de abrir el corazón a la empatía y la conexión universal. Sentimos las energías sutiles con más fuerza, y un anhelo por ir más allá de lo material. La clave es encontrar claridad en esta disolución para guiarnos con nuestra sabiduría interior.",
+            "en": "Neptune draws us into the deep waters of the unconscious, where the 'I' dissolves into the 'all'. Dreams and intuitions sharpen, calling us to compassion and spirituality. It's a time to heal, to open our hearts to empathy and universal connection. We feel subtle energies more strongly, and a yearning to go beyond the material. The key is to find clarity in this dissolution to guide us with our inner wisdom."
         }
     }
 }
